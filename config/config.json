@@ -6,8 +6,7 @@
     "host": "localhost",
     "port": 3308,
     "dialect": "mysql",
-    "freezeTableName": true,
-    "operatorsAliases": false
+    "operatorsAliases": "false"
   },
   "test": {
     "username": "root",
@@ -15,7 +14,6 @@
     "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "freezeTableName": true,
     "operatorsAliases": false
   },
   "production": {
@@ -24,7 +22,6 @@
     "database": "database_production",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "freezeTableName": true,
     "operatorsAliases": false
   }
 }

@@ -6,17 +6,17 @@
   * password       - varchar, not null
   * login_attempts - int, default = 0 (may or may not need)
 
-## ref_category
+## category
   * id   - auto increment
   * name - varchar, not null
   
-  Seeded values - vacation, work, school, bathroom, easy, hard
+  Seeded values - Vacation, Work, School, Bathroom, Easy, Hard
 
-## ref_status
+## status
   * id   - auto increment
   * name - varchar, not null
   
-  Seeded values - not started, in progress, completed, deleted
+  Seeded values - Not Started, In Progress, Completed, Deleted
 
 ## library
   * id     - auto increment
@@ -26,11 +26,11 @@
   * url    - varchar, allow nulls (need to verify what is on API)
 
 ## reading_list
-  * id          - auto increment
-  * user_id     - int, foreign key to user(id)
-  * library_id  - int, foreign key to library(id)
-  * category_id - int, foreign key to ref_category(id)
-  * status_id   - int, foreign key to ref_status(id)
+  * id         - auto increment
+  * userId     - int, foreign key to user(id)
+  * libraryId  - int, foreign key to library(id)
+  * categoryId - int, foreign key to category(id)
+  * statusId   - int, foreign key to status(id)
 
 
 NOTE: All tables will use the default setting to add create/update timestamps.

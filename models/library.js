@@ -30,11 +30,15 @@ module.exports = (sequelize, DataTypes) => {
         isUrl: true
       }
     }
+  },
+  {
+    freezeTableName: true
   });
 
   Library.associate = models =>
     Library.hasMany(models.Reading_List, {
-      onDelete: 'cascade'
+      onDelete: 'cascade',
+      onUpdate: 'cascade'
     });
 
   return Library;

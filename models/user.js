@@ -23,11 +23,15 @@ module.exports = (sequelize, DataTypes) => {
         isInt: true
       }
     }
+  },
+  {
+    freezeTableName: true
   });
 
-  Ref_User.associate = models =>
-    Ref_User.hasMany(models.Reading_List, {
-      onDelete: 'cascade'
+  User.associate = models =>
+    User.hasMany(models.Reading_List, {
+      onDelete: 'cascade',
+      onUpdate: 'cascade'
     });
 
   return User;

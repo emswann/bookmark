@@ -9,24 +9,26 @@ module.exports = {
           primaryKey: true,
           autoIncrement: true
         },
-        productId: {
-          type: Sequelize.INTEGER,
-          references: {
-            model: 'products',
-            key: 'id'
-          },
+        name: {
+          type: Sequelize.STRING,
           allowNull: false
         },
-        orderId: {
+        password: {
+          type: Sequelize.STRING,
+          allowNull: false
+        },
+        login_attempts: {
           type: Sequelize.INTEGER,
-          references: {
-            model: 'orders',
-            key: 'id'
-          },
+          defaultValue: 0
+        },
+        createdAt: {
+          type: Sequelize.DATE,
+          allowNull: false
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
           allowNull: false
         }
-        createdAt: Sequelize.DATE,
-        updatedAt: Sequelize.DATE,
       }
   )},
 
@@ -34,12 +36,3 @@ module.exports = {
     return queryInterface.dropTable('user')
   }
 };
-
-migrations/model1.js
-model2Id: {
-  type: Sequelize.INTEGER,
-  references: {
-    model: 'model2',
-    key: 'id'
-  },
-},
