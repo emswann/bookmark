@@ -1,10 +1,6 @@
 {
   "development": {
-    "username": "root",
-    "password": "root",
-    "database": "bookmark",
-    "host": "localhost",
-    "port": 3308,
+    "use_env_variable": "MYSQLDB_URL",
     "dialect": "mysql",
     "operatorsAliases": "false"
   },
