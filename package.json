@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/emswann/bookmark#readme",
   "dependencies": {
+    "@datafire/google_books": "^4.0.0",
     "body-parser": "^1.18.2",
     "chai": "^4.1.2",
     "dotenv": "^5.0.1",
