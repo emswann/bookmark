@@ -11,11 +11,8 @@ $(document).ready(() => {
         
         $.ajax(url, {
             type: "GET"
-        }).then(
-            function () {
-                console.log("created search variables")
-                // navigate to search results.....
-            }
+        }).then(() =>
+            console.log("Completed books search")
         )
     });
 

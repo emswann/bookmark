@@ -9,7 +9,7 @@ let gbooks = require('@datafire/google_books').create({
   redirect_uri: ""
 });
 
-var getGBooks = (searchType, searchParam) => {
+var getGBooks = (res, searchType, searchParam) => {
   try {
     const apiKey = process.env.GBOOKS_API_KEY;
     const MAX_RESULTS = 10;
@@ -23,9 +23,10 @@ var getGBooks = (searchType, searchParam) => {
         "key" : apiKey,
         "printType": "books",
         "maxResults": MAX_RESULTS,
-        "orderBy":    "relevance"
+        "orderBy":    "newest"
       })
       .then(data => {
+        // res.json(data); res.render(handlebars stuff);
         console.log(data);
       })
       .catch(error => {
@@ -47,11 +48,11 @@ module.exports = app => {
   }));
 
   app.get("/api/search/title/:title", (req, res) => 
-    getGBooks("intitle", req.params.title));
+    getGBooks(res, "intitle", req.params.title));
 
   app.get("/api/search/author/:author", (req, res) => 
-    getGBooks("inauthor", req.params.author));
+    getGBooks(res, "inauthor", req.params.author));
 
   app.get("/api/search/subject/:subject", (req, res) => 
-    getGBooks("subject", req.params.subject));
+    getGBooks(res, "subject", req.params.subject));
 };
