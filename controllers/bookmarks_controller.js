@@ -12,7 +12,7 @@ let gbooks = require('@datafire/google_books').create({
 var getGBooks = (res, searchType, searchParam) => {
   try {
     const apiKey = process.env.GBOOKS_API_KEY;
-    const MAX_RESULTS = 10;
+    const MAX_RESULTS = 2;
       
     if (apiKey) {
       gbooks.volumes.list({
@@ -23,11 +23,11 @@ var getGBooks = (res, searchType, searchParam) => {
         "key" : apiKey
       })
       .then(data => {
-        var hbsObjArray = [];
+        var booksObjArray = [];
         var books = data.items;
         
         books.forEach(book =>
-          hbsObjArray.push({
+          booksObjArray.push({
             title: book.volumeInfo.title,
             author: book.volumeInfo.authors,
             year: book.volumeInfo.publishedDate,
@@ -35,10 +35,8 @@ var getGBooks = (res, searchType, searchParam) => {
             img: book.volumeInfo.imageLinks.smallThumbnail
           })
         );
-
-        console.log(hbsObjArray);
           
-        res.render("index", hbsObjArray);
+        res.render("usersearch", {books: booksObjArray});
       })
       .catch(error => {
         console.log(error);
@@ -55,7 +53,11 @@ var getGBooks = (res, searchType, searchParam) => {
 
 module.exports = app => {
   app.get("/", ((req, res) => {
-    res.sendFile(path.join(__dirname, "../public/usersearch.html"));
+    res.sendFile(path.join(__dirname, "../public/login.html"));
+  }));
+
+  app.get("/search", ((req, res) => {
+    res.render("usersearch", {});
   }));
 
   app.get("/api/search/title/:title", (req, res) => 
