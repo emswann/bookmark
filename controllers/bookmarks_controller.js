@@ -13,21 +13,32 @@ var getGBooks = (res, searchType, searchParam) => {
   try {
     const apiKey = process.env.GBOOKS_API_KEY;
     const MAX_RESULTS = 10;
-
-    const qStr = "+" + searchType + ":" + searchParam.replace(/ /g,'%');
-    console.log("Search string: " + qStr);
       
     if (apiKey) {
       gbooks.volumes.list({
-        "q": qStr,
-        "key" : apiKey,
+        "q": searchParam,
         "printType": "books",
         "maxResults": MAX_RESULTS,
-        "orderBy":    "newest"
+        "orderBy":    "newest",
+        "key" : apiKey
       })
       .then(data => {
-        // res.json(data); res.render(handlebars stuff);
-        console.log(data);
+        var hbsObjArray = [];
+        var books = data.items;
+        
+        books.forEach(book =>
+          hbsObjArray.push({
+            title: book.volumeInfo.title,
+            author: book.volumeInfo.authors,
+            year: book.volumeInfo.publishedDate,
+            desc: book.volumeInfo.description,
+            img: book.volumeInfo.imageLinks.smallThumbnail
+          })
+        );
+
+        console.log(hbsObjArray);
+          
+        res.render("index", hbsObjArray);
       })
       .catch(error => {
         console.log(error);
