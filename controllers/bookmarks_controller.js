@@ -19,7 +19,7 @@ var getGBooks = (res, searchType, searchParam) => {
         "q": searchParam,
         "printType": "books",
         "maxResults": MAX_RESULTS,
-        "orderBy":    "newest",
+        "orderBy":    "relevance",
         "key" : apiKey
       })
       .then(data => {
@@ -28,11 +28,18 @@ var getGBooks = (res, searchType, searchParam) => {
         
         books.forEach(book =>
           booksObjArray.push({
-            title: book.volumeInfo.title,
-            author: book.volumeInfo.authors,
-            year: book.volumeInfo.publishedDate,
-            desc: book.volumeInfo.description,
-            img: book.volumeInfo.imageLinks.smallThumbnail
+            title: book.volumeInfo.title || "undefined",
+            author: book.volumeInfo.authors || "undefined",
+            year: book.volumeInfo.publishedDate || "undefined",
+            desc: book.volumeInfo.description || "undefined",
+            img: () => {
+              if (book.volumeInfo.imageLinks) {
+                return book.volumeInfo.imageLinks.smallThumbnail || "undefined"
+              }
+              else {
+                return "undefined";
+              }
+            }
           })
         );
           
