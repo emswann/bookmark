@@ -1,45 +1,11 @@
-<h1>Book Search</h1>
-
-<form action="/search" method="post" class="user-search">
-    <div>
-        <label>Search: </label>
-        <input type="text" name="search" id="userText">
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" id="search-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Select search parameter
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li>
-                    <a class="search-param" data-value="title" href="#">Title</a>
-                </li>
-                <li>
-                    <a class="search-param" data-value="author" href="#">Author</a>
-                </li>
-                <li>
-                    <a class="search-param" data-value="subject" href="#">Subject</a>
-                </li>
-            </ul>
-        </div>
-        <input type="submit" value="Submit">
-        <p>See your list
-            <a href="#">here</a>
-        </p>
-    </div>
-</form>
-
-<div class="search-results">
-    <ul>
-    {{#each books}}
-        <li>
-            <p>Title: {{title}}</p>
-            <p>Author: {{author}}</p>
-            <p>Year: {{year}}</p>
-            <p>Description: {{desc}}</p>
-            <img src={{img}}>
-        </li>
-    {{/each}}
-    </ul>
-</div>
-
-</body>
+<ul>
+{{#each books}}
+    <li>
+        <p>Title: {{title}}</p>
+        <p>Author: {{author}}</p>
+        <p>Year: {{year}}</p>
+        <p>Description: {{desc}}</p>
+        <img src={{img}}>
+    </li>
+{{/each}}
+</ul>

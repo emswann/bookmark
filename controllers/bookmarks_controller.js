@@ -12,7 +12,7 @@ let gbooks = require('@datafire/google_books').create({
 var getGBooks = (res, searchType, searchParam) => {
   try {
     const apiKey = process.env.GBOOKS_API_KEY;
-    const MAX_RESULTS = 2;
+    const MAX_RESULTS = 10;
       
     if (apiKey) {
       gbooks.volumes.list({
@@ -36,7 +36,7 @@ var getGBooks = (res, searchType, searchParam) => {
           })
         );
           
-        res.render("usersearch", {books: booksObjArray});
+        res.render("usersearch", {books: booksObjArray, layout: false});
       })
       .catch(error => {
         console.log(error);
@@ -52,13 +52,13 @@ var getGBooks = (res, searchType, searchParam) => {
 };
 
 module.exports = app => {
-  app.get("/", ((req, res) => {
-    res.sendFile(path.join(__dirname, "../public/login.html"));
-  }));
+  app.get("/", ((req, res) =>
+    res.sendFile(path.join(__dirname, "../public/login.html"))
+  ));
 
-  app.get("/search", ((req, res) => {
-    res.render("usersearch", {});
-  }));
+  app.get("/search", ((req, res) => 
+    res.sendFile(path.join(__dirname, "../public/usersearch.html"))
+  ));
 
   app.get("/api/search/title/:title", (req, res) => 
     getGBooks(res, "intitle", req.params.title));

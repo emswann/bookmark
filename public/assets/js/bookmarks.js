@@ -11,9 +11,9 @@ $(document).ready(() => {
         
         $.ajax(url, {
             type: "GET"
-        }).then(() =>
-            console.log("Completed books search")
-        )
+        }).then(data => {
+          $(".search-results").html(data)
+        });
     });
 
     $(".search-param").on("click", function (event) {
