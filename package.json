@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/emswann/bookmark#readme",
   "dependencies": {
+    "@datafire/google_books": "^4.0.0",
     "body-parser": "^1.18.2",
     "chai": "^4.1.2",
     "dotenv": "^5.0.1",
@@ -26,6 +27,7 @@
     "mysql": "^2.15.0",
     "mysql2": "^1.5.2",
     "passport": "^0.4.0",
+    "path": "^0.12.7",
     "sequelize": "^4.36.1"
   }
 }
