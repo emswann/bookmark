@@ -1,5 +1,5 @@
-const db = require("../models");
-const path = require("path");
+const db = require('../models');
+const path = require('path');
 const env = require('dotenv').config();
 let gbooks = require('@datafire/google_books').create({
   access_token: "",
@@ -8,12 +8,13 @@ let gbooks = require('@datafire/google_books').create({
   client_secret: "",
   redirect_uri: ""
 });
+const Sequelize = require('sequelize');
 
 var getGBooks = (res, searchType, searchParam) => {
-  try {
-    const apiKey = process.env.GBOOKS_API_KEY;
-    const MAX_RESULTS = 10;
-      
+  const apiKey = process.env.GBOOKS_API_KEY;
+  const MAX_RESULTS = 10;
+
+  try { 
     if (apiKey) {
       gbooks.volumes.list({
         "q": searchParam,
@@ -45,9 +46,7 @@ var getGBooks = (res, searchType, searchParam) => {
           
         res.render("usersearch", {books: booksObjArray, layout: false});
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(error => console.log(error));
     } 
     else {
       throw Error("Unable to process Google Books search - no API key.");
@@ -75,4 +74,41 @@ module.exports = app => {
 
   app.get("/api/search/subject/:subject", (req, res) => 
     getGBooks(res, "subject", req.params.subject));
+
+  app.get("/api/search/list/:id/:category?", (req, res) => {
+    const Op = Sequelize.Op;
+    const userId = req.params.id;
+    const category = req.params.category;
+    const DEL_STATUS_ID = 4;
+
+    var categoryWhere = {};  
+    if (category) {
+      categoryWhere.id = category;
+    }
+
+    db.Reading_List.findAll({
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      where: [{ UserId: userId, StatusId: { [Op.ne]: DEL_STATUS_ID } }],
+      include: [{
+        model: db.Library,
+        attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+      },
+      {
+        model: db.Category,
+        where: categoryWhere,
+        attributes: ['name']
+      },
+      {
+        model: db.Status,
+        attributes: ['name']
+      },
+      {
+        model: db.User,
+        attributes: ['name']
+      }]
+    })
+    .then(data => res.json(data))
+        // res.render("userlist", {books: data, layout: false});
+    .catch(error => res.json(error));
+  });
 };

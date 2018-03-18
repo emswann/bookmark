@@ -27,10 +27,10 @@
 
 ## reading_list
   * id         - auto increment
-  * userId     - int, foreign key to user(id)
-  * libraryId  - int, foreign key to library(id)
-  * categoryId - int, foreign key to category(id)
-  * statusId   - int, foreign key to status(id)
+  * UserId     - int, foreign key to user(id)
+  * LibraryId  - int, foreign key to library(id)
+  * CategoryId - int, foreign key to category(id)
+  * StatusId   - int, foreign key to status(id)
 
 
 NOTE: All tables will use the default setting to add create/update timestamps.
@@ -44,7 +44,7 @@ EXAMPLE:
 ## user 
   1 | test | test (Seed file will be created to insert this dummy test user.) 
 
-## ref_category
+## category
   1 | Vacation
   2 | Work
   3 | School
@@ -52,7 +52,7 @@ EXAMPLE:
   5 | Easy
   6 | Hard
 
-## ref_status
+## status
   1 | Not Started
   2 | In Progress
   3 | Completed
