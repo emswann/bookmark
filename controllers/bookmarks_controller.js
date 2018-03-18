@@ -32,6 +32,14 @@ var getGBooks = (res, searchType, searchParam) => {
             title: book.volumeInfo.title || "undefined",
             author: book.volumeInfo.authors || "undefined",
             year: book.volumeInfo.publishedDate || "undefined",
+            genre: () => {
+              if (book.volumeInfo.categories) {
+                return book.volumeInfo.categories[0] || "undefined"
+              }
+              else {
+                return "undefined";
+              }
+            },
             desc: book.volumeInfo.description || "undefined",
             img: () => {
               if (book.volumeInfo.imageLinks) {
@@ -43,7 +51,7 @@ var getGBooks = (res, searchType, searchParam) => {
             }
           })
         );
-          
+         
         res.render("usersearch", {books: booksObjArray, layout: false});
       })
       .catch(error => console.log(error));
@@ -64,6 +72,10 @@ module.exports = app => {
 
   app.get("/search", ((req, res) => 
     res.sendFile(path.join(__dirname, "../public/usersearch.html"))
+  ));
+
+  app.get("/list", ((req, res) => 
+    res.sendFile(path.join(__dirname, "../public/userlist.html"))
   ));
 
   app.get("/api/search/title/:title", (req, res) => 
