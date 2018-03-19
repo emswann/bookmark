@@ -65,6 +65,26 @@ var getGBooks = (res, searchType, searchParam) => {
   }  
 };
 
+var getWhereQuery = (queryTable, searchParam, searchParamVal) => {
+  var whereQuery = {};
+
+  // For category or status search matching by name.
+  // For library search matching by title or author.
+  if (((queryTable === 'library') 
+          && (searchParam === 'title' || searchParam === 'author')) 
+      || queryTable === searchParam) {
+    if (queryTable === 'library') {
+      column = searchParam;
+    }
+    else {
+      column = 'name';
+    }
+    whereQuery[column] = searchParamVal;
+  }
+
+  return(whereQuery);
+}
+
 module.exports = app => {
   app.get("/", ((req, res) =>
     res.sendFile(path.join(__dirname, "../public/login.html"))
@@ -87,31 +107,32 @@ module.exports = app => {
   app.get("/api/search/subject/:subject", (req, res) => 
     getGBooks(res, "subject", req.params.subject));
 
-  app.get("/api/search/list/:id/:category?", (req, res) => {
+  app.get("/api/list/:id/:searchParam/:searchParamVal?", (req, res) => {
     const Op = Sequelize.Op;
     const userId = req.params.id;
-    const category = req.params.category;
+    const searchParam = req.params.searchParam;
+    const searchParamVal = 
+      searchParam === 'all' ? undefined : req.params.searchParamVal;
     const DEL_STATUS_ID = 4;
 
-    var categoryWhere = {};  
-    if (category) {
-      categoryWhere.id = category;
-    }
+    console.log(userId, searchParam, searchParamVal);
 
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
       where: [{ UserId: userId, StatusId: { [Op.ne]: DEL_STATUS_ID } }],
       include: [{
         model: db.Library,
+        where: getWhereQuery('library', searchParam, searchParamVal),
         attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
       },
       {
         model: db.Category,
-        where: categoryWhere,
+        where: getWhereQuery('category', searchParam, searchParamVal),
         attributes: ['name']
       },
       {
         model: db.Status,
+        where: getWhereQuery('status', searchParam, searchParamVal),
         attributes: ['name']
       },
       {
@@ -119,8 +140,7 @@ module.exports = app => {
         attributes: ['name']
       }]
     })
-    .then(data => res.json(data))
-        // res.render("userlist", {books: data, layout: false});
+    .then(data => res.json(data)) //res.render("userlist", {books: data, layout: false}))
     .catch(error => res.json(error));
   });
 };
