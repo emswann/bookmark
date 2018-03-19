@@ -1,5 +1,5 @@
-const db = require("../models");
-const path = require("path");
+const db = require('../models');
+const path = require('path');
 const env = require('dotenv').config();
 let gbooks = require('@datafire/google_books').create({
   access_token: "",
@@ -8,12 +8,13 @@ let gbooks = require('@datafire/google_books').create({
   client_secret: "",
   redirect_uri: ""
 });
+const Sequelize = require('sequelize');
 
 var getGBooks = (res, searchType, searchParam) => {
-  try {
-    const apiKey = process.env.GBOOKS_API_KEY;
-    const MAX_RESULTS = 10;
-      
+  const apiKey = process.env.GBOOKS_API_KEY;
+  const MAX_RESULTS = 10;
+
+  try { 
     if (apiKey) {
       gbooks.volumes.list({
         "q": searchParam,
@@ -31,6 +32,14 @@ var getGBooks = (res, searchType, searchParam) => {
             title: book.volumeInfo.title || "undefined",
             author: book.volumeInfo.authors || "undefined",
             year: book.volumeInfo.publishedDate || "undefined",
+            genre: () => {
+              if (book.volumeInfo.categories) {
+                return book.volumeInfo.categories[0] || "undefined"
+              }
+              else {
+                return "undefined";
+              }
+            },
             desc: book.volumeInfo.description || "undefined",
             img: () => {
               if (book.volumeInfo.imageLinks) {
@@ -42,12 +51,10 @@ var getGBooks = (res, searchType, searchParam) => {
             }
           })
         );
-          
+         
         res.render("usersearch", {books: booksObjArray, layout: false});
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(error => console.log(error));
     } 
     else {
       throw Error("Unable to process Google Books search - no API key.");
@@ -58,6 +65,26 @@ var getGBooks = (res, searchType, searchParam) => {
   }  
 };
 
+var getWhereQuery = (queryTable, searchParam, searchParamVal) => {
+  var whereQuery = {};
+
+  // For category or status search matching by name.
+  // For library search matching by title or author.
+  if (((queryTable === 'library') 
+          && (searchParam === 'title' || searchParam === 'author')) 
+      || queryTable === searchParam) {
+    if (queryTable === 'library') {
+      column = searchParam;
+    }
+    else {
+      column = 'name';
+    }
+    whereQuery[column] = searchParamVal;
+  }
+
+  return(whereQuery);
+}
+
 module.exports = app => {
   app.get("/", ((req, res) =>
     res.sendFile(path.join(__dirname, "../public/login.html"))
@@ -65,6 +92,10 @@ module.exports = app => {
 
   app.get("/search", ((req, res) => 
     res.sendFile(path.join(__dirname, "../public/usersearch.html"))
+  ));
+
+  app.get("/list", ((req, res) => 
+    res.sendFile(path.join(__dirname, "../public/userlist.html"))
   ));
 
   app.get("/api/search/title/:title", (req, res) => 
@@ -75,4 +106,56 @@ module.exports = app => {
 
   app.get("/api/search/subject/:subject", (req, res) => 
     getGBooks(res, "subject", req.params.subject));
+
+  app.get("/api/list/:id/:searchParam/:searchParamVal?", (req, res) => {
+    const Op = Sequelize.Op;
+    const userId = req.params.id;
+    const searchParam = req.params.searchParam;
+    const searchParamVal = 
+      searchParam === 'all' ? undefined : req.params.searchParamVal;
+    const DEL_STATUS_ID = 4;
+
+    console.log(userId, searchParam, searchParamVal);
+
+    db.Reading_List.findAll({
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      where: [{ UserId: userId, StatusId: { [Op.ne]: DEL_STATUS_ID } }],
+      include: [{
+        model: db.Library,
+        where: getWhereQuery('library', searchParam, searchParamVal),
+        attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+      },
+      {
+        model: db.Category,
+        where: getWhereQuery('category', searchParam, searchParamVal),
+        attributes: ['name']
+      },
+      {
+        model: db.Status,
+        where: getWhereQuery('status', searchParam, searchParamVal),
+        attributes: ['name']
+      },
+      {
+        model: db.User,
+        attributes: ['name']
+      }]
+    })
+    .then(data =>  {
+      var booksObjArray = [];
+        
+      data.forEach(book =>
+        booksObjArray.push({
+          title: book.Library.title,
+          author: book.Library.author,
+          genre: book.Library.genre,
+          category: book.Category.name,
+          status: book.Status.name,
+          url: book.Library.url
+        })
+      );
+         
+      res.render("userlist", {books: booksObjArray, layout: false});
+    })
+    .catch(error => console.log(error));
+  });
 };

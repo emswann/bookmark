@@ -20,9 +20,9 @@
     <form action="/search" method="post" class="user-search">
         <div>
             <label>Search: </label>
-            <input type="text" name="search" id="userText">
+            <input type="text" name="search" class="userText">
             <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" id="search-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-default dropdown-toggle search-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Select search parameter
                     <span class="caret"></span>
                 </button>
@@ -40,12 +40,12 @@
             </div>
             <input type="submit" value="Submit">
             <p>See your list
-                <a href="userlist.html">here</a>
+                <a href="/list">here</a>
             </p>
         </div>
     </form>
 
-    <div class="search-results">
+    <div id="search-results">
         <!-- ========== -->
     </div>
 

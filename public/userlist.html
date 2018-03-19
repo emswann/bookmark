@@ -17,14 +17,41 @@
 
     <h1>User Reading List</h1>
 
-    <form action="/search" method="post">
+    <form action="/list" method="post" class="list-search">
         <div>
-            <label>Search My List: </label>
-            <input type="text" name="search"><input type="submit" value="Submit">
-            <p>Search for more books <a href="usersearch.html">here</a></p>
+            <label>Search: </label>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle search-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select search parameter
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="search-param" data-value="all" href="#">All</a>
+                    </li>
+                    <li>
+                        <a class="search-param" data-value="category" href="#">Category</a>
+                    </li>
+                    <li>
+                        <a class="search-param" data-value="status" href="#">Status</a>
+                    </li>
+                    <li>
+                        <a class="search-param" data-value="title" href="#">Title</a>
+                    </li>
+                    <li>
+                        <a class="search-param" data-value="author" href="#">Author</a>
+                    </li>
+                </ul>
+            </div>
+            <input type="text" name="search" class="userText">
+            <input type="submit" value="Submit">
+            <p>Search for more books
+                <a href="/search">here</a>
+            </p>
         </div>
+    </form>
 
-    <div class="user-list">
+    <div id="list-results">
         <!-- ========== -->
     </div>
 

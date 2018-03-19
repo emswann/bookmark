@@ -9,15 +9,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   },
   {
-    freezeTableName: true,
-    operatorsAliases: false
+    freezeTableName: true
   });
 
-  Status.associate = models =>
-    Status.hasMany(models.Reading_List, {
-      onDelete: 'cascade',
-      onUpdate: 'cascade'
-    });
+  Status.associate = models => Status.hasMany(models.Reading_List);
 
   return Status;
 };

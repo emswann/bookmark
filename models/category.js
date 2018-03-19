@@ -13,11 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true
   });
 
-  Category.associate = models =>
-    Category.hasMany(models.Reading_List, {
-      onDelete: 'cascade',
-      onUpdate: 'cascade'
-    });
+  Category.associate = models => Category.hasMany(models.Reading_List);
 
   return Category;
 };
