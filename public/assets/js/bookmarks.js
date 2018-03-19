@@ -28,7 +28,7 @@ $(document).ready(() => {
         $.ajax(url, {
             type: "GET"       
         })
-        .then(data => console.log(data)) //$("#list-results").html(data))
+        .then(data => {console.log(data); $("#list-results").html(data);})
         .fail(error => console.error(error));
     });
 

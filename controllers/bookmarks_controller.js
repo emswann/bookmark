@@ -140,7 +140,22 @@ module.exports = app => {
         attributes: ['name']
       }]
     })
-    .then(data => res.json(data)) //res.render("userlist", {books: data, layout: false}))
-    .catch(error => res.json(error));
+    .then(data =>  {
+      var booksObjArray = [];
+        
+      data.forEach(book =>
+        booksObjArray.push({
+          title: book.Library.title,
+          author: book.Library.author,
+          genre: book.Library.genre,
+          category: book.Category.name,
+          status: book.Status.name,
+          url: book.Library.url
+        })
+      );
+         
+      res.render("userlist", {books: booksObjArray, layout: false});
+    })
+    .catch(error => console.log(error));
   });
 };
