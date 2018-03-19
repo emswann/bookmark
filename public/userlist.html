@@ -21,11 +21,18 @@
         <div>
             <label>Search: </label>
             <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle search-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <select id="selectSearchList" name="selectSearchList">
+                    <option value="all">All</option>
+                    <option value="category">Category</option>
+                    <option value="status">Status</option>
+                    <option value="title">Title</option>
+                    <option value="author">Author</option>
+                </select>
+                <!-- <button type="button" class="btn btn-default dropdown-toggle search-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Select search parameter
                     <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
+                </button> -->
+                <!-- <ul id="searchFor" class="dropdown-menu">
                     <li>
                         <a class="search-param" data-value="all" href="#">All</a>
                     </li>
@@ -41,9 +48,9 @@
                     <li>
                         <a class="search-param" data-value="author" href="#">Author</a>
                     </li>
-                </ul>
+                </ul> -->
             </div>
-            <input type="text" name="search" class="userText">
+            <div id="dynamicSearchListContainer"></div>
             <input type="submit" value="Submit">
             <p>Search for more books
                 <a href="/search">here</a>

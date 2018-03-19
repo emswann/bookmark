@@ -107,6 +107,70 @@ module.exports = app => {
   app.get("/api/search/subject/:subject", (req, res) => 
     getGBooks(res, "subject", req.params.subject));
 
+  app.get("/api/list/:id/category", (req, res) => {
+    const Op = Sequelize.Op;
+    const userId = req.params.id;
+    const DEL_STATUS_ID = 4;
+    db.Reading_List.findAll({
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      where: [{ CategoryId: { [Op.ne]: DEL_STATUS_ID } }],
+    })
+    .then(data =>  {
+      var usedCategories = [];
+      data.forEach(function(ele) {
+        if (!usedCategories.includes(ele.CategoryId)) {
+          usedCategories.push(ele.CategoryId)
+        }
+      });
+      console.log("categories =",usedCategories);
+      db.Category.findAll({
+        where: {
+          id: {
+            [Op.or]: usedCategories
+          }
+        }
+      }).then(data => {
+        var categoryNames = [];
+        data.forEach(ele => categoryNames.push(ele.name));
+        console.log("categoryNames =", categoryNames);
+        res.json(categoryNames);
+      })
+      .catch(error => console.log(error));
+    })
+    .catch(error => console.log(error));
+  });
+
+  app.get("/api/list/:id/status", (req, res) => {
+    const Op = Sequelize.Op;
+    const userId = req.params.id;
+    db.Reading_List.findAll({
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    })
+    .then(data =>  {
+      var usedStatuses = [];
+      data.forEach(function(ele) {
+        if (!usedStatuses.includes(ele.StatusId)) {
+          usedStatuses.push(ele.StatusId)
+        }
+      });
+      console.log("statuses =",usedStatuses);
+      db.Status.findAll({
+        where: {
+          id: {
+            [Op.or]: usedStatuses
+          }
+        }
+      }).then(data => {
+        var statusNames = [];
+        data.forEach(ele => statusNames.push(ele.name));
+        console.log("statusNames =", statusNames);
+        res.json(statusNames);
+      })
+      .catch(error => console.log(error));
+    })
+    .catch(error => console.log(error));
+  });
+
   app.get("/api/list/:id/:searchParam/:searchParamVal?", (req, res) => {
     const Op = Sequelize.Op;
     const userId = req.params.id;
