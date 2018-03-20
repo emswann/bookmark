@@ -205,7 +205,7 @@ module.exports = app => {
       },
       {
         model: db.User,
-        attributes: ['name']
+        attributes: ['email']
       }]
     })
     .then(data =>  {

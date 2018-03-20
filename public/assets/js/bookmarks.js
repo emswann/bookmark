@@ -20,7 +20,7 @@ $(document).ready(() => {
 
         var searchParam = $("#selectSearchList").val();
         var searchParamVal = $("#dynamicSearchList").val().trim();
-        var userId = 1;
+        var userId = sessionStorage.getItem("userId");
 
         var url = "/api/list/" + userId + "/" + searchParam + "/" + searchParamVal;
         console.log("GET request: " + url);
@@ -49,7 +49,7 @@ $(document).ready(() => {
                 break;
             case "category": 
                 // search category <categoryList>
-                var url = "/api/list/" + "1" + "/category"; // temp userId
+                var url = "/api/list/" + sessionStorage.getItem("userId") + "/category"; 
                 console.log("GET request: " + url);
                 $.ajax(url, {
                     type: "GET"       
@@ -63,7 +63,7 @@ $(document).ready(() => {
                 break;
             case "status": 
                 // search status <statusList>
-                var url = "/api/list/" + "1" + "/status"; // temp userId
+                var url = "/api/list/" + sessionStorage.getItem("userId") + "/status"; 
                 console.log("GET request: " + url);
                 $.ajax(url, {
                     type: "GET"       
@@ -82,8 +82,7 @@ $(document).ready(() => {
     })
 
     $(document).on("click", "#launch-app", function(event) {
-        console.log("got here");
-        sessionStorage.setItem("userId", $("#user-id").val());
+        sessionStorage.setItem("userId", $("#user-id").attr("data-value"));
         window.location.href = "/list";
     });
 
