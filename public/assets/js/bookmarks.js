@@ -39,11 +39,15 @@ $(document).ready(() => {
         console.log(selectedSearchList);
         var dynamicSearchList = $("<select id='dynamicSearchList' name='dynamicSearchList'>");
         switch (selectedSearchList) {
-            case "all": {
+            case "all": 
+            case "title":
+            case "author":
                 // search all <text field>
+                // search title <text field>
+                // search author <text field>
                 dynamicSearchList = $("<input type='text' name='search' id='dynamicSearchList'>");
-            } break;
-            case "category": {
+                break;
+            case "category": 
                 // search category <categoryList>
                 var url = "/api/list/" + "1" + "/category"; // temp userId
                 console.log("GET request: " + url);
@@ -56,8 +60,8 @@ $(document).ready(() => {
                     })
                 })
                 .fail(error => console.error(error));
-            } break;
-            case "status": {
+                break;
+            case "status": 
                 // search status <statusList>
                 var url = "/api/list/" + "1" + "/status"; // temp userId
                 console.log("GET request: " + url);
@@ -70,18 +74,18 @@ $(document).ready(() => {
                     })
                 })
                 .fail(error => console.error(error));
-            } break;
-            case "title": {
-                // search title <text field>
-                dynamicSearchList = $("<input type='text' name='search' id='dynamicSearchList'>");
-            } break;
-            case "author": {
-                // search author <text field>
-                dynamicSearchList = $("<input type='text' name='search' id='dynamicSearchList'>");
-            } break;
+                break;
+            default:
+                console.log("Should never get here - something is wrong.");
         }
         $("#dynamicSearchListContainer").append(dynamicSearchList);
     })
+
+    $(document).on("click", "#launch-app", function(event) {
+        console.log("got here");
+        sessionStorage.setItem("userId", $("#user-id").val());
+        window.location.href = "/list";
+    });
 
     $(".search-param").on("click", function (event) {
         var newSearchParam = $(this).attr("data-value");
