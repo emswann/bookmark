@@ -113,7 +113,6 @@ module.exports = app => {
     const DEL_STATUS_ID = 4;
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
-      where: [{ CategoryId: { [Op.ne]: DEL_STATUS_ID } }],
     })
     .then(data =>  {
       var usedCategories = [];
@@ -145,12 +144,13 @@ module.exports = app => {
     const userId = req.params.id;
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
+      where: [{ CategoryId: { [Op.ne]: DEL_STATUS_ID } }]
     })
     .then(data =>  {
       var usedStatuses = [];
       data.forEach(function(ele) {
         if (!usedStatuses.includes(ele.StatusId)) {
-          usedStatuses.push(ele.StatusId)
+          usedStatuses.push(ele.StatusId);
         }
       });
       console.log("statuses =",usedStatuses);
