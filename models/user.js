@@ -24,5 +24,11 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = models => User.hasMany(models.Reading_List);
 
+  User.generateHash = password => 
+    bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+
+  User.validPassword = (password, this_password) =>
+    bcrypt.compareSync(password, this_password);
+
   return User;
 };

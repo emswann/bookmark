@@ -17,12 +17,6 @@ module.exports = (app, passport) => {
     failureFlash : true
   }));
 
-  app.post('/user/login', 
-  passport.authenticate('user', { successRedirect: '/user/home', failureRedirect: '/user/login' }));
-
-app.post('/company/login', 
-  passport.authenticate('company', { successRedirect: '/company/home', failureRedirect: '/company/login' }));
-
   app.get('/signup', (req, res) =>
     res.render('signup.ejs', { message: req.flash('signupMessage') }));
 
