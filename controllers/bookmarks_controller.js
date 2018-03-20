@@ -81,7 +81,7 @@ var getWhereQuery = (queryTable, searchParam, searchParamVal) => {
     }
     whereQuery[column] = searchParamVal;
   }
-
+  console.log("whereQuery =", whereQuery);
   return(whereQuery);
 }
 
@@ -107,11 +107,14 @@ module.exports = app => {
   app.get("/api/search/subject/:subject", (req, res) => 
     getGBooks(res, "subject", req.params.subject));
 
+  // "Category" dropdown list population
   app.get("/api/list/:id/category", (req, res) => {
     const Op = Sequelize.Op;
     const userId = req.params.id;
+    const DEL_STATUS_ID = 4;
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
+      where: [{ CategoryId: { [Op.ne]: DEL_STATUS_ID } }]
     })
     .then(data =>  {
       var usedCategories = [];
@@ -120,7 +123,6 @@ module.exports = app => {
           usedCategories.push(ele.CategoryId)
         }
       });
-      console.log("categories =",usedCategories);
       db.Category.findAll({
         where: {
           id: {
@@ -130,30 +132,27 @@ module.exports = app => {
       }).then(data => {
         var categoryNames = [];
         data.forEach(ele => categoryNames.push(ele.name));
-        console.log("categoryNames =", categoryNames);
         res.json(categoryNames);
       })
       .catch(error => console.log(error));
     })
     .catch(error => console.log(error));
   });
-
+  
+  // "Status" dropdown list population
   app.get("/api/list/:id/status", (req, res) => {
     const Op = Sequelize.Op;
     const userId = req.params.id;
-    const DEL_STATUS_ID = 4;    
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
-      where: [{ CategoryId: { [Op.ne]: DEL_STATUS_ID } }]
     })
     .then(data =>  {
       var usedStatuses = [];
       data.forEach(function(ele) {
         if (!usedStatuses.includes(ele.StatusId)) {
-          usedStatuses.push(ele.StatusId);
+          usedStatuses.push(ele.StatusId)
         }
       });
-      console.log("statuses =",usedStatuses);
       db.Status.findAll({
         where: {
           id: {
@@ -163,7 +162,6 @@ module.exports = app => {
       }).then(data => {
         var statusNames = [];
         data.forEach(ele => statusNames.push(ele.name));
-        console.log("statusNames =", statusNames);
         res.json(statusNames);
       })
       .catch(error => console.log(error));
@@ -178,12 +176,19 @@ module.exports = app => {
     const searchParamVal = 
       searchParam === 'all' ? undefined : req.params.searchParamVal;
     const DEL_STATUS_ID = 4;
-
-    console.log(userId, searchParam, searchParamVal);
-
+    
+    console.log("userID =", userId, "// searchParam =", searchParam, "// searchParamVal =", searchParamVal);
+    var listDeleted;
+    if (searchParam === "status" && searchParamVal === "Deleted") {
+      listDeleted = DEL_STATUS_ID;
+      console.log("filtering for Deleted list");
+    } else {
+      listDeleted = { [Op.ne]: DEL_STATUS_ID };
+      console.log("filtering out Deleted from lists");
+    }
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
-      where: [{ UserId: userId, StatusId: { [Op.ne]: DEL_STATUS_ID } }],
+      where: [{ UserId: userId, StatusId: listDeleted }],
       include: [{
         model: db.Library,
         where: getWhereQuery('library', searchParam, searchParamVal),
