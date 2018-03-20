@@ -1,4 +1,11 @@
 const LocalStrategy = require('passport-local').Strategy;
+const bCrypt        = require('bcrypt-nodejs');
+
+var generateHash = password => 
+  bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
+
+var validPassword = (password, this_password) =>
+  bCrypt.compareSync(password, this_password);
 
 module.exports = (passport, db) => {
   passport.serializeUser((user, done) => done(null, user.id));
@@ -25,14 +32,16 @@ module.exports = (passport, db) => {
           email: email,
           password: userPassword,
         };
- 
+
         db.User.create(data)
         .then((newUser, created) => { 
           if (!newUser) return done(null, false);
 
           if (newUser) return done(null, newUser); 
-        }); 
-      }) 
+        })
+        .catch(error => done(null, false, req.flash('signupMessage', 'That email/password is not valid.')));
+      })
+      .catch(error => console.log(error));
     })
   }));
 
@@ -46,10 +55,11 @@ module.exports = (passport, db) => {
       if (!user) 
         return done(null, false, req.flash('loginMessage', 'No user found.')); 
 
-      if (!user.validPassword(password, user.password))
+      if (!validPassword(password, user.password))
         return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
 
       return done(null, user);
     })
+    .catch(error => console.log(error));
   }));
 };
