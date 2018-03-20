@@ -9,17 +9,13 @@ module.exports = {
           primaryKey: true,
           autoIncrement: true
         },
-        name: {
+        email: {
           type: Sequelize.STRING,
           allowNull: false
         },
         password: {
           type: Sequelize.STRING,
           allowNull: false
-        },
-        login_attempts: {
-          type: Sequelize.INTEGER,
-          defaultValue: 0
         },
         createdAt: {
           type: Sequelize.DATE,

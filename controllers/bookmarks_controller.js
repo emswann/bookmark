@@ -52,7 +52,8 @@ var getGBooks = (res, searchType, searchParam) => {
           })
         );
          
-        res.render("usersearch", {books: booksObjArray, layout: false});
+        // Including extension since using both handlebars and ejs in app. 
+        res.render("usersearch.handlebars", {books: booksObjArray, layout: false});
       })
       .catch(error => console.log(error));
     } 
@@ -86,9 +87,7 @@ var getWhereQuery = (queryTable, searchParam, searchParamVal) => {
 }
 
 module.exports = app => {
-  app.get("/", ((req, res) =>
-    res.sendFile(path.join(__dirname, "../public/login.html"))
-  ));
+  // app.get("/", ((req, res) => moved to login_controller.js
 
   app.get("/search", ((req, res) => 
     res.sendFile(path.join(__dirname, "../public/usersearch.html"))
@@ -153,8 +152,9 @@ module.exports = app => {
           url: book.Library.url
         })
       );
-         
-      res.render("userlist", {books: booksObjArray, layout: false});
+
+      // Including extension since using both handlebars and ejs in app.   
+      res.render("userlist.handlebars", {books: booksObjArray, layout: false});
     })
     .catch(error => console.log(error));
   });
