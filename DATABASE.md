@@ -1,10 +1,9 @@
 # Bookmark Database Tables
 
 ## user
-  * id             - auto increment
-  * username       - varchar, not null
-  * password       - varchar, not null
-  * login_attempts - int, default = 0 (may or may not need)
+  * id       - auto increment
+  * email    - varchar, not null
+  * password - varchar, not null
 
 ## category
   * id   - auto increment
