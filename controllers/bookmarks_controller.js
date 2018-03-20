@@ -110,7 +110,6 @@ module.exports = app => {
   app.get("/api/list/:id/category", (req, res) => {
     const Op = Sequelize.Op;
     const userId = req.params.id;
-    const DEL_STATUS_ID = 4;
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
     })
@@ -142,6 +141,7 @@ module.exports = app => {
   app.get("/api/list/:id/status", (req, res) => {
     const Op = Sequelize.Op;
     const userId = req.params.id;
+    const DEL_STATUS_ID = 4;    
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
       where: [{ CategoryId: { [Op.ne]: DEL_STATUS_ID } }]
