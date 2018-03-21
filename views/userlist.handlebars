@@ -1,12 +1,16 @@
-<ul>
-{{#each books}}
-    <li>
-        <p>Title: {{title}}</p>
-        <p>Author: {{author}}</p>
-        <p>Genre: {{genre}}</p>
-        <p>Category: {{category}}</p>
-        <p>Status: {{status}}</p>
-        <p>URL: {{url}}</p>
-    </li>
-{{/each}}
-</ul>
+{{#if books}}
+    <ul>
+    {{#each books}}
+        <li>
+            <p>Title: {{title}}</p>
+            <p>Author: {{author}}</p>
+            <p>Genre: {{genre}}</p>
+            <p>Category: {{category}}</p>
+            <p>Status: {{status}}</p>
+            <p>URL: {{url}}</p>
+        </li>
+    {{/each}}
+    </ul>
+{{else}}
+    <h2>There are no books in your library!</h2>
+{{/if}}
