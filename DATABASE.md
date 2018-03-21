@@ -7,13 +7,13 @@
 
 ## category
   * id   - auto increment
-  * name - varchar, not null
+  * name - varchar, default = Not Assigned
   
-  Seeded values - Vacation, Work, School, Bathroom, Easy, Hard
+  Seeded values - Not Assigned, Vacation, Work, School, Bathroom, Easy, Hard
 
 ## status
   * id   - auto increment
-  * name - varchar, not null
+  * name - varchar, default = Not Started
   
   Seeded values - Not Started, In Progress, Completed, Deleted
 
@@ -21,8 +21,8 @@
   * id     - auto increment
   * title  - varchar, not null
   * author - varchar, not null
-  * genre  - varchar, allow nulls (need to verify what is on API)
-  * url    - varchar, allow nulls (need to verify what is on API)
+  * genre  - varchar, allow nulls
+  * url    - varchar, allow nulls
 
 ## reading_list
   * id         - auto increment
@@ -36,20 +36,19 @@ NOTE: All tables will use the default setting to add create/update timestamps.
       Database will use freezeTableName: true option to preserve original name and not make plural with s.
       Database will use operatorsAliases: false option to improve security.
 
-*** Need to add validation and any additional constraints ***
-
 EXAMPLE:
 
 ## user 
-  1 | test | test (Seed file will be created to insert this dummy test user.) 
+  1 | test@hotmail.com | <encrypted password> (Seed file will be created to insert this dummy test user.) 
 
 ## category
-  1 | Vacation
-  2 | Work
-  3 | School
-  4 | Bathroom
-  5 | Easy
-  6 | Hard
+  1 | Not Assigned
+  2 | Vacation
+  3 | Work
+  4 | School
+  5 | Bathroom
+  6 | Easy
+  7 | Hard
 
 ## status
   1 | Not Started
@@ -61,7 +60,6 @@ EXAMPLE:
   1 | Stephen King | The Stand | horror | https://books.google.com/books?isbn=038552885X
 
 ## reading_list
-  1 | 1 | 1 | 1 | 2
+  1 | 1 | 1 | 2 | 2
 
-  For: test, The Stand, Vacation, In Progress
-
+  For: test@hotmail.com, The Stand, Vacation, In Progress

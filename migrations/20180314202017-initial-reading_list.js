@@ -31,6 +31,7 @@ module.exports = {
         },
         CategoryId: {
           type: Sequelize.INTEGER,
+          defaultValue: 1,
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
           references: {
@@ -41,6 +42,7 @@ module.exports = {
         },
         StatusId: {
           type: Sequelize.INTEGER,
+          defaultValue: 1,
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
           references: {
