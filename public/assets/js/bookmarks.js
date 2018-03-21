@@ -104,7 +104,8 @@ $(document).ready(() => {
         }  
         var url = "/api/list/add";
 
-        console.log(dataObj, url);
+        console.log(url)
+        console.log(dataObj);
 
         $.ajax(url, {
             type: "POST",
