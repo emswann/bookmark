@@ -113,5 +113,6 @@ $(document).ready(() => {
         .then(() => {
             alert(title + " was added to your library!");
         })
+        .fail(error => console.error(error));
     });
 });
