@@ -91,4 +91,27 @@ $(document).ready(() => {
         $(".search-btn").text("Searching: " + newSearchParam.toUpperCase());
         $(".search-btn").attr("data-value", newSearchParam);
     });
+
+    $(document).on("click", ".add-to-list", function(event) {
+        $(this).prop("disabled",true); // disable so cannot add again.
+
+        var dataObj = {
+            userId: sessionStorage.getItem("userId"),
+            title:  $(this).attr("data-title"),
+            author: $(this).attr("data-author"),
+            genre:  $(this).attr("data-genre"),
+            url:    $(this).attr("data-url")
+        }  
+        var url = "/api/list/add";
+
+        console.log(dataObj, url);
+
+        $.ajax(url, {
+            type: "POST",
+            data: dataObj
+        })
+        .then(() => {
+            alert(title + " was added to your library!");
+        })
+    });
 });

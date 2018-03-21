@@ -1,16 +1,14 @@
-{{#if books}}
-    <ul>
+<ul>
     {{#each books}}
-        <li>
-            <p>Title: {{title}}</p>
-            <p>Author: {{author}}</p>
-            <p>Year: {{year}}</p>
-            <p>Genre: {{genre}}</p>
-            <p>Description: {{desc}}</p>
-            <img src={{img}}>
-        </li>
+    <li class="add-book">
+        <button type="submit" class="add-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-url="{{url}}"> + Add to your list</button>
+        <p>Title: {{title}}</p>
+        <p>Author: {{author}}</p>
+        <p>Year: {{year}}</p>
+        <p>Genre: {{genre}}</p>
+        <p>Description: {{desc}}</p>
+        <p><img src={{img}}></p>
+        <p><a href={{url}}>{{url}}</a></p>
+    </li>
     {{/each}}
-    </ul>
-    {{else}}
-    <h2>There are no search results!</h2>
-{{/if}}
+</ul>
