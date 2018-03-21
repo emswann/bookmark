@@ -13,9 +13,9 @@ const Sequelize = require('sequelize');
 var getGBooks = (res, searchType, searchParam) => {
   const apiKey = process.env.GBOOKS_API_KEY;
   const MAX_RESULTS = 10;
-  searchParam = searchParam.split(" ").join("%20");
+
   try { 
-    var searchTypeAndParam = searchType+":"+searchParam;
+    var searchTypeAndParam = searchType+":"+ searchParam.replace(/ /g, "%20");
     if (apiKey) {
       gbooks.volumes.list({
         "q": searchTypeAndParam,
@@ -26,37 +26,33 @@ var getGBooks = (res, searchType, searchParam) => {
       })
       .then(data => {
         var booksObjArray = [];
-        var books = data.items;
-        if (books) {
-          books.forEach(book => {
-            booksObjArray.push({
-              title: book.volumeInfo.title || "undefined",
-              author: book.volumeInfo.authors || "undefined",
-              year: book.volumeInfo.publishedDate || "undefined",
-              genre: () => {
-                if (book.volumeInfo.categories) {
-                  return book.volumeInfo.categories[0] || "undefined"
-                }
-                else {
-                  return "undefined";
-                }
-              },
-              desc: book.volumeInfo.description || "undefined",
-              img: () => {
-                if (book.volumeInfo.imageLinks) {
-                  return book.volumeInfo.imageLinks.smallThumbnail || "undefined"
-                }
-                else {
-                  return "undefined";
-                }
+        var books = data.items || [];
+        books.forEach(book => {
+           booksObjArray.push({
+            title: book.volumeInfo.title || "undefined",
+            author: book.volumeInfo.authors || "undefined",
+            year: book.volumeInfo.publishedDate || "undefined",
+            genre: () => {
+              if (book.volumeInfo.categories) {
+                return book.volumeInfo.categories[0] || "undefined"
               }
-            })
-          });
-          // Including extension since using both handlebars and ejs in app. 
-          res.render("usersearch.handlebars", {books: booksObjArray, layout: false});
-        } else {
-          res.render("usersearch.handlebars", {books: booksObjArray, layout: false});
-        }
+               else {
+                return "undefined";
+              }
+            },
+            desc: book.volumeInfo.description || "undefined",
+            img: () => {
+              if (book.volumeInfo.imageLinks) {
+                return book.volumeInfo.imageLinks.smallThumbnail || "undefined"
+              }
+              else {
+                return "undefined";
+              }
+            }
+          })
+        });
+         // Including extension since using both handlebars and ejs in app. 
+        res.render("usersearch.handlebars", {books: booksObjArray, layout: false});
       })
       .catch(error => console.log("gbooks.then error =", error));
     } 
