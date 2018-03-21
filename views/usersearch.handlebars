@@ -1,12 +1,16 @@
-<ul>
-{{#each books}}
-    <li>
-        <p>Title: {{title}}</p>
-        <p>Author: {{author}}</p>
-        <p>Year: {{year}}</p>
-        <p>Genre: {{genre}}</p>
-        <p>Description: {{desc}}</p>
-        <img src={{img}}>
-    </li>
-{{/each}}
-</ul>
+{{#if books}}
+    <ul>
+    {{#each books}}
+        <li>
+            <p>Title: {{title}}</p>
+            <p>Author: {{author}}</p>
+            <p>Year: {{year}}</p>
+            <p>Genre: {{genre}}</p>
+            <p>Description: {{desc}}</p>
+            <img src={{img}}>
+        </li>
+    {{/each}}
+    </ul>
+    {{else}}
+    <h2>There are no search results!</h2>
+{{/if}}

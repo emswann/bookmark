@@ -4,7 +4,7 @@ $(document).ready(() => {
 
         var searchInput = $(".userText").val().trim();
         var searchParam = $(".search-btn").attr("data-value");
-
+        searchInput = searchInput.split(" ").join("%20");
         var url = "/api/search/" + searchParam + "/" + searchInput;
         console.log("GET request: " + url);
         
