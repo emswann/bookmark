@@ -13,11 +13,12 @@ const Sequelize = require('sequelize');
 var getGBooks = (res, searchType, searchParam) => {
   const apiKey = process.env.GBOOKS_API_KEY;
   const MAX_RESULTS = 10;
-
+  searchParam = searchParam.split(" ").join("%20");
   try { 
+    var searchTypeAndParam = searchType+":"+searchParam;
     if (apiKey) {
       gbooks.volumes.list({
-        "q": searchParam,
+        "q": searchTypeAndParam,
         "printType": "books",
         "maxResults": MAX_RESULTS,
         "orderBy":    "relevance",
@@ -26,43 +27,45 @@ var getGBooks = (res, searchType, searchParam) => {
       .then(data => {
         var booksObjArray = [];
         var books = data.items;
-        
-        books.forEach(book =>
-          booksObjArray.push({
-            title: book.volumeInfo.title || "undefined",
-            author: book.volumeInfo.authors || "undefined",
-            year: book.volumeInfo.publishedDate || "undefined",
-            genre: () => {
-              if (book.volumeInfo.categories) {
-                return book.volumeInfo.categories[0] || "undefined"
+        if (books) {
+          books.forEach(book => {
+            booksObjArray.push({
+              title: book.volumeInfo.title || "undefined",
+              author: book.volumeInfo.authors || "undefined",
+              year: book.volumeInfo.publishedDate || "undefined",
+              genre: () => {
+                if (book.volumeInfo.categories) {
+                  return book.volumeInfo.categories[0] || "undefined"
+                }
+                else {
+                  return "undefined";
+                }
+              },
+              desc: book.volumeInfo.description || "undefined",
+              img: () => {
+                if (book.volumeInfo.imageLinks) {
+                  return book.volumeInfo.imageLinks.smallThumbnail || "undefined"
+                }
+                else {
+                  return "undefined";
+                }
               }
-              else {
-                return "undefined";
-              }
-            },
-            desc: book.volumeInfo.description || "undefined",
-            img: () => {
-              if (book.volumeInfo.imageLinks) {
-                return book.volumeInfo.imageLinks.smallThumbnail || "undefined"
-              }
-              else {
-                return "undefined";
-              }
-            }
-          })
-        );
-         
-        // Including extension since using both handlebars and ejs in app. 
-        res.render("usersearch.handlebars", {books: booksObjArray, layout: false});
+            })
+          });
+          // Including extension since using both handlebars and ejs in app. 
+          res.render("usersearch.handlebars", {books: booksObjArray, layout: false});
+        } else {
+          res.render("usersearch.handlebars", {books: booksObjArray, layout: false});
+        }
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log("gbooks.then error =", error));
     } 
     else {
       throw Error("Unable to process Google Books search - no API key.");
     }
   }
   catch(error) {
-    console.log(error);
+    console.log("getGBooks error =", error);
   }  
 };
 
@@ -97,15 +100,20 @@ module.exports = app => {
     res.sendFile(path.join(__dirname, "../public/userlist.html"))
   ));
 
-  app.get("/api/search/title/:title", (req, res) => 
-    getGBooks(res, "intitle", req.params.title));
+  app.get("/api/search/title/:title", (req, res) => {
+    console.log("title search received =", req.params);
+    getGBooks(res, "intitle", req.params.title)
+  })
 
-  app.get("/api/search/author/:author", (req, res) => 
-    getGBooks(res, "inauthor", req.params.author));
+  app.get("/api/search/author/:author", (req, res) => {
+    console.log("author search received =", req.params);
+    getGBooks(res, "inauthor", req.params.author);
+  })
 
-  app.get("/api/search/subject/:subject", (req, res) => 
-    getGBooks(res, "subject", req.params.subject));
-
+  app.get("/api/search/subject/:subject", (req, res) => {
+    console.log("subject search received =", req.params);
+    getGBooks(res, "subject", req.params.subject);
+  })
   // "Category" dropdown list population
   app.get("/api/list/:id/category", (req, res) => {
     const Op = Sequelize.Op;
