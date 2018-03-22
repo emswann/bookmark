@@ -6,49 +6,68 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
         crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Sriracha" rel="stylesheet">
     <title>Bookmark</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
     <script src="/assets/js/bookmarks.js"></script>
+    <script src="/assets/js/style.js"></script>
 </head>
 
 <body>
-
-    <p><a href="/logout" class="logoutButton">Log Out</a></p>
-
-    <h1>Book Search</h1>
-
-    <form action="/search" method="post" class="user-search">
-        <div>
-            <label>Search: </label>
-            <input type="text" name="search" class="userText">
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle search-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Select search parameter
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="search-param" data-value="title" href="#">Title</a>
-                    </li>
-                    <li>
-                        <a class="search-param" data-value="author" href="#">Author</a>
-                    </li>
-                    <li>
-                        <a class="search-param" data-value="subject" href="#">Subject</a>
-                    </li>
-                </ul>
+    <div id="wrap">
+        <div id="content">
+            <header>
+                <div class="titleOuter">
+                    <div class="title">
+                        <span>Bookmarks.js</span>
+                        <!-- <div class="titleCircleOuter">
+                            <div class="titleCircle"></div>
+                        </div> -->
+                        <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+                    </div>
+                </div>
+                <div id="loginInfo">
+                    <p>Welcome, <span class="userName"></span></p>
+                   
+                </div>  
+                <nav>
+                    <ul class="nav nav-pills">
+                        <li role="presentation"><a href="/list">Your List</a></li>
+                        <li role="presentation" class="active"><a href="#">Find Books</a></li>
+                        <li role="presentation"><a href="/logout">Log Out</a></li>
+                    </ul>
+                </nav>
+                <form action="/search" method="post" class="user-search">
+                    <label>Search: </label>
+                    <input type="text" name="search" class="userText">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle search-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Search by...
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="search-param" data-value="title" href="#">Title</a>
+                            </li>
+                            <li>
+                                <a class="search-param" data-value="author" href="#">Author</a>
+                            </li>
+                            <li>
+                                <a class="search-param" data-value="subject" href="#">Subject</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <input type="submit" value="Submit">
+                </form>
+            </header>
+            <div id="search-results">
+                <!-- ========== -->
             </div>
-            <input type="submit" value="Submit">
-            <p>See your list
-                <a href="/list">here</a>
-            </p>
-        </div>
-    </form>
-
-    <div id="search-results">
-        <!-- ========== -->
-    </div>
-
+        </div> <!-- content -->
+    </div> <!-- wrap -->
+    <footer>
+        <p><a href src="https://github.com/emswann/bookmark.git" target="_blank">Github repository</a></p>
+    </footer>
 </body>

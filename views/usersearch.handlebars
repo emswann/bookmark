@@ -1,13 +1,15 @@
 {{#if books}}
-    <ul>
+    <ul class="stack">
     {{#each books}}
-        <li>
-            <p>Title: {{title}}</p>
-            <p>Author: {{author}}</p>
-            <p>Year: {{year}}</p>
-            <p>Genre: {{genre}}</p>
-            <p>Description: {{desc}}</p>
+        <li class="container book">
             <img src={{img}}>
+            <div class="bookDetails">
+                <h3>{{title}}</h3>
+                <h4>by {{author}}</h4>
+                <p>Year: {{year}}</p>
+                <p>Genre: {{genre}}</p>
+                <p class="bookDesc">Description: {{desc}}</p>
+            </div>
         </li>
     {{/each}}
     </ul>
