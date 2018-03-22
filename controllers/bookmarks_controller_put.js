@@ -7,7 +7,7 @@ module.exports = app => {
 
     db.Status.findAll({
       where: { name: req.body.status },
-      attributes: ['id']
+      attributes: ['id'],
     })
     .then(status => {
       db.Reading_List.findAll({
@@ -28,7 +28,7 @@ module.exports = app => {
           where: { id: list[0].id }
         })
         .then(result => {
-                    // result[0] = 0;
+          result[0] = 0;
           var formatResult = { result: result[0] };
           if (!result[0]) {
             formatResult['error'] = 'No rows updated';

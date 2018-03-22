@@ -130,4 +130,29 @@ $(document).ready(() => {
         )
         .fail(error => console.error(error));
     });
+
+    $(document).on("click", ".delete-from-list", function (event) {e
+        var title = $(this).attr("data-title")
+
+        var dataObj = {
+            userId: sessionStorage.getItem("userId"),
+            title: title,
+            author: $(this).attr("data-author"),
+            status: "Deleted"
+        }
+        var url = "/api/list/update";
+
+        console.log("PUT request: " + url);
+
+        $.ajax(url, {
+            type: "PUT",
+            data: dataObj
+        })
+        .then((results) =>
+            results.hasOwnProperty("error")
+                ? alert("<" + title + ">" + "not deleted from list")
+                : alert("<" + title + ">" + "deleted from list")
+        )
+        .fail(error => console.error(error));
+    });
 });
