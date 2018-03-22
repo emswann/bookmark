@@ -40,34 +40,22 @@
                     </ul>
                 </nav>
                 <form action="/list" method="post" class="list-search">
-                    <label>Search: </label>
-                    <div class="btn-group" id="selectSearchList">
-                        <button type="button" class="btn btn-default dropdown-toggle search-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            In Group...
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="search-param" data-value="all" href="#">All</a>
-                            </li>
-                            <li>
-                                <a class="search-param" data-value="category" href="#">Category</a>
-                            </li>
-                            <li>
-                                <a class="search-param" data-value="status" href="#">Status</a>
-                            </li>
-                            <li>
-                                <a class="search-param" data-value="title" href="#">Title</a>
-                            </li>
-                            <li>
-                                <a class="search-param" data-value="author" href="#">Author</a>
-                            </li>
-                        </ul>
+                    <div>
+                        <label>Search: </label>
+                        <div class="btn-group">
+                            <select id="selectSearchList" name="selectSearchList">
+                                <option value="all">All</option>
+                                <option value="category">Category</option>
+                                <option value="status">Status</option>
+                                <option value="title">Title</option>
+                                <option value="author">Author</option>
+                            </select>
+                        </div>
+                        <div id="dynamicSearchListContainer">
+                            <input type='text' name='search' class='userText'>
+                        </div>
+                        <input type="submit" value="Submit">
                     </div>
-                    <div id="dynamicSearchListContainer">
-                        <input type="text" name="search" class="userText">
-                    </div>
-                    <input type="submit" value="Submit">
                 </form>
             </header>
             <div id="search-results">

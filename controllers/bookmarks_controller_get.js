@@ -98,6 +98,7 @@ module.exports = app => {
     const Op = Sequelize.Op;
     const userId = req.params.id;
     const DEL_STATUS_ID = 4;
+    console.log("Category GET received req =", req.params);
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
       where: [{ CategoryId: { [Op.ne]: DEL_STATUS_ID } }]
@@ -118,6 +119,7 @@ module.exports = app => {
       }).then(data => {
         var categoryNames = [];
         data.forEach(ele => categoryNames.push(ele.name));
+        console.log("categoryNames about to be sent back =", categoryNames);
         res.json(categoryNames);
       })
       .catch(error => console.log(error));
