@@ -91,6 +91,18 @@ header {
   display: inline-block;
 } */
 
+.login-form input {
+  width: 100%;
+  display: inline-block;
+}
+
+.jumbotron {
+  margin: 2rem auto;
+  border-radius: 1em;
+  overflow: auto;
+  width: 60%;
+}
+
 #loginInfo {
   position: absolute;
   top: 1rem;
@@ -150,7 +162,7 @@ label {
   border-radius: .5em 0 0 .5em;
 }
 
-input[type=text] {
+input[type=text], input[type=password] {
   height: 2em;
   margin: 0;
 }
