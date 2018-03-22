@@ -29,27 +29,29 @@ var getGBooks = (res, searchType, searchParam) => {
         var books = data.items || [];
         
         books.forEach(book => {
-           booksObjArray.push({
-            title: book.volumeInfo.title || "undefined",
-            author: book.volumeInfo.authors || "undefined",
-            year: book.volumeInfo.publishedDate || "undefined",
+          var info = book.volumeInfo;
+          booksObjArray.push({
+            title: info.title || "undefined",
+            author: info.authors || "undefined",
+            year: info.publishedDate || "undefined",
             genre: () => {
-              if (book.volumeInfo.categories) {
-                return book.volumeInfo.categories[0] || "undefined"
+              if (info.categories) {
+                return info.categories[0] || "undefined"
               }
                else {
                 return "undefined";
               }
             },
-            desc: book.volumeInfo.description || "undefined",
+            desc: info.description || "undefined",
             img: () => {
-              if (book.volumeInfo.imageLinks) {
-                return book.volumeInfo.imageLinks.smallThumbnail || "undefined"
+              if (info.imageLinks) {
+                return info.imageLinks.smallThumbnail || "undefined"
               }
               else {
                 return "undefined";
               }
-            }
+            },
+            url: info.infoLink || "undefined"
           })
         });
          // Including extension since using both handlebars and ejs in app. 

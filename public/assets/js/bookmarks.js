@@ -93,11 +93,11 @@ $(document).ready(() => {
     });
 
     $(document).on("click", ".add-to-list", function(event) {
-        $(this).prop("disabled",true); // disable so cannot add again.
+        var title = $(this).attr("data-title")
 
         var dataObj = {
             userId: sessionStorage.getItem("userId"),
-            title:  $(this).attr("data-title"),
+            title:  title,
             author: $(this).attr("data-author"),
             genre:  $(this).attr("data-genre"),
             url:    $(this).attr("data-url")
@@ -110,9 +110,11 @@ $(document).ready(() => {
             type: "POST",
             data: dataObj
         })
-        .then(() => {
-            alert(title + " was added to your library!");
-        })
+        .then((results) => 
+            results.hasOwnProperty("message") 
+              ? alert("You have already added <" + title + ">to your library!")
+              : alert("<" + title + "> was added to your library!")
+        )
         .fail(error => console.error(error));
     });
 });
