@@ -12,14 +12,6 @@ module.exports = {
       },
       {
         UserId: 1,
-        LibraryId: 1,
-        CategoryId: 2,
-        StatusId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        UserId: 1,
         LibraryId: 2,
         CategoryId: 1,
         StatusId: 2,

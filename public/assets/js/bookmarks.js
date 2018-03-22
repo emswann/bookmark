@@ -28,7 +28,7 @@ $(document).ready(() => {
         $.ajax(url, {
             type: "GET"       
         })
-        .then(data => {console.log(data); $("#list-results").html(data);})
+        .then(data => $("#list-results").html(data))
         .fail(error => console.error(error));
     });
 
@@ -104,8 +104,7 @@ $(document).ready(() => {
         }  
         var url = "/api/list/add";
 
-        console.log(url)
-        console.log(dataObj);
+        console.log("POST request: " + url);
 
         $.ajax(url, {
             type: "POST",

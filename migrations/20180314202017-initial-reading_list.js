@@ -31,25 +31,25 @@ module.exports = {
         },
         CategoryId: {
           type: Sequelize.INTEGER,
-          defaultValue: 1,
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
           references: {
             model: 'category',
             key: 'id'
           },
-          allowNull: false
+          allowNull: false,
+          defaultValue: 1
         },
         StatusId: {
           type: Sequelize.INTEGER,
-          defaultValue: 1,
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
           references: {
             model: 'status',
             key: 'id'
           },
-          allowNull: false
+          allowNull: false,
+          defaultValue: 1
         },
         createdAt: {
           type: Sequelize.DATE,

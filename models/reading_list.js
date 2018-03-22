@@ -15,20 +15,20 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Reading_List.belongsTo(models.Category, {
-      defaultValue: 1,
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
       foreignKey: {
-        allowNull: false
+        allowNull: false,
+        defaultValue: 1
       }
     });
 
     Reading_List.belongsTo(models.Status, {
-      defaultValue: 1,
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
       foreignKey: {
-        allowNull: false
+        allowNull: false,
+        defaultValue: 1
       }
     });
 
