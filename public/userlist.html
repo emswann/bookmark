@@ -6,41 +6,76 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
         crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Sriracha" rel="stylesheet">
     <title>Bookmark</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
     <script src="/assets/js/bookmarks.js"></script>
+    <script src="/assets/js/style.js"></script>
 </head>
 
 <body>
-
-    <h1>User Reading List</h1>
-
-    <form action="/list" method="post" class="list-search">
-        <div>
-            <label>Search: </label>
-            <div class="btn-group">
-                <select id="selectSearchList" name="selectSearchList">
-                    <option value="all">All</option>
-                    <option value="category">Category</option>
-                    <option value="status">Status</option>
-                    <option value="title">Title</option>
-                    <option value="author">Author</option>
-                </select>
+    <div id="wrap">
+        <div id="content">
+            <header>
+                <div class="titleOuter">
+                    <div class="title">
+                        <span>Bookmarks.js</span>
+                        <!-- <div class="titleCircleOuter">
+                            <div class="titleCircle"></div>
+                        </div> -->
+                        <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+                    </div>
+                </div>
+                <div id="loginInfo">
+                    <p>Welcome, <span class="userName"></span></p>
+                    
+                </div>  
+                <nav>
+                    <ul class="nav nav-pills">
+                        <li role="presentation" class="active"><a href="#">Your List</a></li>
+                        <li role="presentation"><a href="/search">Find Books</a></li>
+                        <li role="presentation"><a href="/logout">Log Out</a></li>
+                    </ul>
+                </nav>
+                <form action="/list" method="post" class="list-search">
+                    <label>Search: </label>
+                    <div class="btn-group" id="selectSearchList">
+                        <button type="button" class="btn btn-default dropdown-toggle search-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            In Group...
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="search-param" data-value="all" href="#">All</a>
+                            </li>
+                            <li>
+                                <a class="search-param" data-value="category" href="#">Category</a>
+                            </li>
+                            <li>
+                                <a class="search-param" data-value="status" href="#">Status</a>
+                            </li>
+                            <li>
+                                <a class="search-param" data-value="title" href="#">Title</a>
+                            </li>
+                            <li>
+                                <a class="search-param" data-value="author" href="#">Author</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="dynamicSearchListContainer">
+                        <input type="text" name="search" class="userText">
+                    </div>
+                    <input type="submit" value="Submit">
+                </form>
+            </header>
+            <div id="search-results">
+                <!-- ========== -->
             </div>
-            <div id="dynamicSearchListContainer">
-                "<input type='text' name='search' id='dynamicSearchList'>
-            </div>
-            <input type="submit" value="Submit">
-            <p>Search for more books
-                <a href="/search">here</a>
-            </p>
-        </div>
-    </form>
-
-    <div id="list-results">
-        <!-- ========== -->
-    </div>
-
+        </div> <!-- content -->
+    </div> <!-- wrap -->
+    <footer>
+        <p><a href src="https://github.com/emswann/bookmark.git" target="_blank">Github repository</a></p>
+    </footer>
 </body>
