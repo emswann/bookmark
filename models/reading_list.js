@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
       foreignKey: {
-        allowNull: false
+        allowNull: false,
+        defaultValue: 1
       }
     });
 
@@ -26,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
       foreignKey: {
-        allowNull: false
+        allowNull: false,
+        defaultValue: 1
       }
     });
 

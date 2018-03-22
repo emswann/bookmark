@@ -37,7 +37,8 @@ module.exports = {
             model: 'category',
             key: 'id'
           },
-          allowNull: false
+          allowNull: false,
+          defaultValue: 1
         },
         StatusId: {
           type: Sequelize.INTEGER,
@@ -47,7 +48,8 @@ module.exports = {
             model: 'status',
             key: 'id'
           },
-          allowNull: false
+          allowNull: false,
+          defaultValue: 1
         },
         createdAt: {
           type: Sequelize.DATE,

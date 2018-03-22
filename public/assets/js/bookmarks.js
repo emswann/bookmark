@@ -30,7 +30,7 @@ $(document).ready(() => {
         $.ajax(url, {
             type: "GET"       
         })
-        .then(data => {console.log(data); $("#list-results").html(data);})
+        .then(data => $("#list-results").html(data))
         .fail(error => console.error(error));
     });
 
@@ -103,5 +103,31 @@ $(document).ready(() => {
         var newSearchParam = $(this).attr("data-value");
         $(".search-btn").text("Searching: " + newSearchParam.toUpperCase());
         $(".search-btn").attr("data-value", newSearchParam);
+    });
+
+    $(document).on("click", ".add-to-list", function(event) {
+        var title = $(this).attr("data-title")
+
+        var dataObj = {
+            userId: sessionStorage.getItem("userId"),
+            title:  title,
+            author: $(this).attr("data-author"),
+            genre:  $(this).attr("data-genre"),
+            url:    $(this).attr("data-url")
+        }  
+        var url = "/api/list/add";
+
+        console.log("POST request: " + url);
+
+        $.ajax(url, {
+            type: "POST",
+            data: dataObj
+        })
+        .then((results) => 
+            results.hasOwnProperty("message") 
+              ? alert("You have already added <" + title + ">to your library!")
+              : alert("<" + title + "> was added to your library!")
+        )
+        .fail(error => console.error(error));
     });
 });
