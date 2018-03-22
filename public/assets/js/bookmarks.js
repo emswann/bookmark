@@ -17,15 +17,22 @@ $(document).ready(() => {
 
     $(".list-search").on("submit", function (event) {
         event.preventDefault();
-
-        var searchParam = $("#selectSearchList").attr("data-value");
-        console.log("searchParam =", searchParam);
-        var searchParamVal = $("#dynamicSearchList").attr("data-value");
+        var searchParam = $("#selectSearchList>button").attr("data-value");
+        var searchParamVal;
+        if ($(".dynamicSearchListField") === undefined) {
+            console.log("should be no text field");
+            searchParamVal = $(".dynamicSearchListButton").attr("data-value");
+        } else {
+            console.log("there should be a text field");
+            searchParamVal = $(".dynamicSearchListField").val().trim();
+        }
         console.log("searchParamVal =", searchParamVal);
+        // console.log("searchParam =", searchParam);
+        // console.log("searchParamVal =", searchParamVal);
         var userId = sessionStorage.getItem("userId");
 
         var url = "/api/list/" + userId + "/" + searchParam + "/" + searchParamVal;
-        console.log("GET request: " + url);
+        console.log("list-search GET request: " + url);
         
         $.ajax(url, {
             type: "GET"       
@@ -35,13 +42,14 @@ $(document).ready(() => {
     });
 
     $("#selectSearchList a").click(function() {
+        console.log("selectSearchList option clicked = ", $(this).attr("data-value"));
         $("#dynamicSearchListContainer").empty();
         var selectedSearchList = $(this).attr("data-value");
         // might need to make sure initial view is set up when page loads
-        console.log(selectedSearchList);
-        var dynamicSearchList = $("<div class='btn-group' id='dynamicSearchList'>");
-        var dySeButton = $('<button type="button" class="btn btn-default dropdown-toggle search-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">');
-        dySeButton.text("For all...").append($("<span class='carat'>"));
+        console.log("selectedSearchList =", selectedSearchList);
+        var dynamicSearchList = $("<div id='dynamicSearchList' class='btn-group'>");
+        var dySeButton = $('<button type="button" class="btn btn-default dropdown-toggle search-btn dynamicSearchListButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">');
+        dySeButton.text("For all...").append($("<span class='caret'>"));
         var dySeDropdown = $("<ul class='dropdown-menu'>");
         switch (selectedSearchList) {
             case "all": 
@@ -50,16 +58,17 @@ $(document).ready(() => {
             // search all <text field>
             // search title <text field>
             // search author <text field>
-            dynamicSearchList = $("<input type='text' name='search' class='userText'>");
+            dynamicSearchList = $("<input type='text' name='search' class='dynamicSearchListField'>");
             break;
             case "category": 
             // search category <categoryList>
             var url = "/api/list/" + sessionStorage.getItem("userId") + "/category"; 
-            console.log("GET request: " + url);
+            console.log("Category GET request: " + url);
             $.ajax(url, {
                 type: "GET"       
             })
             .then(data => {
+                console.log("bookmarks.js Category GET .then() = ", data);
                 data.forEach(ele => {
                     var item = $("<li>");
                     var link = $("<a href='#' class='search-param' data-value='"+ele+"'>").text(ele);
@@ -73,7 +82,7 @@ $(document).ready(() => {
             case "status": 
             // search status <statusList>
             var url = "/api/list/" + sessionStorage.getItem("userId") + "/status"; 
-            console.log("GET request: " + url);
+            console.log("Status GET request: " + url);
             $.ajax(url, {
                 type: "GET"       
             })
@@ -85,6 +94,7 @@ $(document).ready(() => {
                     dySeDropdown.append(item);
                 })
                 dynamicSearchList.append(dySeButton, dySeDropdown);
+                console.log("ping");
             })
             .fail(error => console.error(error));
             break;

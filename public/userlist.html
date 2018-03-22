@@ -39,10 +39,10 @@
                         <li role="presentation"><a href="/logout">Log Out</a></li>
                     </ul>
                 </nav>
-                <form action="/list" method="post" class="list-search">
+                <form action="/list" method="get" class="list-search">
                     <label>Search: </label>
-                    <div class="btn-group" id="selectSearchList">
-                        <button type="button" class="btn btn-default dropdown-toggle search-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div id="selectSearchList" class="btn-group">
+                        <button type="button"  class="btn btn-default dropdown-toggle search-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             In Group...
                             <span class="caret"></span>
                         </button>
@@ -65,7 +65,7 @@
                         </ul>
                     </div>
                     <div id="dynamicSearchListContainer">
-                        <input type="text" name="search" class="userText">
+                        <input type="text" name="search" class="dynamicSearchListField">
                     </div>
                     <input type="submit" value="Submit">
                 </form>
