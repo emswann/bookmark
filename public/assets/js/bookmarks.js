@@ -18,8 +18,10 @@ $(document).ready(() => {
     $(".list-search").on("submit", function (event) {
         event.preventDefault();
 
-        var searchParam = $("#selectSearchList").val();
-        var searchParamVal = $("#dynamicSearchList").val().trim();
+        var searchParam = $("#selectSearchList").attr("data-value");
+        console.log("searchParam =", searchParam);
+        var searchParamVal = $("#dynamicSearchList").attr("data-value");
+        console.log("searchParamVal =", searchParamVal);
         var userId = sessionStorage.getItem("userId");
 
         var url = "/api/list/" + userId + "/" + searchParam + "/" + searchParamVal;
@@ -32,51 +34,62 @@ $(document).ready(() => {
         .fail(error => console.error(error));
     });
 
-    $("#selectSearchList").change(function() {
+    $("#selectSearchList a").click(function() {
         $("#dynamicSearchListContainer").empty();
-        var selectedSearchList = $(this).val();
+        var selectedSearchList = $(this).attr("data-value");
         // might need to make sure initial view is set up when page loads
         console.log(selectedSearchList);
-        var dynamicSearchList = $("<select id='dynamicSearchList' name='dynamicSearchList'>");
+        var dynamicSearchList = $("<div class='btn-group' id='dynamicSearchList'>");
+        var dySeButton = $('<button type="button" class="btn btn-default dropdown-toggle search-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">');
+        dySeButton.text("For all...").append($("<span class='carat'>"));
+        var dySeDropdown = $("<ul class='dropdown-menu'>");
         switch (selectedSearchList) {
             case "all": 
             case "title":
             case "author":
-                // search all <text field>
-                // search title <text field>
-                // search author <text field>
-                dynamicSearchList = $("<input type='text' name='search' id='dynamicSearchList'>");
-                break;
+            // search all <text field>
+            // search title <text field>
+            // search author <text field>
+            dynamicSearchList = $("<input type='text' name='search' class='userText'>");
+            break;
             case "category": 
-                // search category <categoryList>
-                var url = "/api/list/" + sessionStorage.getItem("userId") + "/category"; 
-                console.log("GET request: " + url);
-                $.ajax(url, {
-                    type: "GET"       
+            // search category <categoryList>
+            var url = "/api/list/" + sessionStorage.getItem("userId") + "/category"; 
+            console.log("GET request: " + url);
+            $.ajax(url, {
+                type: "GET"       
+            })
+            .then(data => {
+                data.forEach(ele => {
+                    var item = $("<li>");
+                    var link = $("<a href='#' class='search-param' data-value='"+ele+"'>").text(ele);
+                    item.append(link);
+                    dySeDropdown.append(item);
                 })
-                .then(data => {
-                    data.forEach(ele => {
-                        $("<option value='"+ele+"'>").text(ele).appendTo(dynamicSearchList);
-                    })
-                })
-                .fail(error => console.error(error));
-                break;
+                dynamicSearchList.append(dySeButton, dySeDropdown);
+            })
+            .fail(error => console.error(error));
+            break;
             case "status": 
-                // search status <statusList>
-                var url = "/api/list/" + sessionStorage.getItem("userId") + "/status"; 
-                console.log("GET request: " + url);
-                $.ajax(url, {
-                    type: "GET"       
+            // search status <statusList>
+            var url = "/api/list/" + sessionStorage.getItem("userId") + "/status"; 
+            console.log("GET request: " + url);
+            $.ajax(url, {
+                type: "GET"       
+            })
+            .then(data => {
+                data.forEach(ele => {
+                    var item = $("<li>");
+                    var link = $("<a href='#' class='search-param' data-value='"+ele+"'>").text(ele);
+                    item.append(link);
+                    dySeDropdown.append(item);
                 })
-                .then(data => {
-                    data.forEach(ele => {
-                        $("<option value='"+ele+"'>").text(ele).appendTo(dynamicSearchList);
-                    })
-                })
-                .fail(error => console.error(error));
-                break;
+                dynamicSearchList.append(dySeButton, dySeDropdown);
+            })
+            .fail(error => console.error(error));
+            break;
             default:
-                console.log("Should never get here - something is wrong.");
+            console.log("Should never get here - something is wrong.");
         }
         $("#dynamicSearchListContainer").append(dynamicSearchList);
     })
