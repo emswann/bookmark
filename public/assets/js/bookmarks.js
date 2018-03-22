@@ -124,7 +124,7 @@ $(document).ready(() => {
             data: dataObj
         })
         .then((results) => 
-            results.hasOwnProperty("message") 
+            results.hasOwnProperty("error") 
               ? alert("You have already added <" + title + ">to your library!")
               : alert("<" + title + "> was added to your library!")
         )
