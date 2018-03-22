@@ -20,11 +20,11 @@ module.exports = app => {
         }
       })
       .then(list =>  {
-        var dataObj = { 
+        var readingListObj = { 
           StatusId: status[0].id 
         };
 
-        db.Reading_List.update(dataObj, {
+        db.Reading_List.update(readingListObj, {
           where: { id: list[0].id }
         })
         .then(result => {
