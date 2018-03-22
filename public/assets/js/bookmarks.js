@@ -26,7 +26,7 @@ $(document).ready(() => {
             var searchParamVal = $("#dynamicSearchList").val();
         } else {
             console.log("#dynamicSearchListContainer DOES NOT HAVE a <select> element in it"); // TEST FAILS
-            var searchParamVal = $(".userText").val();
+            var searchParamVal = $(".userText").val().trim();
         }
 
         var url = "/api/list/" + userId + "/" + searchParam + "/" + searchParamVal;
