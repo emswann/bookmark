@@ -17,15 +17,13 @@ $(document).ready(() => {
 
     $(".list-search").on("submit", function (event) {
         event.preventDefault();
-        userId = sessionStorage.getItem("userId");
+        var userId = sessionStorage.getItem("userId");
 
         var searchParam = $("#selectSearchList").val();
         var searchParamVal;
         if ($("#dynamicSearchListContainer").find('select').length > 0) {
-            console.log("dynamicSearchListContainer DOES HAVE a <select> element in it");
             var searchParamVal = $("#dynamicSearchList").val();
         } else {
-            console.log("#dynamicSearchListContainer DOES NOT HAVE a <select> element in it"); // TEST FAILS
             var searchParamVal = $(".userText").val().trim();
         }
 
