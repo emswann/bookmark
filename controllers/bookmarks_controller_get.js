@@ -158,7 +158,6 @@ module.exports = app => {
   });
 
   app.get("/api/list/:id/:searchParam/:searchParamVal?", (req, res) => {
-    const Op = Sequelize.Op;
     const userId = req.params.id;
     const searchParam = req.params.searchParam;
     const searchParamVal = 

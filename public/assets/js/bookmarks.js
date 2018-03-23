@@ -121,7 +121,6 @@ $(document).ready(() => {
         )
         .fail(error => console.error(error));
     });
-<<<<<<< HEAD
 
     $(document).on("click", ".delete-from-list", function (event) {e
         var title = $(this).attr("data-title")
@@ -148,6 +147,3 @@ $(document).ready(() => {
         .fail(error => console.error(error));
     });
 });
-=======
-});
->>>>>>> master
