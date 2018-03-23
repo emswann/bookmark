@@ -66,7 +66,12 @@ module.exports = {
       where: { UserId: userId, StatusId: { [Op.ne]: statusId }},
       include: [{
         model: db.Library,
-        where: { author: searchParamVal },
+        where:  
+          Sequelize.where(Sequelize.fn('lower', Sequelize.col('author')),
+          {
+            [Op.like]: Sequelize.fn('lower', 
+                        '%' + searchParamVal.replace(/ /g, '%') + '%')
+          }),
         attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
       },
       {
@@ -79,13 +84,18 @@ module.exports = {
       }] 
     }).then(data => data),
 
-  title: (userId, statusId, searchParamVal) =>
+  title: (userId, statusId, searchParamVal) => 
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
       where: { UserId: userId, StatusId: { [Op.ne]: statusId }},
       include: [{
         model: db.Library,
-        where: { title: searchParamVal },
+        where:  
+          Sequelize.where(Sequelize.fn('lower', Sequelize.col('title')),
+          {
+            [Op.like]: Sequelize.fn('lower', 
+                        '%' + searchParamVal.replace(/ /g, '%') + '%')
+          }),
         attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
       },
       {

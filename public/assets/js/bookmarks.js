@@ -27,14 +27,19 @@ $(document).ready(() => {
             var searchParamVal = $(".userText").val().trim();
         }
 
-        var url = "/api/list/" + userId + "/" + searchParam + "/" + searchParamVal;
-        console.log("GET request: " + url);
+        if (searchParam != "all" && searchParamVal.length === 0) {
+          alert("The search field cannot be blank!");  
+        }
+        else {
+            var url = "/api/list/" + userId + "/" + searchParam + "/" + searchParamVal;
+            console.log("GET request: " + url);
         
-        $.ajax(url, {
-            type: "GET"       
-        })
-        .then(data => {$("#list-results").html(data);})
-        .fail(error => console.error(error));
+            $.ajax(url, {
+                type: "GET"       
+            })
+            .then(data => {$("#list-results").html(data);})
+            .fail(error => console.error(error));
+        }
     });
 
     $("#selectSearchList").change(function() {
