@@ -79,80 +79,54 @@ module.exports = app => {
   ));
 
   app.get("/api/search/title/:title", (req, res) => {
-    console.log("title search received =", req.params);
     getGBooks(res, "intitle", req.params.title)
   })
 
   app.get("/api/search/author/:author", (req, res) => {
-    console.log("author search received =", req.params);
     getGBooks(res, "inauthor", req.params.author);
   })
 
   app.get("/api/search/subject/:subject", (req, res) => {
-    console.log("subject search received =", req.params);
     getGBooks(res, "subject", req.params.subject);
   })
 
   // "Category" dropdown list population
   app.get("/api/list/:id/category", (req, res) => {
-    const Op = Sequelize.Op;
-    const userId = req.params.id;
-    const DEL_STATUS_ID = 4;
-    console.log("Category GET received req =", req.params);
-    db.Reading_List.findAll({
-      attributes: { exclude: ['createdAt', 'updatedAt'] },
-      where: [{ CategoryId: { [Op.ne]: DEL_STATUS_ID } }]
+    db.Reading_List.aggregate('categoryId', 'DISTINCT', {
+      plain: false,
+      where: { UserId: req.params.id },
+      include: [{
+        model: db.Status,
+        where: { name: 'Deleted' },
+        attributes: { exclude: ['id', 'name', 'createdAt', 'updatedAt'] }
+      },
+      {
+        model: db.Category,
+        attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+      }]
     })
     .then(data =>  {
-      var usedCategories = [];
-      data.forEach(function(ele) {
-        if (!usedCategories.includes(ele.CategoryId)) {
-          usedCategories.push(ele.CategoryId)
-        }
-      });
-      db.Category.findAll({
-        where: {
-          id: {
-            [Op.or]: usedCategories
-          }
-        }
-      }).then(data => {
-        var categoryNames = [];
-        data.forEach(ele => categoryNames.push(ele.name));
-        console.log("categoryNames about to be sent back =", categoryNames);
-        res.json(categoryNames);
-      })
-      .catch(error => console.log(error));
+      var categoryNames = [];
+      data.forEach(ele => categoryNames.push(ele["Category.name"]));
+      res.json(categoryNames);
     })
     .catch(error => console.log(error));
   });
   
   // "Status" dropdown list population
   app.get("/api/list/:id/status", (req, res) => {
-    const Op = Sequelize.Op;
-    const userId = req.params.id;
-    db.Reading_List.findAll({
-      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    db.Reading_List.aggregate('statusId', 'DISTINCT', {
+      plain: false,
+      where: { UserId: req.params.id },
+      include: {
+        model: db.Status,
+        attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
+      }
     })
     .then(data =>  {
-      var usedStatuses = [];
-      data.forEach(function(ele) {
-        if (!usedStatuses.includes(ele.StatusId)) {
-          usedStatuses.push(ele.StatusId)
-        }
-      });
-      db.Status.findAll({
-        where: {
-          id: {
-            [Op.or]: usedStatuses
-          }
-        }
-      }).then(data => {
-        var statusNames = [];
-        data.forEach(ele => statusNames.push(ele.name));
-        res.json(statusNames);
-      })
-      .catch(error => console.log(error));
+      var statusNames = [];
+      data.forEach(ele => statusNames.push(ele["Status.name"]));
+      res.json(statusNames);
     })
     .catch(error => console.log(error));
   });
@@ -162,9 +136,8 @@ module.exports = app => {
     const searchParam = req.params.searchParam;
     const searchParamVal = 
       searchParam === 'all' ? undefined : req.params.searchParamVal;
-    const DEL_STATUS_ID = 4;
 
-    searchList[searchParam](userId, DEL_STATUS_ID, searchParamVal)
+    searchList[searchParam](userId, searchParamVal)
     .then(data =>  {
       var booksObjArray = [];
         
