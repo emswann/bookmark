@@ -69,7 +69,8 @@ module.exports = {
         where:  
           Sequelize.where(Sequelize.fn('lower', Sequelize.col('author')),
           {
-            [Op.like]: Sequelize.fn('lower', '%' + searchParamVal + '%')
+            [Op.like]: Sequelize.fn('lower', 
+                        '%' + searchParamVal.replace(/ /g, '%') + '%')
           }),
         attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
       },
@@ -92,7 +93,8 @@ module.exports = {
         where:  
           Sequelize.where(Sequelize.fn('lower', Sequelize.col('title')),
           {
-            [Op.like]: Sequelize.fn('lower', '%' + searchParamVal + '%')
+            [Op.like]: Sequelize.fn('lower', 
+                        '%' + searchParamVal.replace(/ /g, '%') + '%')
           }),
         attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
       },
