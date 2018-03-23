@@ -29,7 +29,7 @@ module.exports = app => {
       })
       .then(result => {
         if (result.count) {
-          res.json({ message: "Record exists" });
+          res.json({ error: "Record exists" });
         }
         else {
           var readingListObj = {
@@ -44,6 +44,6 @@ module.exports = app => {
         }
       });
     })
-    .catch(error => console.log(errro));
+    .catch(error => console.log(error));
   });
 };
