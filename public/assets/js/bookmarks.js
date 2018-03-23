@@ -156,4 +156,10 @@ $(document).ready(() => {
             )
             .fail(error => console.error(error));
     });
+
+    $(".expand").on("click", function () {
+        console.log("clicked");
+        $(this).prev(".contents").toggleClass("contentsExpanded");
+        $(this).children("span").toggleClass("glyphicon-chevron-down glyphicon-chevron-up");
+    })
 });

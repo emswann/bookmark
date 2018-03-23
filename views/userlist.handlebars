@@ -1,17 +1,23 @@
 {{#if books}}
-    <ul>
+    <ul class="stack">
     {{#each books}}
-        <li>
-            <button type="submit" class="update-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-url="{{url}}
-            ">Update Status</button>
-            <button type="submit" class="delete-from-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-url="{{url}}
-            ">Delete</button>
-            <p>Title: {{title}}</p>
-            <p>Author: {{author}}</p>
-            <p>Genre: {{genre}}</p>
-            <p>Category: {{category}}</p>
-            <p>Status: {{status}}</p>
-            <p>URL: {{url}}</p>
+        <li class="container book">
+            <div class="contents">
+                <button type="submit" class="update-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-url="{{url}}
+                ">Update Status</button>
+                <button type="submit" class="delete-from-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-url="{{url}}
+                ">Delete</button>
+                <div class="bookDetails">
+                    <h3>Title: {{title}}</h3>
+                    <h4>Author: {{author}}</h4>
+                    <p>Genre: {{genre}}</p>
+                    <p>Category: {{category}}</p>
+                    <p>Status: {{status}}</p>
+                    <p>URL: {{url}}</p>
+                </div>
+            </div>
+            <div class="expand"><span class="glyphicon glyphicon-chevron-down"></span></div>
+            </div>
         </li>
     {{/each}}
     </ul>

@@ -169,13 +169,21 @@ input[type=submit] {
 
 .book {
   background-color: rgba(255, 240, 175, 0.925);
-  overflow: auto;
-  padding: .5em;
-  height: 11em;
-  /* overflow: hidden; */
   margin-bottom: .5em;
   width: auto;
   border: 1px solid #444;
+  overflow: auto;
+  clear: both;
+}
+
+.contents {
+  padding: .5em;
+  overflow: hidden;
+  height: 11em;
+}
+
+.contentsExpanded {
+  height: auto;
 }
 
 h3 {
@@ -193,6 +201,16 @@ h3 {
   margin-right: .5em;
   border: 1px solid #444;
   box-shadow: 2px 2px 5px #4e0e0ecc;
+}
+
+.add-to-list {
+  float: right;
+}
+
+.expand {
+  text-align: center;
+  height: 1em;
+  border-top: 1px dotted rgb(151, 132, 49)
 }
 
 footer {
