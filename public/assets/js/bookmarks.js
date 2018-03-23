@@ -5,7 +5,7 @@ $(document).ready(() => {
         var searchInput = $(".userText").val().trim();
         var searchParam = $(".search-btn").attr("data-value");
 
-        if (searchParam === "title" || "author" || "subject" && searchInput.length === 0) {
+        if (!searchInput.length) {
             alert("The search field cannot be blank!");
         }
         else {
