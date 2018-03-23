@@ -122,7 +122,7 @@ $(document).ready(() => {
         .fail(error => console.error(error));
     });
 
-    $(document).on("click", ".delete-from-list", function (event) {e
+    $(document).on("click", ".delete-from-list", function (event) {
         var title = $(this).attr("data-title")
 
         var dataObj = {
