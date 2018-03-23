@@ -41,6 +41,7 @@ header {
 .title span {
   text-align: left;
   font-size: 2rem;
+  vertical-align: top;
   font-family: 'Sriracha', cursive;
   color: #fff;
   text-shadow: 2px 2px 5px #4e0e0ecc;
@@ -67,9 +68,9 @@ header {
   border-radius: 0 2rem 2rem 0;
 }
 
-.title i {
-  display: inline-block;
-}
+.glyphicon.glyphicon-book {
+  font-family:"Glyphicons Halflings" !important;
+ }
 
 /* .glyphicon {
   color: white;
@@ -90,32 +91,6 @@ header {
   border: 2px dotted #ccc;
   display: inline-block;
 } */
-
-.login-form input {
-  width: 100%;
-  display: inline-block;
-}
-
-.jumbotron {
-  margin: 2rem auto;
-  border-radius: 1em;
-  overflow: auto;
-  width: 60%;
-}
-
-#loginInfo {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background-color: rgb(240, 240, 240);
-  padding: .25rem .5em;
-  text-align: right;
-  border-radius: .5rem;
-}
-
-#loginInfo p {
-  margin: .25em 0;
-}
 
 nav {
   margin-top: 1em;
@@ -156,10 +131,16 @@ nav {
 
 label {
   background-color: #eee;
-  line-height: 2em;
+  line-height: 2rem;
   margin: 0;
   padding: 0 .5em;
   border-radius: .5em 0 0 .5em;
+}
+
+select {
+  height: 2rem;
+  border-radius: 0;
+  vertical-align: baseline;
 }
 
 input[type=text], input[type=password] {
