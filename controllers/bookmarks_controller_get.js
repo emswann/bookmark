@@ -136,9 +136,8 @@ module.exports = app => {
     const searchParam = req.params.searchParam;
     const searchParamVal = 
       searchParam === 'all' ? undefined : req.params.searchParamVal;
-    const DEL_STATUS_ID = 4;
 
-    searchList[searchParam](userId, DEL_STATUS_ID, searchParamVal)
+    searchList[searchParam](userId, searchParamVal)
     .then(data =>  {
       var booksObjArray = [];
         

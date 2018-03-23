@@ -3,10 +3,10 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 module.exports = {
-  all: (userId, statusId, searchParamVal) => 
+  all: (userId, searchParamVal) => 
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
-      where: { UserId: userId, StatusId: { [Op.ne]: statusId }},
+      where: { UserId: userId },
       include: [{
         model: db.Library,
         attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
@@ -17,15 +17,16 @@ module.exports = {
       }, 
       {
         model: db.Status,
-        attributes: ['name']
+        attributes: ['name'],
+        where: { name: { [Op.ne]: 'Deleted' }}
       }]     
     })
     .then(data => data),
 
-  category: (userId, statusId, searchParamVal) =>
+  category: (userId, searchParamVal) =>
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
-      where: { UserId: userId, StatusId: { [Op.ne]: statusId }},
+      where: { UserId: userId },
       include: [{
         model: db.Library,
         attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
@@ -37,14 +38,15 @@ module.exports = {
       }, 
       {
         model: db.Status,
-        attributes: ['name']
+        attributes: ['name'],
+        where: { name: { [Op.ne]: 'Deleted' }}
       }] 
     }).then(data => data),
 
-  status: (userId, statusId, searchParamVal) => 
+  status: (userId, searchParamVal) => 
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
-      where: { UserId: userId }, // do not exclude deleted status
+      where: { UserId: userId },
       include: [{
         model: db.Library,
         attributes: { exclude: ['id', 'createdAt', 'updatedAt'] }
@@ -60,10 +62,10 @@ module.exports = {
       }] 
     }).then(data => data),
 
-  author: (userId, statusId, searchParamVal) =>
+  author: (userId, searchParamVal) =>
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
-      where: { UserId: userId, StatusId: { [Op.ne]: statusId }},
+      where: { UserId: userId },
       include: [{
         model: db.Library,
         where:  
@@ -80,14 +82,15 @@ module.exports = {
       }, 
       {
         model: db.Status,
-        attributes: ['name']
+        attributes: ['name'],
+        where: { name: { [Op.ne]: 'Deleted' }}
       }] 
     }).then(data => data),
 
-  title: (userId, statusId, searchParamVal) => 
+  title: (userId, searchParamVal) => 
     db.Reading_List.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
-      where: { UserId: userId, StatusId: { [Op.ne]: statusId }},
+      where: { UserId: userId },
       include: [{
         model: db.Library,
         where:  
@@ -104,7 +107,8 @@ module.exports = {
       }, 
       {
         model: db.Status,
-        attributes: ['name']
+        attributes: ['name'],
+        where: { name: { [Op.ne]: 'Deleted' }}
       }] 
     }).then(data => data)
 };

@@ -3,8 +3,6 @@ const Sequelize = require('sequelize');
 
 module.exports = app => {
   app.put("/api/list/update", (req, res) => {
-    const Op = Sequelize.Op;
-
     db.Status.findAll({
       where: { name: req.body.status },
       attributes: ['id'],
