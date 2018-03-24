@@ -2,7 +2,9 @@ const db = require('../models');
 const Sequelize = require('sequelize');
 
 module.exports = app => {
-  app.put("/api/list/update", (req, res) => {
+  app.put("/api/list/update/:id", (req, res) => {
+    const userId = req.params.id;
+
     db.Status.findAll({
       where: { name: req.body.status },
       attributes: ['id'],
@@ -11,7 +13,7 @@ module.exports = app => {
     .then(status => {
       db.Reading_List.findAll({
         attributes: { exclude: ['createdAt', 'updatedAt'] },
-        where: { UserId: req.body.userId },
+        where: { UserId: userId },
         include: {
           model: db.Library,
           where: { title: req.body.title, author: req.body.author },
