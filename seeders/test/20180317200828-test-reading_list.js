@@ -41,6 +41,14 @@ module.exports = {
         StatusId: 4,
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        UserId: 1,
+        LibraryId: 6,
+        CategoryId: 1,
+        StatusId: 5,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }]
     );
   },
