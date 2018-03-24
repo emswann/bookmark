@@ -148,6 +148,7 @@ module.exports = app => {
           genre: book.Library.genre,
           category: book.Category.name,
           status: book.Status.name,
+          img: book.Library.img,
           url: book.Library.url
         })
       );
