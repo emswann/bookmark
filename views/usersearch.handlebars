@@ -2,14 +2,18 @@
     <ul class="stack">
     {{#each books}}
         <li class="container book">
-            <button type="submit" class="add-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-url="{{url}}"> + Add to your list</button>
-            <img src={{img}}>
-            <div class="bookDetails">
-                <h3>{{title}}</h3>
-                <h4>by {{author}}</h4>
-                <p>Year: {{year}}</p>
-                <p>Genre: {{genre}}</p>
-                <p class="bookDesc">Description: {{desc}}</p>
+            <div class="contents">
+                <button type="submit" class="add-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-url="{{url}}"> + Add to your list</button>
+                <img src={{img}}>
+                <div class="bookDetails">
+                    <h3>{{title}}</h3>
+                    <h4>by {{author}}</h4>
+                    <p>Year: {{year}}</p>
+                    <p>Genre: {{genre}}</p>
+                    <p class="bookDesc">Description: {{desc}}</p>
+                </div>
+            </div>  
+            <div class="expand"><span class="glyphicon glyphicon-chevron-down"></span></div>
             </div>
         </li>
         {{/each}}

@@ -41,6 +41,7 @@ header {
 .title span {
   text-align: left;
   font-size: 2rem;
+  vertical-align: top;
   font-family: 'Sriracha', cursive;
   color: #fff;
   text-shadow: 2px 2px 5px #4e0e0ecc;
@@ -67,9 +68,9 @@ header {
   border-radius: 0 2rem 2rem 0;
 }
 
-.title i {
-  display: inline-block;
-}
+.glyphicon.glyphicon-book {
+  font-family:"Glyphicons Halflings" !important;
+ }
 
 /* .glyphicon {
   color: white;
@@ -90,32 +91,6 @@ header {
   border: 2px dotted #ccc;
   display: inline-block;
 } */
-
-.login-form input {
-  width: 100%;
-  display: inline-block;
-}
-
-.jumbotron {
-  margin: 2rem auto;
-  border-radius: 1em;
-  overflow: auto;
-  width: 60%;
-}
-
-#loginInfo {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background-color: rgb(240, 240, 240);
-  padding: .25rem .5em;
-  text-align: right;
-  border-radius: .5rem;
-}
-
-#loginInfo p {
-  margin: .25em 0;
-}
 
 nav {
   margin-top: 1em;
@@ -156,10 +131,16 @@ nav {
 
 label {
   background-color: #eee;
-  line-height: 2em;
+  line-height: 2rem;
   margin: 0;
   padding: 0 .5em;
   border-radius: .5em 0 0 .5em;
+}
+
+select {
+  height: 2rem;
+  border-radius: 0;
+  vertical-align: baseline;
 }
 
 input[type=text], input[type=password] {
@@ -188,13 +169,20 @@ input[type=submit] {
 
 .book {
   background-color: rgba(255, 240, 175, 0.925);
-  overflow: auto;
-  padding: .5em;
-  height: 11em;
-  /* overflow: hidden; */
   margin-bottom: .5em;
   width: auto;
   border: 1px solid #444;
+  clear: both;
+}
+
+.contents {
+  padding: .5em;
+  overflow: hidden;
+  height: 12rem;
+}
+
+.contentsExpanded {
+  height: auto;
 }
 
 h3 {
@@ -213,6 +201,60 @@ h3 {
   border: 1px solid #444;
   box-shadow: 2px 2px 5px #4e0e0ecc;
 }
+
+.add-to-list {
+  float: right;
+}
+
+.expand {
+  text-align: center;
+  height: 1em;
+  border-top: 1px dotted rgb(151, 132, 49);
+}
+
+.expand span {
+  vertical-align: top;
+}
+
+.statusArea {
+  list-style: none;
+  display: block;
+  float: right;
+  padding: 0;
+  width: 6rem;
+}
+
+/* .statusArea:hover {
+  cursor: pointer;
+} */
+
+.statusArea button {
+  padding: .1rem .25rem;
+  text-align: center;
+  width: 100%;
+  outline: 0;
+}
+
+.notStarted button {
+  background-color: yellow;
+  color: rgb(151, 132, 49);
+}
+
+.inProgress button {
+  background-color: rgb(35, 202, 35);
+  color: white;
+}
+
+.completed button {
+  background-color: rgb(38, 173, 226);
+  color: white;
+}
+
+.deleted button {
+  background-color: rgb(253, 112, 107);
+  color: white;
+}
+
 
 footer {
   text-align: left;

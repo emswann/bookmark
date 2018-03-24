@@ -1,4 +1,6 @@
 $(document).ready(() => {
+    var currentView;
+
     $(".user-search").on("submit", function (event) {
         event.preventDefault();
 
@@ -15,7 +17,10 @@ $(document).ready(() => {
             $.ajax(url, {
                 type: "GET"
             })
-                .then(data => $("#search-results").html(data))
+                .then(data => {
+                    $("#search-results").html(data)
+                    handleOverflows(); 
+                })
                 .fail(error => console.error(error));
         }
     });
@@ -36,14 +41,20 @@ $(document).ready(() => {
             alert("The search field cannot be blank!");
         }
         else {
+            console.log("searchParam =", searchParam, "// searchParamVal =", searchParamVal)
             var url = "/api/list/" + userId + "/" + searchParam + "/" + searchParamVal;
             console.log("GET request: " + url);
 
             $.ajax(url, {
                 type: "GET"
             })
-                .then(data => { $("#list-results").html(data); })
-                .fail(error => console.error(error));
+            .then(data => { 
+                $("#list-results").html(data);
+                handleOverflows(); 
+                showStatus();
+                currentView = searchParamVal;
+            })
+            .fail(error => console.error(error));
         }
     });
 
@@ -51,7 +62,6 @@ $(document).ready(() => {
         $("#dynamicSearchListContainer").empty();
         var selectedSearchList = $(this).val();
         // might need to make sure initial view is set up when page loads
-        console.log(selectedSearchList);
         var dynamicSearchList = $("<select id='dynamicSearchList' name='dynamicSearchList'>");
         switch (selectedSearchList) {
             case "all":
@@ -132,15 +142,34 @@ $(document).ready(() => {
             .fail(error => console.error(error));
     });
 
-    $(document).on("click", ".delete-from-list", function (event) {
-        var title = $(this).attr("data-title")
+    // for each reading_list book, show active status and hide others
+    function showStatus () {
+        $(".statusArea li").hide();
+        $(".statusArea li").filter(function() {
+            return $(this).parent().attr("value") === $(this).attr("value");
+        }).addClass("setStatus").show();
+    }
+
+    // reveal all status for selection
+    $(document).on("click", ".setStatus button", function () {
+        $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
+            // Animation complete.
+        });
+    })
+
+    // PUT new "status" when status (not currently set) button is clicked
+    $(document).on("click", ".statusArea li:not(.setStatus) button",  function() {
+        console.log($(this).attr("data-status"));
+        
+        var title = $(this).attr("data-title");
+        var status = $(this).attr("data-status");
 
         var dataObj = {
             userId: sessionStorage.getItem("userId"),
             title: title,
             author: $(this).attr("data-author"),
-            status: "Deleted"
-        }
+            status: status
+        };
         var url = "/api/list/update";
 
         console.log("PUT request: " + url);
@@ -149,11 +178,54 @@ $(document).ready(() => {
             type: "PUT",
             data: dataObj
         })
-            .then((results) =>
-                results.hasOwnProperty("error")
-                    ? alert("<" + title + ">" + "not deleted from list")
-                    : alert("<" + title + ">" + "deleted from list")
-            )
-            .fail(error => console.error(error));
-    });
+        .then((results) => {
+            if (!results.hasOwnProperty("error")) {
+                console.log("'" + title + "'" + " added to " + status + " list");
+                $(this).parent().siblings(".setStatus").removeClass("setStatus");
+                $(this).parent().addClass("setStatus");
+                console.log("var currentView = 'Completed' = "+(currentView === "Completed"));
+                console.log("var status = 'Completed' = "+(status === "Completed"));
+                console.log("var currentView = 'In Progress' = "+(currentView === "In Progress"));
+                console.log("var status = 'In Progress' = "+(status === "In Progress"));
+                console.log("var currentView = 'Deleted' = "+(currentView === "Deleted"));
+                console.log("var status = 'Deleted' = "+(status === "Deleted"));
+                console.log("var currentView = 'Not Started' = "+(currentView === "Not Started"));
+                console.log("var status = 'Not Started' = "+(status === "Not Started"));
+                console.log("status =", "'"+status+"'", "(typeof '"+typeof status + "')");
+                console.log("currentView =", "'"+currentView+"'", "(typeof '"+typeof currentView+"')");
+                $(this).closest(".book").empty().append($("<p>").text("Book moved to '"+status+"'"));
+                if (!status == currentView) { // PROBLEM CHILD, DOES NOT PROPERLY EVALUATE
+                    console.log("status and currentView do not match. WE SHOULD BE DOING SHIT NOW.");
+                } else {
+                    $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
+                        // Animation complete
+                    });
+                    console.log("status and currentView match!!!")
+                };
+            } else {
+                console.log("'" + title + "'" + "not added to " + status + " list");
+            }
+        })
+        .fail(error => console.error(error));
+    })
+
+    // expand book to show all hidden overflow
+    function isOverflown(element) {
+        return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+    };
+    
+    // if book contents is overflowing, display expanding edge
+    function handleOverflows() {
+        $(".contents").each(function() {
+            if (!isOverflown(this)) {
+                $(this).next().hide()
+            }
+        })
+    }
+    
+    // expand overflowing book
+    $(document).on("click", ".expand", function () {
+        $(this).prev(".contents").toggleClass("contentsExpanded");
+        $(this).children("span").toggleClass("glyphicon-chevron-down glyphicon-chevron-up");
+    })
 });
