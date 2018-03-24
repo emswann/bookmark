@@ -193,9 +193,9 @@ $(document).ready(() => {
                 console.log("var status = 'Not Started' = "+(status === "Not Started"));
                 console.log("status =", "'"+status+"'", "(typeof '"+typeof status + "')");
                 console.log("currentView =", "'"+currentView+"'", "(typeof '"+typeof currentView+"')");
+                $(this).closest(".book").empty().append($("<p>").text("Book moved to '"+status+"'"));
                 if (!status == currentView) { // PROBLEM CHILD, DOES NOT PROPERLY EVALUATE
                     console.log("status and currentView do not match. WE SHOULD BE DOING SHIT NOW.");
-                    $(this).closest(".book").empty().append($("<p>").text("Book moved to '"+searchParamVal+"'"));
                 } else {
                     $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
                         // Animation complete
