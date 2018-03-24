@@ -255,6 +255,10 @@ h3 {
   color: white;
 }
 
+.onLoan button {
+  background-color: rgb(238, 130, 238);
+  color: white;
+}
 
 footer {
   text-align: left;

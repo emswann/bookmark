@@ -56,6 +56,7 @@ EXAMPLE:
   2 | In Progress
   3 | Completed
   4 | Deleted
+  5 | On Loan
 
 ## library
   1 | Stephen King | The Stand | horror | https://books.google.com/books?isbn=038552885X

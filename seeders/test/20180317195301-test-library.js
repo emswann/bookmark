@@ -46,6 +46,14 @@ module.exports = {
         url: null,
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        title: 'Title - Test 6',
+        author: 'Author - Test 6',
+        genre: 'Genre - Test 6',
+        url: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }]
     );
   },
