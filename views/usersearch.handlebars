@@ -6,11 +6,25 @@
                 <button type="submit" class="add-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-url="{{url}}"> + Add to your list</button>
                 <img src={{img}}>
                 <div class="bookDetails">
-                    <h3>{{title}}</h3>
-                    <h4>by {{author}}</h4>
-                    <p>Year: {{year}}</p>
-                    <p>Genre: {{genre}}</p>
-                    <p class="bookDesc">Description: {{desc}}</p>
+                    {{#if title}}
+                        <h3>{{title}}</h3>
+                    {{/if}}
+
+                    {{#if author}}
+                        <h4>by {{author}}</h4>
+                    {{/if}}
+
+                    {{#if year}}
+                        <p>Year: {{year}}</p>
+                    {{/if}}
+
+                    {{#if genre}}
+                        <p>Genre: {{genre}}</p>
+                    {{/if}}
+
+                    {{#if desc}}
+                        <p class="bookDesc">Description: {{desc}}</p>
+                    {{/if}}                                       
                 </div>
             </div>  
             <div class="expand"><span class="glyphicon glyphicon-chevron-down"></span></div>
