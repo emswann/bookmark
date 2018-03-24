@@ -18,6 +18,7 @@ body {
   background-image: url("../images/parchment.jpg");
   background-size: 100% 100%;
   color: #774206;
+  padding: 3em;
 
 }
 
@@ -47,6 +48,15 @@ body {
 
 #loginInfo p {
   margin: .25em 0;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.buttons {
+  margin: 0 auto;
 }
 
 label {
