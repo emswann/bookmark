@@ -139,6 +139,7 @@ module.exports = app => {
 
     searchList[searchParam](userId, searchParamVal)
     .then(data =>  {
+
       var booksObjArray = [];
         
       data.forEach(book =>

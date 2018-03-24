@@ -124,6 +124,7 @@ $(document).ready(() => {
             title: title,
             author: $(this).attr("data-author"),
             genre: $(this).attr("data-genre"),
+            img: $(this).attr("data-img"),
             url: $(this).attr("data-url")
         }
         var url = "/api/list/add";
