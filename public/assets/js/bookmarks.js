@@ -42,7 +42,10 @@ $(document).ready(() => {
             $.ajax(url, {
                 type: "GET"
             })
-                .then(data => { $("#list-results").html(data); })
+                .then(data => { 
+                    $("#list-results").html(data); 
+                    showStatus();
+                })
                 .fail(error => console.error(error));
         }
     });
@@ -157,9 +160,62 @@ $(document).ready(() => {
             .fail(error => console.error(error));
     });
 
-    $(".expand").on("click", function () {
+    $(document).on("click", ".expand", function () {
         console.log("clicked");
         $(this).prev(".contents").toggleClass("contentsExpanded");
         $(this).children("span").toggleClass("glyphicon-chevron-down glyphicon-chevron-up");
     })
+
+    function showStatus () {
+        $(".statusArea li").hide();
+        $(".statusArea li").filter(function() {
+            return $(this).parent().attr("value") === $(this).attr("value");
+        }).addClass("setStatus").show();
+    }
+
+    $(document).on("click", ".setStatus button", function () {
+        $(this).parent().siblings().animate({height: "toggle"}, 500, function() {
+            // Animation complete.
+        });
+        // $(this).nextAll().toggle("slide", { direction: "down" }, 1000);
+    })
+
+    $(document).on("click", ".statusArea li:not(.setStatus) button",  function() {
+        console.log($(this).attr("data-status"));
+        
+
+        
+        var title = $(this).attr("data-title");
+        var status = $(this).attr("data-status");
+
+        var dataObj = {
+            userId: sessionStorage.getItem("userId"),
+            title: title,
+            author: $(this).attr("data-author"),
+            status: status
+        };
+        var url = "/api/list/update";
+
+        console.log("PUT request: " + url);
+
+        $.ajax(url, {
+            type: "PUT",
+            data: dataObj
+        })
+        .then((results) => {
+            if (!results.hasOwnProperty("error")) {
+                console.log("'" + title + "'" + "added to " + status + " list")
+                $(this).parent().siblings(".setStatus").removeClass("setStatus");
+                $(this).parent().addClass("setStatus");
+                $(this).parent().siblings().animate({height: "toggle"}, 500, function() {
+                    // Animation complete.
+                });
+            } else {
+                console.log("'" + title + "'" + "not added to " + status + " list");
+            }
+        })
+        .fail(error => console.error(error));
+
+    })
+
 });
