@@ -3,58 +3,69 @@ $(document).ready(() => {
 
     $(".user-search").on("submit", function (event) {
         event.preventDefault();
+        var userId = sessionStorage.getItem("userId");
 
-        var searchInput = $(".userText").val().trim();
-        var searchParam = $(".search-btn").attr("data-value");
-
-        if (!searchInput.length) {
-            alert("The search field cannot be blank!");
+        if (!userId) {
+            alert("dummy");
         }
         else {
-            var url = "/api/search/" + searchParam + "/" + searchInput;
-            console.log("GET request: " + url);
+            var searchInput = $(".userText").val().trim();
+            var searchParam = $(".search-btn").attr("data-value");
 
-            $.ajax(url, {
-                type: "GET"
-            })
-                .then(data => {
-                    $("#search-results").html(data)
-                    handleOverflows(); 
+            if (!searchInput.length) {
+                alert("The search field cannot be blank!");
+            }
+            else {
+                var url = "/api/search/" + searchParam + "/" + searchInput;
+                console.log("GET request: " + url);
+
+                $.ajax(url, {
+                    type: "GET"
                 })
-                .fail(error => console.error(error));
+                    .then(data => {
+                        $("#search-results").html(data)
+                        handleOverflows(); 
+                    })
+                    .fail(error => console.error(error));
+            }
         }
     });
 
     $(".list-search").on("submit", function (event) {
         event.preventDefault();
         var userId = sessionStorage.getItem("userId");
-
-        var searchParam = $("#selectSearchList").val();
-        var searchParamVal;
-        if ($("#dynamicSearchListContainer").find('select').length > 0) {
-            var searchParamVal = $("#dynamicSearchList").val();
-        } else {
-            var searchParamVal = $(".userText").val().trim();
-        }
-
-        if (searchParam != "all" && searchParamVal.length === 0) {
-            alert("The search field cannot be blank!");
+        
+        if (!userId) {
+            alert("dummy");
         }
         else {
-            console.log("searchParam =", searchParam, "// searchParamVal =", searchParamVal)
-            var url = "/api/list/" + userId + "/" + searchParam + "/" + searchParamVal;
-            console.log("GET request: " + url);
+            var searchParam = $("#selectSearchList").val();
+            var searchParamVal;
+            if ($("#dynamicSearchListContainer").find('select').length > 0) {
+                var searchParamVal = $("#dynamicSearchList").val();
+            } else {
+                var searchParamVal = $(".userText").val().trim();
+            }
 
-            $.ajax(url, {
-                type: "GET"
-            })
-            .then(data => { 
-                $("#list-results").html(data);
-                handleOverflows(); 
-                showStatus();
-                currentView = searchParamVal;
-            })
-            .fail(error => console.error(error));
+            if (searchParam != "all" && searchParamVal.length === 0) {
+                alert("The search field cannot be blank!");
+            }
+            else {
+                console.log("searchParam =", searchParam, "// searchParamVal =", searchParamVal)
+                var url = "/api/list/" + userId + "/" + searchParam + "/" + searchParamVal;
+                console.log("GET request: " + url);
+
+                $.ajax(url, {
+                    type: "GET"
+                })
+                .then(data => { 
+                    $("#list-results").html(data);
+                    handleOverflows(); 
+                    showStatus();
+                    currentView = searchParamVal;
+                })
+                .fail(error => console.error(error));
+            }
         }
     });
 
@@ -108,6 +119,11 @@ $(document).ready(() => {
     $(document).on("click", "#launch-app", function (event) {
         sessionStorage.setItem("userId", $("#user-id").attr("data-value"));
         window.location.href = "/list";
+    });
+
+    $(document).on("click", ".logout", function (event) {
+        sessionStorage.removeItem("userId");
+        window.location.href = "/logout";
     });
 
     $(".search-param").on("click", function (event) {
