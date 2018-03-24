@@ -15,7 +15,10 @@ $(document).ready(() => {
             $.ajax(url, {
                 type: "GET"
             })
-                .then(data => $("#search-results").html(data))
+                .then(data => {
+                    $("#search-results").html(data)
+                    handleOverflows(); 
+                })
                 .fail(error => console.error(error));
         }
     });
@@ -43,7 +46,8 @@ $(document).ready(() => {
                 type: "GET"
             })
                 .then(data => { 
-                    $("#list-results").html(data); 
+                    $("#list-results").html(data);
+                    handleOverflows(); 
                     showStatus();
                 })
                 .fail(error => console.error(error));
@@ -135,37 +139,7 @@ $(document).ready(() => {
             .fail(error => console.error(error));
     });
 
-    $(document).on("click", ".delete-from-list", function (event) {
-        var title = $(this).attr("data-title")
-
-        var dataObj = {
-            userId: sessionStorage.getItem("userId"),
-            title: title,
-            author: $(this).attr("data-author"),
-            status: "Deleted"
-        }
-        var url = "/api/list/update";
-
-        console.log("PUT request: " + url);
-
-        $.ajax(url, {
-            type: "PUT",
-            data: dataObj
-        })
-            .then((results) =>
-                results.hasOwnProperty("error")
-                    ? alert("<" + title + ">" + "not deleted from list")
-                    : alert("<" + title + ">" + "deleted from list")
-            )
-            .fail(error => console.error(error));
-    });
-
-    $(document).on("click", ".expand", function () {
-        console.log("clicked");
-        $(this).prev(".contents").toggleClass("contentsExpanded");
-        $(this).children("span").toggleClass("glyphicon-chevron-down glyphicon-chevron-up");
-    })
-
+    // for each reading_list book, show active status and hide others
     function showStatus () {
         $(".statusArea li").hide();
         $(".statusArea li").filter(function() {
@@ -173,17 +147,16 @@ $(document).ready(() => {
         }).addClass("setStatus").show();
     }
 
+    // reveal all status for selection
     $(document).on("click", ".setStatus button", function () {
         $(this).parent().siblings().animate({height: "toggle"}, 500, function() {
             // Animation complete.
         });
-        // $(this).nextAll().toggle("slide", { direction: "down" }, 1000);
     })
 
+    // PUT new "status" when status (not currently set) button is clicked
     $(document).on("click", ".statusArea li:not(.setStatus) button",  function() {
         console.log($(this).attr("data-status"));
-        
-
         
         var title = $(this).attr("data-title");
         var status = $(this).attr("data-status");
@@ -215,7 +188,31 @@ $(document).ready(() => {
             }
         })
         .fail(error => console.error(error));
-
     })
 
+    // expand book to show all hidden overflow
+    function isOverflown(element) {
+        console.log("element =", element);
+        return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+    };
+    
+    // if book contents is overflowing, display expanding edge
+    function handleOverflows() {
+        console.log("looking for overflows");
+        $(".contents").each(function() {
+            if (!isOverflown(this)) {
+                $(this).next().hide()
+                console.log("not overFlown");
+            } else {
+                console.log("overFlown");
+            }
+        })
+    }
+
+    // expand overflowing book
+    $(document).on("click", ".expand", function () {
+        console.log("clicked");
+        $(this).prev(".contents").toggleClass("contentsExpanded");
+        $(this).children("span").toggleClass("glyphicon-chevron-down glyphicon-chevron-up");
+    })
 });

@@ -172,14 +172,13 @@ input[type=submit] {
   margin-bottom: .5em;
   width: auto;
   border: 1px solid #444;
-  overflow: auto;
   clear: both;
 }
 
 .contents {
   padding: .5em;
   overflow: hidden;
-  height: 11em;
+  height: 12rem;
 }
 
 .contentsExpanded {
