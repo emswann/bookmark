@@ -180,7 +180,7 @@ $(document).ready(() => {
                 console.log("'" + title + "'" + "added to " + status + " list")
                 $(this).parent().siblings(".setStatus").removeClass("setStatus");
                 $(this).parent().addClass("setStatus");
-                $(this).parent().siblings().animate({height: "toggle"}, 500, function() {
+                $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
                     // Animation complete.
                 });
             } else {
