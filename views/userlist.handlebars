@@ -17,13 +17,33 @@
                         <button type="submit" class="update-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-img="{{img}}" data-url="{{url}}" data-status="Deleted">Deleted</button>
                     </li>
                 </ul>
+<<<<<<< HEAD
                 <img src={{img}}>
+=======
+                {{#if img}}
+                    <img src={{img}}>
+                {{/if}}
+>>>>>>> no-render-undefined
                 <div class="bookDetails">
-                    <h3>Title: {{title}}</h3>
-                    <h4>Author: {{author}}</h4>
-                    <p>Genre: {{genre}}</p>
-                    <p>Category: {{category}}</p>
-                    <p>URL: {{url}}</p>
+                    {{#if title}}
+                        <h3>Title: {{title}}</h3>
+                    {{/if}}
+
+                    {{#if author}}
+                        <h4>Author: {{author}}</h4>
+                    {{/if}}
+
+                    {{#if genre}}
+                        <p>Genre: {{genre}}</p>
+                    {{/if}}
+
+                    {{#if category}}
+                        <p>Category: {{category}}</p>
+                    {{/if}}
+
+                    {{#if url}}
+                        <p>URL: {{url}}</p>
+                    {{/if}}                    
                 </div>
             </div>
             <div class="expand"><span class="glyphicon glyphicon-chevron-down"></span></div>
