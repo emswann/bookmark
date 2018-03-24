@@ -149,7 +149,7 @@ $(document).ready(() => {
 
     // reveal all status for selection
     $(document).on("click", ".setStatus button", function () {
-        $(this).parent().siblings().animate({height: "toggle"}, 500, function() {
+        $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
             // Animation complete.
         });
     })
