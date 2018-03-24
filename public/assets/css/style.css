@@ -231,7 +231,8 @@ h3 {
 .statusArea button {
   padding: .1rem .25rem;
   text-align: center;
-  width: 100%
+  width: 100%;
+  outline: 0;
 }
 
 .notStarted button {

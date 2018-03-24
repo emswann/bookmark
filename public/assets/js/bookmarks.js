@@ -1,4 +1,6 @@
 $(document).ready(() => {
+    var currentView;
+
     $(".user-search").on("submit", function (event) {
         event.preventDefault();
 
@@ -39,18 +41,20 @@ $(document).ready(() => {
             alert("The search field cannot be blank!");
         }
         else {
+            console.log("searchParam =", searchParam, "// searchParamVal =", searchParamVal)
             var url = "/api/list/" + userId + "/" + searchParam + "/" + searchParamVal;
             console.log("GET request: " + url);
 
             $.ajax(url, {
                 type: "GET"
             })
-                .then(data => { 
-                    $("#list-results").html(data);
-                    handleOverflows(); 
-                    showStatus();
-                })
-                .fail(error => console.error(error));
+            .then(data => { 
+                $("#list-results").html(data);
+                handleOverflows(); 
+                showStatus();
+                currentView = searchParamVal;
+            })
+            .fail(error => console.error(error));
         }
     });
 
@@ -58,7 +62,6 @@ $(document).ready(() => {
         $("#dynamicSearchListContainer").empty();
         var selectedSearchList = $(this).val();
         // might need to make sure initial view is set up when page loads
-        console.log(selectedSearchList);
         var dynamicSearchList = $("<select id='dynamicSearchList' name='dynamicSearchList'>");
         switch (selectedSearchList) {
             case "all":
@@ -177,12 +180,19 @@ $(document).ready(() => {
         })
         .then((results) => {
             if (!results.hasOwnProperty("error")) {
-                console.log("'" + title + "'" + "added to " + status + " list")
+                console.log("'" + title + "'" + " added to " + status + " list")
                 $(this).parent().siblings(".setStatus").removeClass("setStatus");
                 $(this).parent().addClass("setStatus");
-                $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
-                    // Animation complete.
-                });
+                console.log("status =", "'"+status+"'", "(typeof '"+typeof status + "')");
+                console.log("currentView =", "'"+currentView+"'", "(typeof '"+typeof currentView+"')");
+                if (!status == currentView) { // PROBLEM CHILD, DOES NOT PROPERLY EVALUATE
+                    console.log("status and currentView do not match; this =", this);
+                    $(this).closest(".book").empty().append($("<p>").text("Book moved to '"+searchParamVal+"'"));
+                } else {
+                    $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
+                        // Animation complete
+                    });
+                    console.log("status and currentView match!!! this =", this)};
             } else {
                 console.log("'" + title + "'" + "not added to " + status + " list");
             }
@@ -192,26 +202,20 @@ $(document).ready(() => {
 
     // expand book to show all hidden overflow
     function isOverflown(element) {
-        console.log("element =", element);
         return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
     };
     
     // if book contents is overflowing, display expanding edge
     function handleOverflows() {
-        console.log("looking for overflows");
         $(".contents").each(function() {
             if (!isOverflown(this)) {
                 $(this).next().hide()
-                console.log("not overFlown");
-            } else {
-                console.log("overFlown");
             }
         })
     }
-
+    
     // expand overflowing book
     $(document).on("click", ".expand", function () {
-        console.log("clicked");
         $(this).prev(".contents").toggleClass("contentsExpanded");
         $(this).children("span").toggleClass("glyphicon-chevron-down glyphicon-chevron-up");
     })
