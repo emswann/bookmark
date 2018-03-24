@@ -180,19 +180,28 @@ $(document).ready(() => {
         })
         .then((results) => {
             if (!results.hasOwnProperty("error")) {
-                console.log("'" + title + "'" + " added to " + status + " list")
+                console.log("'" + title + "'" + " added to " + status + " list");
                 $(this).parent().siblings(".setStatus").removeClass("setStatus");
                 $(this).parent().addClass("setStatus");
+                console.log("var currentView = 'Completed' = "+(currentView === "Completed"));
+                console.log("var status = 'Completed' = "+(status === "Completed"));
+                console.log("var currentView = 'In Progress' = "+(currentView === "In Progress"));
+                console.log("var status = 'In Progress' = "+(status === "In Progress"));
+                console.log("var currentView = 'Deleted' = "+(currentView === "Deleted"));
+                console.log("var status = 'Deleted' = "+(status === "Deleted"));
+                console.log("var currentView = 'Not Started' = "+(currentView === "Not Started"));
+                console.log("var status = 'Not Started' = "+(status === "Not Started"));
                 console.log("status =", "'"+status+"'", "(typeof '"+typeof status + "')");
                 console.log("currentView =", "'"+currentView+"'", "(typeof '"+typeof currentView+"')");
                 if (!status == currentView) { // PROBLEM CHILD, DOES NOT PROPERLY EVALUATE
-                    console.log("status and currentView do not match; this =", this);
+                    console.log("status and currentView do not match. WE SHOULD BE DOING SHIT NOW.");
                     $(this).closest(".book").empty().append($("<p>").text("Book moved to '"+searchParamVal+"'"));
                 } else {
                     $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
                         // Animation complete
                     });
-                    console.log("status and currentView match!!! this =", this)};
+                    console.log("status and currentView match!!!")
+                };
             } else {
                 console.log("'" + title + "'" + "not added to " + status + " list");
             }
