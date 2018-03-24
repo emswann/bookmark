@@ -22,6 +22,7 @@
   * title  - varchar, not null
   * author - varchar, not null
   * genre  - varchar, allow nulls
+  * img - varchar, allow nulls
   * url    - varchar, allow nulls
 
 ## reading_list

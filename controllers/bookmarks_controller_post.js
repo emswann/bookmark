@@ -9,6 +9,7 @@ module.exports = app => {
       title:  req.body.title,
       author: req.body.author,
       genre:  req.body.genre,
+      img:    req.body.img,
       url:    req.body.url         
     };
 
