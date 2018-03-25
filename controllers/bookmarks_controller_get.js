@@ -11,7 +11,7 @@ let gbooks = require('@datafire/google_books').create({
 const Sequelize = require('sequelize');
 const searchList = require('./searchList');
 
-var getGBooks = (res, searchType, searchParam) => {
+var getGBooks = (res, userId, searchType, searchParam) => {
   const apiKey = process.env.GBOOKS_API_KEY;
   const MAX_RESULTS = 10;
 
@@ -26,31 +26,43 @@ var getGBooks = (res, searchType, searchParam) => {
         "key" : apiKey
       })
       .then(data => {
-        var booksObjArray = [];
-        var books = data.items || [];
-        
-        books.forEach(book => {
+        var gBooks = data.items || [];
+        var gBooksObjArray = [];
+
+        gBooks.forEach(book => {
           var info = book.volumeInfo;
-          booksObjArray.push({
+
+          gBooksObjArray.push({
             title: info.title,
-            author: info.authors,
+            author: info.authors ? info.authors.toString() : undefined,
             year: info.publishedDate,
-            genre: () => {
-              if (info.categories) {
-                return info.categories[0] || undefined
-              }
-            },
+            genre: info.categories ? info.categories.toString() : undefined,
             desc: info.description,
-            img: () => {
-              if (info.imageLinks) {
-                return info.imageLinks.smallThumbnail || undefined
-              }
-            },
+            img: info.imageLinks ? info.imageLinks.smallThumbnail : undefined,
             url: info.infoLink
           })
         });
-         // Including extension since using both handlebars and ejs in app. 
-        res.render("usersearch.handlebars", {books: booksObjArray, layout: false});
+
+        searchList["all"](userId, undefined)
+        .then(data =>  {
+          var userBooks = data;
+          var userBooksObjArray = [];
+        
+          userBooks.forEach(book =>
+            userBooksObjArray.push({
+              title: book.Library.title,
+              author: book.Library.author,
+            })  
+          )             
+
+          var filteredObjArray = 
+            gBooksObjArray.filter(gbook =>   
+              !userBooksObjArray.some(ubook => 
+                gbook.title === ubook.title && gbook.author === ubook.author));
+
+          // Including extension since using both handlebars and ejs in app. 
+          res.render("usersearch.handlebars", {books: filteredObjArray, layout: false});
+        });
       })
       .catch(error => console.log("gbooks.then error =", error));
     } 
@@ -72,16 +84,16 @@ module.exports = app => {
     res.sendFile(path.join(__dirname, "../public/userlist.html"))
   ));
 
-  app.get("/api/search/title/:title", (req, res) => {
-    getGBooks(res, "intitle", req.params.title)
+  app.get("/api/search/:id/title/:title", (req, res) => {
+    getGBooks(res, req.params.id, "intitle", req.params.title)
   })
 
-  app.get("/api/search/author/:author", (req, res) => {
-    getGBooks(res, "inauthor", req.params.author);
+  app.get("/api/search/:id/author/:author", (req, res) => {
+    getGBooks(res, req.params.id, "inauthor", req.params.author);
   })
 
-  app.get("/api/search/subject/:subject", (req, res) => {
-    getGBooks(res, "subject", req.params.subject);
+  app.get("/api/search/:id/subject/:subject", (req, res) => {
+    getGBooks(res, req.params.id, "subject", req.params.subject);
   })
 
   // "Category" dropdown list population

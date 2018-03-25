@@ -16,7 +16,7 @@ $(document).ready(() => {
                 showError("#user", "The search field cannot be blank!");
             }
             else {
-                var url = "/api/search/" + searchParam + "/" + searchInput;
+                var url = "/api/search/" + userId + "/" + searchParam + "/" + searchInput;
                 console.log("GET request: " + url);
 
                 $.ajax(url, {
@@ -157,7 +157,7 @@ $(document).ready(() => {
         })
             .then((results) => {
                 if (results.hasOwnProperty("error")) {
-                    showError("#user", "You have already added '" + title + "' to your library!");
+                    console.log("Adding book already on list should never happen");
                 }
                 else {
                     $(this).closest(".book").empty().append($("<p style='text-align: center'>").text("'" + title + "' added to library"));
