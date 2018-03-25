@@ -15,6 +15,9 @@ $(document).ready(() => {
             if (!searchInput.length) {
                 showError("#user", "The search field cannot be blank!");
             }
+            else if (!searchParam) {
+                showError("#user", "The search type must be chosen!");
+            }
             else {
                 var url = "/api/search/" + userId + "/" + searchParam + "/" + searchInput;
                 console.log("GET request: " + url);
