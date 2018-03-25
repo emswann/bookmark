@@ -34,19 +34,11 @@ var getGBooks = (res, userId, searchType, searchParam) => {
 
           gBooksObjArray.push({
             title: info.title,
-            author: info.authors,
+            author: info.authors ? info.authors.toString() : undefined,
             year: info.publishedDate,
-            genre: () => {
-              if (info.categories) {
-                return info.categories[0] || undefined
-              }
-            },
+            genre: info.categories ? info.categories.toString() : undefined,
             desc: info.description,
-            img: () => {
-              if (info.imageLinks) {
-                return info.imageLinks.smallThumbnail || undefined
-              }
-            },
+            img: info.imageLinks ? info.imageLinks.smallThumbnail : undefined,
             url: info.infoLink
           })
         });
@@ -66,7 +58,7 @@ var getGBooks = (res, userId, searchType, searchParam) => {
           var filteredObjArray = [];
           gBooksObjArray.forEach(gbook => {
             var found = false;
-            for (let i=0; i<1; i++) {
+            for (let i=0; i<userBooksObjArray.length; i++) {
               if (gbook.title === userBooksObjArray[i].title 
                   && gbook.author === userBooksObjArray[i].author) {
                 found = true;
