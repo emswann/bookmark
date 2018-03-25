@@ -15,8 +15,8 @@ module.exports = (app, passport) => {
     res.render('login.ejs', { message: req.flash('loginMessage') }));
 
   app.post('/', passport.authenticate('local-login', {
-    successRedirect : '/list',
-    failureRedirect : '/',
+    successRedirect : '/profile',
+    failureRedirect : '/login',
     failureFlash : true
   }));
 
@@ -24,7 +24,7 @@ module.exports = (app, passport) => {
     res.render('signup.ejs', { message: req.flash('signupMessage') }));
 
   app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect : '/list',
+    successRedirect : '/profile',
     failureRedirect : '/signup',
     failureFlash : true
   }));

@@ -9,7 +9,7 @@ body {
   display: inline-block;
 }
 
-.loginPortal, .modal-dialog {
+.loginPortal {
   margin: 2rem auto;
   border-radius: 1em;
   overflow: auto;
