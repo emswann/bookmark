@@ -157,7 +157,10 @@ $(document).ready(() => {
         })
             .then((results) => {
                 if (results.hasOwnProperty("error")) {
-                    showError("#user", "You have already added <" + title + "> to your library!");
+                    showError("#user", "You have already added '" + title + "' to your library!");
+                }
+                else {
+                    $(this).closest(".book").empty().append($("<p style='text-align: center'>").text("'" + title + "' added to library"));
                 }
             })
             .fail(error => console.error(error));
@@ -201,7 +204,7 @@ $(document).ready(() => {
         })
         .then((results) => {
             if (!results.hasOwnProperty("error")) {
-                console.log("'" + title + "'" + " added to " + status + " list");
+                console.log("'" + title + "'" + " updated to " + status + " on list");
                 $(this).parent().siblings(".setStatus").removeClass("setStatus");
                 $(this).parent().addClass("setStatus");
                 if (!(status === currentView)) {
@@ -212,7 +215,7 @@ $(document).ready(() => {
                     });
                 };
             } else {
-                console.log("'" + title + "'" + "not added to " + status + " list");
+                console.log("'" + title + "'" + "not updated to " + status + " on list");
             }
         })
         .fail(error => console.error(error));
