@@ -55,14 +55,11 @@ var getGBooks = (res, userId, searchType, searchParam) => {
             })  
           )             
 
-          var filteredObjArray = [];
-          gBooksObjArray.forEach(gbook => { 
-            if (!userBooksObjArray.some(ubook => 
-              gbook.title === ubook.title && gbook.author === ubook.author)) {
-              filteredObjArray.push(gbook);
-            }
-          });
-          
+          var filteredObjArray = 
+            gBooksObjArray.filter(gbook =>   
+              !userBooksObjArray.some(ubook => 
+                gbook.title === ubook.title && gbook.author === ubook.author));
+
           // Including extension since using both handlebars and ejs in app. 
           res.render("usersearch.handlebars", {books: filteredObjArray, layout: false});
         });
