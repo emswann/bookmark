@@ -15,7 +15,7 @@ module.exports = (app, passport) => {
     res.render('login.ejs', { message: req.flash('loginMessage') }));
 
   app.post('/login', passport.authenticate('local-login', {
-    successRedirect : '/list',
+    successRedirect : '/profile',
     failureRedirect : '/login',
     failureFlash : true
   }));
