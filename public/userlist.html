@@ -16,6 +16,27 @@
 </head>
 
 <body>
+    <!-- Error Modal -->
+    <div class="modal fade" id="login-err-modal" tabindex="-1" role="dialog" data-backdrop="true" data-keyboard="true" aria-labelledby="login-err-modal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close reload" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="login-err-modal-title"></h4>
+                </div>
+                <div class="modal-body" id="login-err-modal-body">
+                    <!-- Divs are dynamically created by JavaScript -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default reload" data-dismiss="modal" id="login-err-modal-btn">
+                      Log In
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="wrap">
         <div id="content">
             <header>
@@ -36,7 +57,7 @@
                     <ul class="nav nav-pills">
                         <li role="presentation" class="active"><a href="#">Your List</a></li>
                         <li role="presentation"><a href="/search">Find Books</a></li>
-                        <li role="presentation"><a href="/logout">Log Out</a></li>
+                        <li role="presentation"><a class="logout" href="#">Log Out</a></li>
                     </ul>
                 </nav>
                 <form action="/list" method="post" class="list-search">
