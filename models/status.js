@@ -2,7 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   var Status = sequelize.define('Status', {
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     }
   },
   {

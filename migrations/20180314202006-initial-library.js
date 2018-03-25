@@ -15,7 +15,7 @@ module.exports = {
         },
         author: {
           type: Sequelize.STRING,
-          allowNull: false
+          allowNull: true
         },
         genre: {
           type: Sequelize.STRING,
