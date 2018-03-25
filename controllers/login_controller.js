@@ -7,15 +7,16 @@ var isLoggedIn = (req, res, next) => {
 
 module.exports = (app, passport) => {
   // app.get('/', (req, res) => res.render('index.ejs'));
+  
   app.get('/', (req, res) => 
     res.render('login.ejs', { message: req.flash('loginMessage') }));
 
-  app.get('/login', (req, res) => 
+  app.get('/', (req, res) => 
     res.render('login.ejs', { message: req.flash('loginMessage') }));
 
-  app.post('/login', passport.authenticate('local-login', {
-    successRedirect : '/profile',
-    failureRedirect : '/login',
+  app.post('/', passport.authenticate('local-login', {
+    successRedirect : '/list',
+    failureRedirect : '/',
     failureFlash : true
   }));
 
@@ -23,7 +24,7 @@ module.exports = (app, passport) => {
     res.render('signup.ejs', { message: req.flash('signupMessage') }));
 
   app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect : '/profile',
+    successRedirect : '/list',
     failureRedirect : '/signup',
     failureFlash : true
   }));
