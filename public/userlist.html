@@ -31,7 +31,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default reload" data-dismiss="modal" id="login-err-modal-btn">
-                      Log In
+                        Log In
                     </button>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default reload" data-dismiss="modal" id="user-err-modal-btn">
-                      Close
+                        Close
                     </button>
                 </div>
             </div>
@@ -71,13 +71,21 @@
                     </div>
                 </div>
                 <div id="loginInfo">
-                    <p>Welcome, <span class="userName"></span></p> 
-                </div>  
+                    <p>Welcome,
+                        <span class="userName"></span>
+                    </p>
+                </div>
                 <nav>
                     <ul class="nav nav-pills">
-                        <li role="presentation" class="active"><a href="#">Your List</a></li>
-                        <li role="presentation"><a href="/search">Find Books</a></li>
-                        <li role="presentation"><a class="logout" href="#">Log Out</a></li>
+                        <li role="presentation" class="active">
+                            <a href="#">Your List</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="/search">Find Books</a>
+                        </li>
+                        <li role="presentation">
+                            <a class="logout" href="#">Log Out</a>
+                        </li>
                     </ul>
                 </nav>
                 <form action="/list" method="post" class="list-search">
@@ -100,11 +108,18 @@
                 </form>
             </header>
             <div id="list-results">
+                <div class="no-res">
+                    <h2>Use the search bar above to view books in your list!</h2>
+                </div>
                 <!-- ========== -->
             </div>
-        </div> <!-- content -->
-    </div> <!-- wrap -->
+        </div>
+        <!-- content -->
+    </div>
+    <!-- wrap -->
     <footer>
-        <p><a href src="https://github.com/emswann/bookmark.git" target="_blank">Github repository</a></p>
+        <p>
+            <a href src="https://github.com/emswann/bookmark.git" target="_blank">Github repository</a>
+        </p>
     </footer>
 </body>
