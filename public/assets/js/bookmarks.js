@@ -6,7 +6,7 @@ $(document).ready(() => {
         var userId = sessionStorage.getItem("userId");
 
         if (!userId) {
-            alert("dummy");
+            showError("#login", "You must sign into Bookmarks to use it!");
         }
         else {
             var searchInput = $(".userText").val().trim();
@@ -36,7 +36,7 @@ $(document).ready(() => {
         var userId = sessionStorage.getItem("userId");
         
         if (!userId) {
-            alert("dummy");
+            showError("#login", "You must sign into Bookmarks to use it!");
         }
         else {
             var searchParam = $("#selectSearchList").val();
@@ -124,6 +124,10 @@ $(document).ready(() => {
     $(document).on("click", ".logout", function (event) {
         sessionStorage.removeItem("userId");
         window.location.href = "/logout";
+    });
+
+    $(document).on("click", "#login-err-modal-btn", function (event) {
+        window.location.href = "/login";
     });
 
     $(".search-param").on("click", function (event) {
@@ -214,6 +218,12 @@ $(document).ready(() => {
         .fail(error => console.error(error));
     })
 
+    // expand overflowing book
+    $(document).on("click", ".expand", function () {
+        $(this).prev(".contents").toggleClass("contentsExpanded");
+        $(this).children("span").toggleClass("glyphicon-chevron-down glyphicon-chevron-up");
+    })
+
     // expand book to show all hidden overflow
     function isOverflown(element) {
         return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
@@ -227,10 +237,13 @@ $(document).ready(() => {
             }
         })
     }
-    
-    // expand overflowing book
-    $(document).on("click", ".expand", function () {
-        $(this).prev(".contents").toggleClass("contentsExpanded");
-        $(this).children("span").toggleClass("glyphicon-chevron-down glyphicon-chevron-up");
-    })
+       
+    function showError(divPrefix, error) {
+        $(divPrefix + '-err-modal-body').empty();
+        $(divPrefix + '-err-modal').modal('show');
+
+        var errModalLine = $('<h3>').text(error);
+
+        $(divPrefix + '-err-modal-body').append(errModalLine);
+    }
 });
