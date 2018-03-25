@@ -16,7 +16,7 @@ var getGBooks = (res, userId, searchType, searchParam) => {
   const MAX_RESULTS = 10;
 
   try { 
-    var searchTypeAndParam = searchType+":"+ searchParam.replace(/ /g, "%20");
+    var searchTypeAndParam = searchType + ":" + searchParam;
     if (apiKey) {
       gbooks.volumes.list({
         "q": searchTypeAndParam,
