@@ -3,4 +3,5 @@ module.exports = app => {
   require('./bookmarks_controller_get')(app);
   require('./bookmarks_controller_post')(app);
   require('./bookmarks_controller_put')(app);
+  require('./bookmarks_controller_delete')(app);
 };

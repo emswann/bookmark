@@ -1,5 +1,6 @@
 $(document).ready(() => {
-    var currentView;
+    var currentView = "All";
+    console.log("page ready ping");
 
     $(".user-search").on("submit", function (event) {
         event.preventDefault();
@@ -53,6 +54,7 @@ $(document).ready(() => {
                 handleOverflows(); 
                 showStatus();
                 currentView = searchParamVal;
+                if (searchParam === "all") currentView = "All";
             })
             .fail(error => console.error(error));
         }
@@ -116,7 +118,7 @@ $(document).ready(() => {
         $(".search-btn").attr("data-value", newSearchParam);
     });
 
-    $(document).on("click", ".add-to-list", function (event) {
+    $(document).on("click", ".add-to-list:not('.added')", function (event) {
         var title = $(this).attr("data-title")
 
         var dataObj = {
@@ -134,11 +136,14 @@ $(document).ready(() => {
             type: "POST",
             data: dataObj
         })
-            .then((results) =>
-                results.hasOwnProperty("error")
-                    ? alert("You have already added <" + title + ">to your library!")
-                    : alert("<" + title + "> was added to your library!")
-            )
+            .then((results) => {
+                if (results.hasOwnProperty("error")) {
+                    
+                    alert("You have already added <" + title + ">to your library!")
+                } else {
+                    $(this).addClass("added").text("In Your List");
+                }
+            })
             .fail(error => console.error(error));
     });
 
@@ -148,6 +153,11 @@ $(document).ready(() => {
         $(".statusArea li").filter(function() {
             return $(this).parent().attr("value") === $(this).attr("value");
         }).addClass("setStatus").show();
+        if (!(currentView === "Deleted")) {
+            console.log("currentView =", currentView);
+            console.log("removing Trash button");
+            $(".trash").remove();
+        }
     }
 
     // reveal all status for selection
@@ -158,8 +168,8 @@ $(document).ready(() => {
     })
 
     // PUT new "status" when status (not currently set) button is clicked
-    $(document).on("click", ".statusArea li:not(.setStatus) button",  function() {
-        console.log($(this).attr("data-status"));
+    $(document).on("click", ".statusArea li:not(.setStatus, .trash) button",  function() {
+        console.log($(this).attr("data-status"));        
         
         var title = $(this).attr("data-title");
         var status = $(this).attr("data-status");
@@ -173,7 +183,6 @@ $(document).ready(() => {
         var url = "/api/list/update";
 
         console.log("PUT request: " + url);
-
         $.ajax(url, {
             type: "PUT",
             data: dataObj
@@ -183,8 +192,8 @@ $(document).ready(() => {
                 console.log("'" + title + "'" + " added to " + status + " list");
                 $(this).parent().siblings(".setStatus").removeClass("setStatus");
                 $(this).parent().addClass("setStatus");
-                if (!(status === currentView)) {
-                    $(this).closest(".book").empty().append($("<p style='text-align: center'>").text("Book moved to '"+status+"'"));
+                if (!(status === currentView) && !(currentView === "All")) {
+                    $(this).closest(".book").empty().append($("<p style='text-align: center'>").text("'"+title+"' moved to '"+status+"'")).delay(2000).fadeOut(1000);
                 } else {
                     $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
                         // Animation complete
