@@ -32,7 +32,7 @@ var getGBooks = (res, userId, searchType, searchParam) => {
         gBooks.forEach(book => {
           var info = book.volumeInfo;
 
-          booksObjArray.push({
+          gBooksObjArray.push({
             title: info.title,
             author: info.authors,
             year: info.publishedDate,
@@ -63,24 +63,24 @@ var getGBooks = (res, userId, searchType, searchParam) => {
             })  
           )             
 
-          var filterObjArray = [];
+          var filteredObjArray = [];
           gBooksObjArray.forEach(gbook => {
             var found = false;
-            for (let i=0; i<userBooksObjArray.length; i++) {
-              if (gbook.title === userBooksObjArray.title 
-                  && gbook.author === userBooksObjArray.author) {
+            for (let i=0; i<1; i++) {
+              if (gbook.title === userBooksObjArray[i].title 
+                  && gbook.author === userBooksObjArray[i].author) {
                 found = true;
                 break;
               }
             }
 
             if (!found) {
-              filterObjArray.push(gbook);
+              filteredObjArray.push(gbook);
             }
           })
           
           // Including extension since using both handlebars and ejs in app. 
-          res.render("usersearch.handlebars", {books: booksObjArray, layout: false});
+          res.render("usersearch.handlebars", {books: filteredObjArray, layout: false});
         });
       })
       .catch(error => console.log("gbooks.then error =", error));
