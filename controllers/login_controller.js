@@ -6,7 +6,9 @@ var isLoggedIn = (req, res, next) => {
 };
 
 module.exports = (app, passport) => {
-  app.get('/', (req, res) => res.render('index.ejs'));
+  // app.get('/', (req, res) => res.render('index.ejs'));
+  app.get('/', (req, res) => 
+    res.render('login.ejs', { message: req.flash('loginMessage') }));
 
   app.get('/login', (req, res) => 
     res.render('login.ejs', { message: req.flash('loginMessage') }));
