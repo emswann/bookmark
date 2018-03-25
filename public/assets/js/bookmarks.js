@@ -118,16 +118,16 @@ $(document).ready(() => {
 
     $(document).on("click", ".add-to-list", function (event) {
         var title = $(this).attr("data-title")
+        var userId = sessionStorage.getItem("userId");
 
         var dataObj = {
-            userId: sessionStorage.getItem("userId"),
             title: title,
             author: $(this).attr("data-author"),
             genre: $(this).attr("data-genre"),
             img: $(this).attr("data-img"),
             url: $(this).attr("data-url")
         }
-        var url = "/api/list/add";
+        var url = "/api/list/add/" + userId;
 
         console.log("POST request: " + url);
 
@@ -162,16 +162,16 @@ $(document).ready(() => {
     $(document).on("click", ".statusArea li:not(.setStatus) button",  function() {
         console.log($(this).attr("data-status"));
         
+        var userId = sessionStorage.getItem("userId");
         var title = $(this).attr("data-title");
         var status = $(this).attr("data-status");
 
         var dataObj = {
-            userId: sessionStorage.getItem("userId"),
             title: title,
             author: $(this).attr("data-author"),
             status: status
         };
-        var url = "/api/list/update";
+        var url = "/api/list/update/" + userId;
 
         console.log("PUT request: " + url);
 

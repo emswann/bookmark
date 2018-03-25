@@ -2,25 +2,18 @@ const db = require('../models');
 const Sequelize = require('sequelize');
 
 module.exports = app => {
-  app.post("/api/list/add", (req, res) => {
+  app.post("/api/list/add/:id", (req, res) => {
     const Op = Sequelize.Op;
+    const userId = req.params.id;
 
-    var libraryObj = {
-      title:  req.body.title,
-      author: req.body.author,
-      genre:  req.body.genre,
-      img:    req.body.img,
-      url:    req.body.url         
-    };
-
-    db.Library.findOrCreate({ where: libraryObj })
+    db.Library.findOrCreate({ where: req.body })
     .spread((book, created) => {
       var libraryId = book.dataValues.id;
       db.Reading_List.findAndCountAll({
         attributes: ['id'],
         where: {
           userId: {
-            [Op.eq]: req.body.userId
+            [Op.eq]: userId
           },
           libraryId: {
             [Op.eq]: libraryId
@@ -34,7 +27,7 @@ module.exports = app => {
         }
         else {
           var readingListObj = {
-            UserId: parseInt(req.body.userId),
+            UserId: parseInt(userId),
             LibraryId: book.dataValues.id
           }
 
