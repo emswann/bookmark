@@ -189,6 +189,15 @@ h3 {
   margin-top: 0;
 }
 
+.no-res {
+  background-color: rgba(255, 240, 175, 0.925);
+  border: 1px solid #444;
+  text-align: center;
+  padding: 2em;
+  margin-right: 10em;
+  margin-left: 10em;
+}
+
 .book p {
   margin-top: .25em;
   margin-bottom: .25em;
