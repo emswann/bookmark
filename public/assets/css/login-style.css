@@ -22,9 +22,6 @@ body {
 
 }
 
-.loginPortal label {
-}
-
 .loginPortal button {
   color: #774206;
   border: 2px solid #774206;
@@ -57,12 +54,4 @@ h1 {
 
 .buttons {
   margin: 0 auto;
-}
-
-label {
-
-}
-
-input {
-  /* display: inline; */
 }
