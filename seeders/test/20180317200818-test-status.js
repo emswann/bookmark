@@ -21,6 +21,11 @@ module.exports = {
         name: 'Deleted',
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        name: 'On Loan',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }]
     );
   },

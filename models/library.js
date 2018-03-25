@@ -9,24 +9,19 @@ module.exports = (sequelize, DataTypes) => {
     },
     author: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     genre: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
+    },
+    img: {
+      type: DataTypes.STRING(510),
+      allowNull: true
     },
     url: {
       type: DataTypes.STRING(510),
-      allowNull: true,
-      validate: {
-        isUrl: true
-      }
+      allowNull: true
     }
   },
   {

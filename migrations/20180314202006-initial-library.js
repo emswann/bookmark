@@ -15,10 +15,14 @@ module.exports = {
         },
         author: {
           type: Sequelize.STRING,
-          allowNull: false
+          allowNull: true
         },
         genre: {
           type: Sequelize.STRING,
+          allowNull: true
+        },
+        img: {
+          type: Sequelize.STRING(510),
           allowNull: true
         },
         url: {

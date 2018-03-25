@@ -232,9 +232,15 @@ h3 {
   color: white;
 }
 
+<<<<<<< HEAD
 .trash button {
   background-color: rgb(180, 0, 0);
   color: yellow;
+=======
+.onLoan button {
+  background-color: rgb(238, 130, 238);
+  color: white;
+>>>>>>> b24a8440bbb96e66b1d83e0a70e6a504bab72d7a
 }
 
 footer {

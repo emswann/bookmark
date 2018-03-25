@@ -20,8 +20,9 @@
 ## library
   * id     - auto increment
   * title  - varchar, not null
-  * author - varchar, not null
+  * author - varchar, allow nulls
   * genre  - varchar, allow nulls
+  * img    - varchar, allow nulls
   * url    - varchar, allow nulls
 
 ## reading_list
@@ -55,9 +56,10 @@ EXAMPLE:
   2 | In Progress
   3 | Completed
   4 | Deleted
+  5 | On Loan
 
 ## library
-  1 | Stephen King | The Stand | horror | https://books.google.com/books?isbn=038552885X
+  1 | Stephen King | The Stand | horror | http://books.google.com/books/content?id=AvK9oAEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api | https://books.google.com/books?isbn=038552885X
 
 ## reading_list
   1 | 1 | 1 | 2 | 2

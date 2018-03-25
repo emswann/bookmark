@@ -57,14 +57,6 @@ module.exports = {
         StatusId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
-      },
-      {
-        UserId: 2,
-        LibraryId: 8,
-        CategoryId: 1,
-        StatusId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date()
       }]
     );
   },

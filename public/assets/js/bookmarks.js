@@ -4,59 +4,69 @@ $(document).ready(() => {
 
     $(".user-search").on("submit", function (event) {
         event.preventDefault();
+        var userId = sessionStorage.getItem("userId");
 
-        var searchInput = $(".userText").val().trim();
-        var searchParam = $(".search-btn").attr("data-value");
-
-        if (!searchInput.length) {
-            alert("The search field cannot be blank!");
+        if (!userId) {
+            showError("#login", "You must sign into Bookmarks to use it!");
         }
         else {
-            var url = "/api/search/" + searchParam + "/" + searchInput;
-            console.log("GET request: " + url);
+            var searchInput = $(".userText").val().trim();
+            var searchParam = $(".search-btn").attr("data-value");
 
-            $.ajax(url, {
-                type: "GET"
-            })
-                .then(data => {
-                    $("#search-results").html(data)
-                    handleOverflows(); 
+            if (!searchInput.length) {
+                showError("#user", "The search field cannot be blank!");
+            }
+            else {
+                var url = "/api/search/" + userId + "/" + searchParam + "/" + searchInput;
+                console.log("GET request: " + url);
+
+                $.ajax(url, {
+                    type: "GET"
                 })
-                .fail(error => console.error(error));
+                    .then(data => {
+                        $("#search-results").html(data)
+                        handleOverflows(); 
+                    })
+                    .fail(error => console.error(error));
+            }
         }
     });
 
     $(".list-search").on("submit", function (event) {
         event.preventDefault();
         var userId = sessionStorage.getItem("userId");
-
-        var searchParam = $("#selectSearchList").val();
-        var searchParamVal;
-        if ($("#dynamicSearchListContainer").find('select').length > 0) {
-            var searchParamVal = $("#dynamicSearchList").val();
-        } else {
-            var searchParamVal = $(".userText").val().trim();
-        }
-
-        if (searchParam != "all" && searchParamVal.length === 0) {
-            alert("The search field cannot be blank!");
+        
+        if (!userId) {
+            showError("#login", "You must sign into Bookmarks to use it!");
         }
         else {
-            console.log("searchParam =", searchParam, "// searchParamVal =", searchParamVal)
-            var url = "/api/list/" + userId + "/" + searchParam + "/" + searchParamVal;
-            console.log("GET request: " + url);
+            var searchParam = $("#selectSearchList").val();
+            var searchParamVal;
+            if ($("#dynamicSearchListContainer").find('select').length > 0) {
+                var searchParamVal = $("#dynamicSearchList").val();
+            } else {
+                var searchParamVal = $(".userText").val().trim();
+            }
 
-            $.ajax(url, {
-                type: "GET"
-            })
-            .then(data => { 
-                $("#list-results").html(data);
-                handleOverflows(); 
-                showStatus();
-                currentView = searchParamVal;
-                if (searchParam === "all") currentView = "All";
-            })
-            .fail(error => console.error(error));
+            if (searchParam != "all" && searchParamVal.length === 0) {
+                showError("#user", "The search field cannot be blank!");
+            }
+            else {
+                console.log("searchParam =", searchParam, "// searchParamVal =", searchParamVal)
+                var url = "/api/list/" + userId + "/" + searchParam + "/" + searchParamVal;
+                console.log("GET request: " + url);
+
+                $.ajax(url, {
+                    type: "GET"
+                })
+                .then(data => { 
+                    $("#list-results").html(data);
+                    handleOverflows(); 
+                    showStatus();
+                    currentView = searchParamVal;
+                })
+                .fail(error => console.error(error));
+            }
         }
     });
 
@@ -112,6 +122,15 @@ $(document).ready(() => {
         window.location.href = "/list";
     });
 
+    $(document).on("click", ".logout", function (event) {
+        sessionStorage.removeItem("userId");
+        window.location.href = "/logout";
+    });
+
+    $(document).on("click", "#login-err-modal-btn", function (event) {
+        window.location.href = "/login";
+    });
+
     $(".search-param").on("click", function (event) {
         var newSearchParam = $(this).attr("data-value");
         $(".search-btn").text("Searching: " + newSearchParam.toUpperCase());
@@ -120,15 +139,16 @@ $(document).ready(() => {
 
     $(document).on("click", ".add-to-list:not('.added')", function (event) {
         var title = $(this).attr("data-title")
+        var userId = sessionStorage.getItem("userId");
 
         var dataObj = {
-            userId: sessionStorage.getItem("userId"),
             title: title,
             author: $(this).attr("data-author"),
             genre: $(this).attr("data-genre"),
+            img: $(this).attr("data-img"),
             url: $(this).attr("data-url")
         }
-        var url = "/api/list/add";
+        var url = "/api/list/add/" + userId;
 
         console.log("POST request: " + url);
 
@@ -138,10 +158,10 @@ $(document).ready(() => {
         })
             .then((results) => {
                 if (results.hasOwnProperty("error")) {
-                    
-                    alert("You have already added <" + title + ">to your library!")
-                } else {
-                    $(this).addClass("added").text("In Your List");
+                    console.log("Adding book already on list should never happen");
+                }
+                else {
+                    $(this).closest(".book").empty().append($("<p style='text-align: center'>").text("'" + title + "' added to library"));
                 }
             })
             .fail(error => console.error(error));
@@ -171,16 +191,16 @@ $(document).ready(() => {
     $(document).on("click", ".statusArea li:not(.setStatus, .trash) button",  function() {
         console.log($(this).attr("data-status"));        
         
+        var userId = sessionStorage.getItem("userId");
         var title = $(this).attr("data-title");
         var status = $(this).attr("data-status");
 
         var dataObj = {
-            userId: sessionStorage.getItem("userId"),
             title: title,
             author: $(this).attr("data-author"),
             status: status
         };
-        var url = "/api/list/update";
+        var url = "/api/list/update/" + userId;
 
         console.log("PUT request: " + url);
         $.ajax(url, {
@@ -189,7 +209,7 @@ $(document).ready(() => {
         })
         .then((results) => {
             if (!results.hasOwnProperty("error")) {
-                console.log("'" + title + "'" + " added to " + status + " list");
+                console.log("'" + title + "'" + " updated to " + status + " on list");
                 $(this).parent().siblings(".setStatus").removeClass("setStatus");
                 $(this).parent().addClass("setStatus");
                 if (!(status === currentView) && !(currentView === "All")) {
@@ -200,10 +220,16 @@ $(document).ready(() => {
                     });
                 };
             } else {
-                console.log("'" + title + "'" + "not added to " + status + " list");
+                console.log("'" + title + "'" + "not updated to " + status + " on list");
             }
         })
         .fail(error => console.error(error));
+    })
+
+    // expand overflowing book
+    $(document).on("click", ".expand", function () {
+        $(this).prev(".contents").toggleClass("contentsExpanded");
+        $(this).children("span").toggleClass("glyphicon-chevron-down glyphicon-chevron-up");
     })
 
     // expand book to show all hidden overflow
@@ -219,10 +245,13 @@ $(document).ready(() => {
             }
         })
     }
-    
-    // expand overflowing book
-    $(document).on("click", ".expand", function () {
-        $(this).prev(".contents").toggleClass("contentsExpanded");
-        $(this).children("span").toggleClass("glyphicon-chevron-down glyphicon-chevron-up");
-    })
+       
+    function showError(divPrefix, error) {
+        $(divPrefix + '-err-modal-body').empty();
+        $(divPrefix + '-err-modal').modal('show');
+
+        var errModalLine = $('<h3>').text(error);
+
+        $(divPrefix + '-err-modal-body').append(errModalLine);
+    }
 });
