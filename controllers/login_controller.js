@@ -11,10 +11,10 @@ module.exports = (app, passport) => {
   app.get('/', (req, res) => 
     res.render('login.ejs', { message: req.flash('loginMessage') }));
 
-  app.get('/', (req, res) => 
+  app.get('/login', (req, res) => 
     res.render('login.ejs', { message: req.flash('loginMessage') }));
 
-  app.post('/', passport.authenticate('local-login', {
+  app.post('/login', passport.authenticate('local-login', {
     successRedirect : '/profile',
     failureRedirect : '/login',
     failureFlash : true
