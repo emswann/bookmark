@@ -16,7 +16,7 @@ $(document).ready(() => {
                 showError("#user", "The search field cannot be blank!");
             }
             else {
-                var url = "/api/search/" + searchParam + "/" + searchInput;
+                var url = "/api/search/" + userId + "/" + searchParam + "/" + searchInput;
                 console.log("GET request: " + url);
 
                 $.ajax(url, {
