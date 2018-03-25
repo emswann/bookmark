@@ -13,7 +13,7 @@ $(document).ready(() => {
             var searchParam = $(".search-btn").attr("data-value");
 
             if (!searchInput.length) {
-                alert("The search field cannot be blank!");
+                showError("#user", "The search field cannot be blank!");
             }
             else {
                 var url = "/api/search/" + searchParam + "/" + searchInput;
@@ -48,7 +48,7 @@ $(document).ready(() => {
             }
 
             if (searchParam != "all" && searchParamVal.length === 0) {
-                alert("The search field cannot be blank!");
+                showError("#user", "The search field cannot be blank!");
             }
             else {
                 console.log("searchParam =", searchParam, "// searchParamVal =", searchParamVal)
@@ -155,11 +155,11 @@ $(document).ready(() => {
             type: "POST",
             data: dataObj
         })
-            .then((results) =>
-                results.hasOwnProperty("error")
-                    ? alert("You have already added <" + title + ">to your library!")
-                    : alert("<" + title + "> was added to your library!")
-            )
+            .then((results) => {
+                if (results.hasOwnProperty("error")) {
+                    showError("#user", "You have already added <" + title + "> to your library!");
+                }
+            })
             .fail(error => console.error(error));
     });
 
