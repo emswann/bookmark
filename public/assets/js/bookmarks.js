@@ -211,7 +211,7 @@ $(document).ready(() => {
             author: $(this).attr("data-author"),
             status: status
         };
-        var url = "/api/list/update/" + userId;
+        var url = "/api/list/update/status" + userId;
 
         console.log("PUT request: " + url);
         $.ajax(url, {
