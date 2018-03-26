@@ -1,12 +1,15 @@
 const chai     = require('chai');
 const chaiHttp = require('chai-http');
- 
+const Nightmare = require('nightmare');
+const port = process.env.PORT || 8080;
+
 const expect   = require('chai').expect;
  
 // Register the plugin
 chai.use(chaiHttp);
 
 var server = require('../server');
+var path = "http://localhost:"+port+"/";
 
 describe('hooks', function() {
   before(function(done) {
@@ -52,35 +55,52 @@ describe('hooks', function() {
             done();
           });
       });
+    })
+    
+    describe('Existing User Login Authentication', function() { 
+      it('should render profile login page for successful login on /login POST', function(done) {
+        const selector = "h1";
+        Nightmare({ show: true })
+        .goto(path+"login")
+        .wait(3000)
+        .type("#loginEmail", "test2@hotmail.com")
+        .type("#loginPassword", "test")
+        .click("button")
+        .wait(3000)
+        expect(selector).to.equal(' Your Profile');
+        done();
+        // .evaluate(selector => {
+        //   return document.querySelector(selector).innerText;
+        // })
+        // .then(function(selector) {
+        // })
 
-      describe('Existing User Login Authentication', function() { 
-        it('should render profile login page for successful login on /login POST', function(done) {
-          chai.request(server)
-            .post('/login')
-            .send({'email': 'test@hotmail.com', 
-                   'password': 'test'})
-            .end((err, res) => {
-              expect(res).to.have.status(200);
-              expect(res).to.be.html;
-              expect(res.text).to.contain('</span> Your Profile</h1>'); 
-              done();
-            });
-        });
+        
+        // chai.request(server)
+        //   .post('/login')
+        //   .send({'email': 'test@hotmail.com', 
+        //          'password': 'test'})
+        //   .end((err, res) => {
+        //     expect(res).to.have.status(200);
+        //     expect(res).to.be.html;
+        //     expect(res.text).to.contain('</span> Your Profile</h1>'); 
+        //     done();
+        //   });
+      });
 
-        it('should render existing user login page with flash message for unsuccessful login on /login POST', function(done) {
-          chai.request(server)
-            .post('/login')
-            .send({'email': 'test@hotmail.com', 
-                   'password': 'wrongpassword'})
-            .end((err, res) => {
-              expect(res).to.have.status(200);
-              expect(res).to.be.html;
-              expect(res.text).to.contain('<form class="login-form" action="/login" method="post">');
-              expect(res.text).to.contain('<div class="alert alert-danger">Oops! Wrong password.</div>');
-              done();
-            });
-        });
-      });   
+      it('should render existing user login page with flash message for unsuccessful login on /login POST', function(done) {
+        chai.request(server)
+          .post('/login')
+          .send({'email': 'test@hotmail.com', 
+                  'password': 'wrongpassword'})
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res).to.be.html;
+            expect(res.text).to.contain('<form class="login-form" action="/login" method="post">');
+            expect(res.text).to.contain('<div class="alert alert-danger">Oops! Wrong password.</div>');
+            done();
+          });
+      });
 
       it('should render new user signup page on /signup GET', function(done) {
         chai.request(server)
@@ -93,34 +113,32 @@ describe('hooks', function() {
           });
       });
 
-      describe('New User Signup Authentication', function() { 
-        it('should render profile login page for successful signup on /signup POST', function(done) {
-          chai.request(server)
-            .post('/signup')
-            .send({'email': 'test2@hotmail.com', 
-                   'password': 'test'})
-            .end((err, res) => {
-              expect(res).to.have.status(200);
-              expect(res).to.be.html;
-              expect(res.text).to.contain('</span> Your Profile</h1>'); 
-              done();
-            });
-        });
+      it('should render profile login page for successful signup on /signup POST', function(done) {
+        chai.request(server)
+          .post('/signup')
+          .send({'email': 'test2@hotmail.com', 
+                  'password': 'test'})
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res).to.be.html;
+            expect(res.text).to.contain('</span> Your Profile</h1>'); 
+            done();
+          });
+      });
 
-        it('should render new user sign page with flash message for unsuccessful signup on /signup POST', function(done) {
-          chai.request(server)
-            .post('/signup')
-            .send({'email': 'test@hotmail.com', 
-                   'password': 'test'})
-            .end((err, res) => {
-              expect(res).to.have.status(200);
-              expect(res).to.be.html;
-              expect(res.text).to.contain('<form class="login-form" action="/login" method="post">');
-              expect(res.text).to.contain('<div class="alert alert-danger">That email is already taken.</div>');
-              done();             
-            });
-        });
-      });  
+      it('should render new user sign page with flash message for unsuccessful signup on /signup POST', function(done) {
+        chai.request(server)
+          .post('/signup')
+          .send({'email': 'test@hotmail.com', 
+                  'password': 'test'})
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res).to.be.html;
+            expect(res.text).to.contain('<form class="login-form" action="/login" method="post">');
+            expect(res.text).to.contain('<div class="alert alert-danger">That email is already taken.</div>');
+            done();             
+          });
+      });
 
       it('should render profile login page on /profile GET', function(done) {
         chai.request(server)
