@@ -194,8 +194,6 @@ $(document).ready(() => {
         });
     })
 
-
-
     // PUT new "status" when status (not currently set) button is clicked
     $(document).on("click", ".statusArea li:not(.setStatus, .trash) button",  function() {
         console.log($(this).attr("data-status"));
