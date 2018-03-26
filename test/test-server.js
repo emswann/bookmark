@@ -1,8 +1,8 @@
-const chai     = require('chai');
-const chaiHttp = newFunction();
-const chaiJson = require('chai-json');
+const chai       = require('chai');
+const chaiHttp   = require('chai-http');
+const chaiJson   = require('chai-json');
+ 
 const expect   = require('chai').expect;
-
  
 // Register the plugin
 chai.use(chaiHttp);
@@ -32,103 +32,126 @@ describe('hooks', function() {
   });
 
   describe('Bookmark', function() {
+
     // Account login tests.
-    // describe('Login', function() {
-    //   it('should render home login page on / GET', function(done) {
-    //     this.timeout(10000);
-    //     chai.request(server)
-    //       .get('/')
-    //       .end((err, res) => {
-    //         res.should.have.status(200);
-    //         res.should.be.html;
-    //         done();
-    //       });
-    //   });
+    describe('Login', function() {
+      it('should render home login page on / GET', function(done) {
+        chai.request(server)
+          .get('/')
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res).to.be.html;
+            expect('<p>Login or Register with:</p>').to.exist;
+            done();
+          });
+      });
 
-    //   it('should render existing user login page on /login GET', function(done) {
-    //     chai.request(server)
-    //       .get('/login')
-    //       .end((err, res) => {
-    //         res.should.have.status(200);
-    //         res.should.be.html;
-    //         done();
-    //       });
-    //   });
+      it('should render existing user login page on /login GET', function(done) {
+        chai.request(server)
+          .get('/login')
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res).to.be.html;
+            expect('<form class="login-form" action="/login" method="post">').to.exist;
+            done();
+          });
+      });
 
-    //   describe('Existing User Login Authentication', function() { 
-    //     it('should render profile login page for successful login on /login POST', function(done) {
-    //       chai.request(server)
-    //         .post('/login')
-    //         .end((err, res) => {
-    //           res.should.have.status(200);
-    //           done();
-    //         });
-    //     });
+      describe('Existing User Login Authentication', function() { 
+        it('should render profile login page for successful login on /login POST', function(done) {
+          chai.request(server)
+            .post('/login')
+            .send({'email': 'test@hotmail.com', 
+                   'password': 'test'})
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+              expect(res).to.be.html;
+              expect('</span> Your Profile</h1>').to.exist; 
+              done();
+            });
+        });
 
-    //     it('should render existing user login page with flash message for unsuccessful login on /login POST', function(done) {
-    //       chai.request(server)
-    //         .post('/login')
-    //         .end((err, res) => {
-    //           res.should.have.status(200);
-    //           done();
-    //         });
-    //     });
-    //   });   
+        it('should render existing user login page with flash message for unsuccessful login on /login POST', function(done) {
+          chai.request(server)
+            .post('/login')
+            .send({'email': 'test@hotmail.com', 
+                   'password': 'wrongpassword'})
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+              expect(res).to.be.html;
+              expect('<form class="login-form" action="/login" method="post">').to.exist;
+              expect('<div class="alert alert-danger">Oops! Wrong password.</div>').to.exist;
+              done();
+            });
+        });
+      });   
 
-    //   it('should render new user signup page on /signup GET', function(done) {
-    //     chai.request(server)
-    //       .get('/signup')
-    //       .end((err, res) => {
-    //         res.should.have.status(200);
-    //         res.should.be.html;
-    //         done();
-    //       });
-    //   });
+      it('should render new user signup page on /signup GET', function(done) {
+        chai.request(server)
+          .get('/signup')
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res).to.be.html;
+            expect('<form action="/signup" method="post">').to.exist;
+            done();
+          });
+      });
 
-    //   describe('New User Signup Authentication', function() { 
-    //     it('should render profile login page for successful signup on /signup POST', function(done) {
-    //       chai.request(server)
-    //         .post('/signup')
-    //         .end((err, res) => {
-    //           res.should.have.status(200);
-    //           done();
-    //         });
-    //     });
+      describe('New User Signup Authentication', function() { 
+        it('should render profile login page for successful signup on /signup POST', function(done) {
+          chai.request(server)
+            .post('/signup')
+            .send({'email': 'test2@hotmail.com', 
+                   'password': 'test'})
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+              expect(res).to.be.html;
+              expect('</span> Your Profile</h1>').to.exist; 
+              done();
+            });
+        });
 
-    //     it('should render new user sign page with flash message for unsuccessful signup on /signup POST', function(done) {
-    //       chai.request(server)
-    //         .post('/signup')
-    //         .end((err, res) => {
-    //           res.should.have.status(200);
-    //           done();
-    //         });
-    //     });
-    //   });  
+        it('should render new user sign page with flash message for unsuccessful signup on /signup POST', function(done) {
+          chai.request(server)
+            .post('/signup')
+            .send({'email': 'test@hotmail.com', 
+                   'password': 'test'})
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+              expect(res).to.be.html;
+              expect('<form class="login-form" action="/login" method="post">').to.exist;
+              expect('<div class="alert alert-danger">That email is already taken.</div>').to.exist;
+              done();             
+            });
+        });
+      });  
 
-    //   it('should render profile login page on /profile GET', function(done) {
-    //     chai.request(server)
-    //       .get('/profile')
-    //       .end((err, res) => {
-    //         res.should.have.status(200);
-    //         res.should.be.html;
-    //         done();
-    //       });
-    //   });
+      it('should render profile login page on /profile GET', function(done) {
+        chai.request(server)
+          .get('/profile')
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res).to.be.html;
+            expect('</span> Your Profile</h1>').to.exist;            
+            done();
+          });
+      });
 
-    //   it('should render home login page on /logout GET', function(done) {
-    //     chai.request(server)
-    //       .get('/logout')
-    //       .end((err, res) => {
-    //         res.should.have.status(200);
-    //         res.should.be.html;
-    //         done();
-    //       });
-    //   });
-    // });
-
+      it('should render home login page on /logout GET', function(done) {
+        chai.request(server)
+          .get('/logout')
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res).to.be.html;
+            expect('<p>Login or Register with:</p>').to.exist;
+            done();
+          });
+      });
+    });
+    
     // Book Search tests.
     describe('Book Search', function() {
-      // GET requests.
+
       it('should render static Book Search page (no books) on /search GET', function(done) {
         chai.request(server)
           .get('/search')
@@ -139,58 +162,70 @@ describe('hooks', function() {
             done();
           });
       });
+
+      it('should render Book Search page with books matching title and not in user library on /api/search/<id>/title/<title> GET', function(done) {
+        chai.request(server)
+          .get('/api/search/1/title/flowers')
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res).to.be.html;
+            expect('Arranging Flowers').to.exist;
+            expect('Show Me How Limited').to.exist;
+            // expect('Familiar flowers of field and garden').to.not.exist;
+            // expect('Ferdinand Schuyler Mathews').to.not.exist;
+            done();
+          });
+      });
+    
+      it('should render Book Search page with books matching author and not in user library on /api/search/<id>/author/<author> GET', function(done) {
+        chai.request(server)
+          .get('/api/search/1/author/flowers')
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res).to.be.html;
+            expect('Murders in the United States').to.exist;
+            expect('R. Barri Flowers,H. Loraine Flowers').to.exist;
+            // expect('Forget Me Not').to.not.exist;
+            // expect('Sarah Flowers').to.not.exist;
+            done();
+          });
+      });
+
+      it('should render Book Search page with books matching subject and not in user library on /api/search/<id>/subject/<subject> GET', function(done) {
+        chai.request(server)
+          .get('/api/search/1/subject/flowers')
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res).to.be.html;
+            expect('New Bach Flower Body Maps').to.exist;
+            expect('Dietmar Krc$mer,Helmut Wild').to.exist;
+            // expect('The New Flower Expert').to.not.exist;
+            // expect('D. G. Hessayon').to.not.exist;
+            done();
+          });
+      });
+
+    });
+
+    // User List tests.
+    describe('User List', function() {
+      // GET requests.
+      it('should render static User List page (no books) on /list GET', function(done) {
+        chai.request(server)
+          .get('/list')
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res).to.be.html;
+            expect('<div id="list-results">').to.exist;
+            done();
+          });
+      });
     });
   });
 });
 
 
 
-function newFunction() {
-  return require('chai-http');
-}
-      // it('should render Book Search page with books matching title and not in user library on /api/search/<id>/title/<title> GET', function(done) {
-      //   chai.request(server)
-      //     .get('/api/search/title/flowers')
-      //     .end((err, res) => {
-      //       res.should.have.status(200);
-      //       res.should.be.json;
-      //       done();
-      //     });
-      // });
-
-      // it('should render Book Search page with books matching author and not in user library on /api/search/<id>/author/<author> GET', function(done) {
-      //   chai.request(server)
-      //     .get('/api/search/author/flowers')
-      //     .end((err, res) => {
-      //       res.should.have.status(200);
-      //       res.should.be.json;
-      //       done();
-      //     });
-      // });
-
-      // it('should render Book Search page with books matching subject and not in user library on /api/search/<id>/subject/<subject> GET', function(done) {
-      //   chai.request(server)
-      //     .get('/api/search/subject/flowers')
-      //     .end((err, res) => {
-      //       res.should.have.status(200);
-      //       res.should.be.json;
-      //       done();
-      //     });
-      // });
-    // });
-
-  //   // User List tests.
-  //   describe('User List', function() {
-  //     // GET requests.
-  //     it('should render static User List page (no books) on /list GET', function(done) {
-  //       chai.request(server)
-  //         .get('/list')
-  //         .end((err, res) => {
-  //           res.should.have.status(200);
-  //           res.should.be.html;
-  //           done();
-  //         });
-  //     });
 
   //     it('should render User List page with dropdown list matching possible categories for user on /api/list/<id>/category GET', function(done) {
   //       chai.request(server)
@@ -318,10 +353,15 @@ function newFunction() {
   // });
 // });
 
+
           // res.body.should.be.a('array');
           // res.body[0].should.have.property('_id');
           // res.body[0].should.have.property('name');
           // res.body[0].should.have.property('lastName');
           // res.body[0].name.should.equal('Bat');
           // res.body[0].lastName.should.equal('man');
- 
+            //  expect(res).to.be.a('array');
+            // expect(res.body[0]).to.have.property('title');
+            // expect(res.body[0]).to.have.property('author');
+            // expect(res.res.body[0]).name.to.be.equal('Bat');
+            // expect(res.res.body[0]).author.to.be.equal('Bat');
