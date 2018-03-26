@@ -242,6 +242,11 @@ h3 {
   color: white;
 }
 
+.trash button {
+  background-color: rgb(180, 0, 0);
+  color: yellow;
+}
+
 .onLoan button {
   background-color: rgb(238, 130, 238);
   color: white;

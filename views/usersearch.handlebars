@@ -1,30 +1,36 @@
 {{#if books}}
 <ul class="stack">
     {{#each books}}
-    <li class="container book">
-        <div class="contents">
-            <button type="submit" class="add-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-img="{{img}}"
-                data-url="{{url}}"> + Add to your list</button>
-            <img src={{img}}>
-            <div class="bookDetails">
-                {{#if title}}
-                <h3>{{title}}</h3>
-                {{/if}} {{#if author}}
-                <h4>by {{author}}</h4>
-                {{/if}} {{#if year}}
-                <p>Year: {{year}}</p>
-                {{/if}} {{#if genre}}
-                <p>Genre: {{genre}}</p>
-                {{/if}} {{#if desc}}
-                <p class="bookDesc">Description: {{desc}}</p>
-                {{/if}}
+        <li class="container book">
+            <div class="contents">
+                <button type="submit" class="add-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-img="{{img}}" data-url="{{url}}"> + Add to your list</button>
+                <img src={{img}}>
+                <div class="bookDetails">
+                    {{#if title}}
+                        <h3>{{title}}</h3>
+                    {{/if}}
+
+                    {{#if author}}
+                        <h4>by {{author}}</h4>
+                    {{/if}}
+
+                    {{#if year}}
+                        <p>Year: {{year}}</p>
+                    {{/if}}
+
+                    {{#if genre}}
+                        <p>Genre: {{genre}}</p>
+                    {{/if}}
+
+                    {{#if desc}}
+                        <p class="bookDesc">Description: {{desc}}</p>
+                    {{/if}}                                       
+                </div>
+            </div>  
+            <div class="expand">
+                <span class="glyphicon glyphicon-chevron-down"></span>
             </div>
-        </div>
-        <div class="expand">
-            <span class="glyphicon glyphicon-chevron-down"></span>
-        </div>
-        </div>
-    </li>
+        </li>
     {{/each}}
 </ul>
 {{else}}
