@@ -27,7 +27,9 @@ $(document).ready(() => {
                 })
                     .then(data => {
                         $("#search-results").html(data)
-                        handleOverflows(); 
+                        handleOverflows();
+                        currentView = "Search";
+                        console.log("currentView =", currentView);
                     })
                     .fail(error => console.error(error));
             }
@@ -64,8 +66,10 @@ $(document).ready(() => {
                 .then(data => { 
                     $("#list-results").html(data);
                     handleOverflows(); 
+                    if (!(searchParamVal === "Deleted")) $(".trash").remove();
                     showStatus();
-                    currentView = searchParamVal;
+                    searchParamVal === "" ? currentView = "All" : currentView = searchParamVal;
+                    console.log("currentView =", currentView);
                 })
                 .fail(error => console.error(error));
             }
@@ -171,7 +175,7 @@ $(document).ready(() => {
 
     // for each reading_list book, show active status and hide others
     function showStatus () {
-        $(".statusArea li").hide();
+        $(".statusArea li:not(.trash)").hide();
         $(".statusArea li").filter(function() {
             return $(this).parent().attr("value") === $(this).attr("value");
         }).addClass("setStatus").show();
@@ -179,13 +183,15 @@ $(document).ready(() => {
 
     // reveal all status for selection
     $(document).on("click", ".setStatus button", function () {
-        $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
+        $(this).parent().siblings(":not(.trash)").animate({height: "toggle"}, 200, function() {
             // Animation complete.
         });
     })
 
+
+
     // PUT new "status" when status (not currently set) button is clicked
-    $(document).on("click", ".statusArea li:not(.setStatus) button",  function() {
+    $(document).on("click", ".statusArea li:not(.setStatus, .trash) button",  function() {
         console.log($(this).attr("data-status"));
         
         var userId = sessionStorage.getItem("userId");
@@ -220,6 +226,27 @@ $(document).ready(() => {
             } else {
                 console.log("'" + title + "'" + "not updated to " + status + " on list");
             }
+        })
+        .fail(error => console.error(error));
+    })
+
+    $(document).on("click", ".trash button", function () {
+        var userId = sessionStorage.getItem("userId");
+        var title = $(this).attr("data-title");
+        var author = $(this).attr("data-author");
+        var dataObj = {
+            title: title,
+            author: author
+        };
+        var url = "/api/list/delete/" + userId;
+        console.log("DELETE request: " + url);
+        $.ajax(url, {
+            type: "DELETE",
+            data: dataObj
+        })
+        .then((results) => {
+            console.log("'" + title + "'" + " deleted from list");
+            $(this).closest(".book").empty().append($("<p style='text-align: center'>").text("'" + title + "' exiled to the Trash"));
         })
         .fail(error => console.error(error));
     })
