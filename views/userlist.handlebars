@@ -3,6 +3,36 @@
     {{#each books}}
     <li class="container book">
         <div class="contents">
+            <ul class="categoryArea" value="{{category}}">
+                <li value="Not Assigned" class="notAssigned">
+                    <button type="submit" class="update-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-img="{{img}}"
+                        data-url="{{url}}" data-category="Not Assigned">Not Assigned</button>
+                </li>
+                <li value="Vacation" class="vacation">
+                    <button type="submit" class="update-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-img="{{img}}"
+                        data-url="{{url}}" data-category="Vacation">Vacation</button>
+                </li>
+                <li value="Work" class="work">
+                    <button type="submit" class="update-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-img="{{img}}"
+                        data-url="{{url}}" data-category="Work">Work</button>
+                </li>
+                <li value="School" class="school">
+                    <button type="submit" class="update-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-img="{{img}}"
+                        data-url="{{url}}" data-category="School">School</button>
+                </li>
+                <li value="Easy" class="easy">
+                    <button type="submit" class="update-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-url="{{url}}"
+                        data-category="Easy">Easy</button>
+                </li>
+                <li value="Hard" class="hard">
+                    <button type="submit" class="update-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-url="{{url}}"
+                        data-category="Hard">Hard</button>
+                </li>
+                <li value="Bathroom" class="bathroom">
+                    <button type="submit" class="update-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-url="{{url}}"
+                        data-category="Bathroom">Bathroom</button>
+                </li>
+            </ul>
             <ul class="statusArea" value="{{status}}">
                 <li value="Not Started" class="notStarted">
                     <button type="submit" class="update-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-img="{{img}}"
