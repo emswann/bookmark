@@ -210,10 +210,6 @@ h3 {
   outline: 0;
 }
 
-/* .statusArea:hover {
-  cursor: pointer;
-} */
-
 .statusArea button {
   padding: .1rem .25rem;
   text-align: center;
@@ -239,6 +235,11 @@ h3 {
 .deleted button {
   background-color: rgb(253, 112, 107);
   color: white;
+}
+
+.trash button {
+  background-color: rgb(180, 0, 0);
+  color: yellow;
 }
 
 .onLoan button {

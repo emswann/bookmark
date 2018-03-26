@@ -24,6 +24,10 @@
                     <button type="submit" class="update-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-url="{{url}}"
                         data-status="On Loan">On Loan</button>
                 </li>
+                <li value="Trash" class="trash">
+                    <button type="submit" class="destroy-from-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-url="{{url}}"
+                        data-status="Destroy"><span class="glyphicon glyphicon-trash"></span> Trash</button>
+                </li>
             </ul>
             {{#if img}}
             <img src={{img}}> {{/if}}

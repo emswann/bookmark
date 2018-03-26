@@ -1,5 +1,6 @@
 $(document).ready(() => {
-    var currentView;
+    var currentView = "All";
+    console.log("page ready ping");
 
     $(".user-search").on("submit", function (event) {
         event.preventDefault();
@@ -27,7 +28,9 @@ $(document).ready(() => {
                 })
                     .then(data => {
                         $("#search-results").html(data)
-                        handleOverflows(); 
+                        handleOverflows();
+                        currentView = "Search";
+                        console.log("currentView =", currentView);
                     })
                     .fail(error => console.error(error));
             }
@@ -62,10 +65,16 @@ $(document).ready(() => {
                     type: "GET"
                 })
                 .then(data => { 
+                    searchParamVal === "" ? currentView = "All" : currentView = searchParamVal;
                     $("#list-results").html(data);
                     handleOverflows(); 
+                    console.log("searchParamVal =", searchParamVal);
+                    if (!(searchParamVal === "Deleted")) {
+                        console.log("removing trash buttons");
+                        $(".trash").remove();
+                    }
                     showStatus();
-                    currentView = searchParamVal;
+                    console.log("currentView =", currentView);
                 })
                 .fail(error => console.error(error));
             }
@@ -139,7 +148,7 @@ $(document).ready(() => {
         $(".search-btn").attr("data-value", newSearchParam);
     });
 
-    $(document).on("click", ".add-to-list", function (event) {
+    $(document).on("click", ".add-to-list:not('.added')", function (event) {
         var title = $(this).attr("data-title")
         var userId = sessionStorage.getItem("userId");
 
@@ -171,21 +180,26 @@ $(document).ready(() => {
 
     // for each reading_list book, show active status and hide others
     function showStatus () {
-        $(".statusArea li").hide();
+        $(".statusArea li:not(.trash)").hide();
         $(".statusArea li").filter(function() {
             return $(this).parent().attr("value") === $(this).attr("value");
         }).addClass("setStatus").show();
+        if (!(currentView === "Deleted")) {
+            console.log("currentView =", currentView);
+            console.log("removing Trash button");
+            $(".trash").remove();
+        }
     }
 
     // reveal all status for selection
     $(document).on("click", ".setStatus button", function () {
-        $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
+        $(this).parent().siblings(":not(.trash)").animate({height: "toggle"}, 200, function() {
             // Animation complete.
         });
     })
 
     // PUT new "status" when status (not currently set) button is clicked
-    $(document).on("click", ".statusArea li:not(.setStatus) button",  function() {
+    $(document).on("click", ".statusArea li:not(.setStatus, .trash) button",  function() {
         console.log($(this).attr("data-status"));
         
         var userId = sessionStorage.getItem("userId");
@@ -200,7 +214,6 @@ $(document).ready(() => {
         var url = "/api/list/update/" + userId;
 
         console.log("PUT request: " + url);
-
         $.ajax(url, {
             type: "PUT",
             data: dataObj
@@ -210,8 +223,8 @@ $(document).ready(() => {
                 console.log("'" + title + "'" + " updated to " + status + " on list");
                 $(this).parent().siblings(".setStatus").removeClass("setStatus");
                 $(this).parent().addClass("setStatus");
-                if (!(status === currentView)) {
-                    $(this).closest(".book").empty().append($("<p style='text-align: center'>").text("Book moved to '"+status+"'"));
+                if (!(status === currentView) && !(currentView === "All")) {
+                    $(this).closest(".book").empty().append($("<p style='text-align: center'>").text("'"+title+"' moved to '"+status+"'")).delay(2000).fadeOut(1000);
                 } else {
                     $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
                         // Animation complete
@@ -220,6 +233,27 @@ $(document).ready(() => {
             } else {
                 console.log("'" + title + "'" + "not updated to " + status + " on list");
             }
+        })
+        .fail(error => console.error(error));
+    })
+
+    $(document).on("click", ".trash button", function () {
+        var userId = sessionStorage.getItem("userId");
+        var title = $(this).attr("data-title");
+        var author = $(this).attr("data-author");
+        var dataObj = {
+            title: title,
+            author: author
+        };
+        var url = "/api/list/delete/" + userId;
+        console.log("DELETE request: " + url);
+        $.ajax(url, {
+            type: "DELETE",
+            data: dataObj
+        })
+        .then((results) => {
+            console.log("'" + title + "'" + " deleted from list");
+            $(this).closest(".book").empty().append($("<p style='text-align: center'>").text("'" + title + "' exiled to the Trash"));
         })
         .fail(error => console.error(error));
     })
