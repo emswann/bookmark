@@ -50,7 +50,7 @@ module.exports = app => {
       attributes: ['id'],
       limit: 1
     })
-    .then(status => {
+    .then(category => {
       db.Reading_List.findAll({
         attributes: { exclude: ['createdAt', 'updatedAt'] },
         where: { UserId: userId },
@@ -63,7 +63,7 @@ module.exports = app => {
       })
       .then(list =>  {
         var readingListObj = { 
-          StatusId: category[0].id 
+          CategoryId: category[0].id 
         };
 
         db.Reading_List.update(readingListObj, {
