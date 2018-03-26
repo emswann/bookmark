@@ -73,6 +73,7 @@ $(document).ready(() => {
                         console.log("removing trash buttons");
                         $(".trash").remove();
                     }
+                    showCategory();
                     showStatus();
                     console.log("currentView =", currentView);
                 })
@@ -176,6 +177,60 @@ $(document).ready(() => {
                 }
             })
             .fail(error => console.error(error));
+    });
+
+    // for each reading_list book, show active category and hide others
+    function showCategory () {
+        $(".categoryArea li").hide();
+        $(".categoryArea li").filter(function() {
+            return $(this).parent().attr("value") === $(this).attr("value");
+        }).addClass("setCategory").show();
+    }
+
+    // reveal all status for selection
+    $(document).on("click", ".setCategory button", function () {
+        $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
+            // Animation complete.
+        });
+    })
+
+    // PUT new "category" when category (not currently set) button is clicked
+    $(document).on("click", ".CategoryArea li:not(.setCategory) button",  function() {
+        console.log($(this).attr("data-category"));
+        
+        var userId = sessionStorage.getItem("userId");
+        var title = $(this).attr("data-title");
+        var category = $(this).attr("data-category");
+
+        var dataObj = {
+            title: title,
+            author: $(this).attr("data-author"),
+            category: category
+        };
+        var url = "/api/list/update/category/" + userId;
+
+        console.log("PUT request: " + url);
+        $.ajax(url, {
+            type: "PUT",
+            data: dataObj
+        })
+        .then((results) => {
+            if (!results.hasOwnProperty("error")) {
+                console.log("'" + title + "'" + " updated to " + category + " on list");
+                $(this).parent().siblings(".setCategory").removeClass("setCategory");
+                $(this).parent().addClass("setCategory");
+                if (!(category === currentView) && !(currentView === "All")) {
+                    $(this).closest(".book").empty().append($("<p style='text-align: center'>").text("'"+title+"' moved to '"+category+"'")).delay(2000).fadeOut(1000);
+                } else {
+                    $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
+                        // Animation complete
+                    });
+                };
+            } else {
+                console.log("'" + title + "'" + "not updated to " + category + " on list");
+            }
+        })
+        .fail(error => console.error(error));
     });
 
     // for each reading_list book, show active status and hide others

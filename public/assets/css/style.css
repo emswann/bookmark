@@ -206,50 +206,60 @@ h3 {
   vertical-align: top;
 }
 
-.statusArea, .add-to-list {
+.statusArea, .categoryArea, .add-to-list {
   list-style: none;
   display: block;
   float: right;
   padding: 0;
-  width: 6rem;
+  width: 7rem;
   outline: 0;
 }
 
-.statusArea button {
+.statusArea button, .categoryArea button {
   padding: .1rem .25rem;
   text-align: center;
   width: 100%;
   outline: 0;
 }
 
-.notStarted button {
+.notStarted button, .notAssigned button {
   background-color: yellow;
   color: rgb(151, 132, 49);
 }
 
-.inProgress button, .added {
+.inProgress button, .vacation button, .added {
   background-color: rgb(35, 202, 35);
   color: white;
 }
 
-.completed button {
+.completed button, .work button {
   background-color: rgb(38, 173, 226);
   color: white;
 }
 
-.deleted button {
+.deleted button, .school button {
   background-color: rgb(253, 112, 107);
+  color: white;
+}
+
+.onLoan button, .easy button {
+  background-color: rgb(238, 130, 238);
+  color: white;
+}
+
+.bathroom button {
+  background-color: rgb(82, 60, 33);
+  color: white;
+}
+
+.hard button {
+  background-color: rgb(247, 47, 20);
   color: white;
 }
 
 .trash button {
   background-color: rgb(180, 0, 0);
   color: yellow;
-}
-
-.onLoan button {
-  background-color: rgb(238, 130, 238);
-  color: white;
 }
 
 footer {
