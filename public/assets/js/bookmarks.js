@@ -65,11 +65,15 @@ $(document).ready(() => {
                     type: "GET"
                 })
                 .then(data => { 
+                    searchParamVal === "" ? currentView = "All" : currentView = searchParamVal;
                     $("#list-results").html(data);
                     handleOverflows(); 
-                    if (!(searchParamVal === "Deleted")) $(".trash").remove();
+                    console.log("searchParamVal =", searchParamVal);
+                    if (!(searchParamVal === "Deleted")) {
+                        console.log("removing trash buttons");
+                        $(".trash").remove();
+                    }
                     showStatus();
-                    searchParamVal === "" ? currentView = "All" : currentView = searchParamVal;
                     console.log("currentView =", currentView);
                 })
                 .fail(error => console.error(error));
