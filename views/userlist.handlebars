@@ -33,15 +33,13 @@
             <img src={{img}}> {{/if}}
             <div class="bookDetails">
                 {{#if title}}
-                <h3>Title: {{title}}</h3>
+                <h3>{{title}}</h3>
                 {{/if}} {{#if author}}
-                <h4>Author: {{author}}</h4>
+                <h4>by {{author}}</h4>
                 {{/if}} {{#if genre}}
                 <p>Genre: {{genre}}</p>
-                {{/if}} {{#if category}}
-                <p>Category: {{category}}</p>
                 {{/if}} {{#if url}}
-                <p>URL: {{url}}</p>
+                <a href="{{url}}" target="_blank"><p>Google Books link {{url}}</p></a>
                 {{/if}}
             </div>
         </div>
