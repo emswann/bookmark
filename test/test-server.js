@@ -1,39 +1,34 @@
-const chai       = require('chai');
-const chaiHttp   = require('chai-http');
-// const chaiEnzyme = require('chai-enzyme');
+const chai     = require('chai');
+const chaiHttp = require('chai-http');
  
 const expect   = require('chai').expect;
  
 // Register the plugin
 chai.use(chaiHttp);
-// chai.use(chaiEnzyme());
 
 var server = require('../server');
 
 describe('hooks', function() {
   before(function(done) {
-    setTimeout(function() {
-      done();
-    }, 1800);
+    done();
   });
 
   after(function(done) {
+    done();
+  });
+
+  beforeEach(function(done) {
     setTimeout(function() {
       done();
     }, 1800);
   });
 
-  beforeEach(function() {
-    // runs before each test in this block
-  });
-
-  afterEach(function() {
-    // runs after each test in this block
+  afterEach(function(done) {
+    done();
   });
 
   describe('Bookmark', function() {
 
-    // Account login tests.
     describe('Login', function() {
       it('should render home login page on / GET', function(done) {
         chai.request(server)
@@ -41,7 +36,8 @@ describe('hooks', function() {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res).to.be.html;
-            expect('<p>Login or Register with:</p>').to.exist;
+            expect(res.text).to.contain('<p>Login or Register with:</p>');
+            expect(res.text).to.not.contain('<p>This is a test</p>');
             done();
           });
       });
@@ -52,7 +48,7 @@ describe('hooks', function() {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res).to.be.html;
-            expect('<form class="login-form" action="/login" method="post">').to.exist;
+            expect(res.text).to.contain('<form class="login-form" action="/login" method="post">');
             done();
           });
       });
@@ -66,7 +62,7 @@ describe('hooks', function() {
             .end((err, res) => {
               expect(res).to.have.status(200);
               expect(res).to.be.html;
-              expect('</span> Your Profile</h1>').to.exist; 
+              expect(res.text).to.contain('</span> Your Profile</h1>'); 
               done();
             });
         });
@@ -79,8 +75,8 @@ describe('hooks', function() {
             .end((err, res) => {
               expect(res).to.have.status(200);
               expect(res).to.be.html;
-              expect('<form class="login-form" action="/login" method="post">').to.exist;
-              expect('<div class="alert alert-danger">Oops! Wrong password.</div>').to.exist;
+              expect(res.text).to.contain('<form class="login-form" action="/login" method="post">');
+              expect(res.text).to.contain('<div class="alert alert-danger">Oops! Wrong password.</div>');
               done();
             });
         });
@@ -92,7 +88,7 @@ describe('hooks', function() {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res).to.be.html;
-            expect('<form action="/signup" method="post">').to.exist;
+            expect(res.text).to.contain('<form action="/signup" method="post">');
             done();
           });
       });
@@ -106,7 +102,7 @@ describe('hooks', function() {
             .end((err, res) => {
               expect(res).to.have.status(200);
               expect(res).to.be.html;
-              expect('</span> Your Profile</h1>').to.exist; 
+              expect(res.text).to.contain('</span> Your Profile</h1>'); 
               done();
             });
         });
@@ -119,8 +115,8 @@ describe('hooks', function() {
             .end((err, res) => {
               expect(res).to.have.status(200);
               expect(res).to.be.html;
-              expect('<form class="login-form" action="/login" method="post">').to.exist;
-              expect('<div class="alert alert-danger">That email is already taken.</div>').to.exist;
+              expect(res.text).to.contain('<form class="login-form" action="/login" method="post">');
+              expect(res.text).to.contain('<div class="alert alert-danger">That email is already taken.</div>');
               done();             
             });
         });
@@ -132,9 +128,9 @@ describe('hooks', function() {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res).to.be.html;
-            expect('</span> Your Profile</h1>').to.exist;            
+            expect(res.text).to.contain('</span> Your Profile</h1>'); 
             done();
-          });
+          })
       });
 
       it('should render home login page on /logout GET', function(done) {
@@ -143,7 +139,7 @@ describe('hooks', function() {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res).to.be.html;
-            expect('<p>Login or Register with:</p>').to.exist;
+            expect(res.text).to.contain('<p>Login or Register with:</p>');
             done();
           });
       });
@@ -158,7 +154,7 @@ describe('hooks', function() {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res).to.be.html;
-            expect('<div id="search-results">').to.exist;
+            expect(res.text).to.contain('<div id="search-results">');
             done();
           });
       });
@@ -169,10 +165,10 @@ describe('hooks', function() {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res).to.be.html;
-            expect('Arranging Flowers').to.exist;
-            expect('Show Me How Limited').to.exist;
-            // expect('Familiar flowers of field and garden').to.not.exist;
-            // expect('Ferdinand Schuyler Mathews').to.not.exist;
+            expect(res.text).to.contain('Arranging Flowers');
+            expect(res.text).to.contain('Show Me How Limited');
+            expect(res.text).to.not.contain('Familiar flowers of field and garden');
+            expect(res.text).to.not.contain('Ferdinand Schuyler Mathews');
             done();
           });
       });
@@ -183,10 +179,10 @@ describe('hooks', function() {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res).to.be.html;
-            expect('Murders in the United States').to.exist;
-            expect('R. Barri Flowers,H. Loraine Flowers').to.exist;
-            // expect('Forget Me Not').to.not.exist;
-            // expect('Sarah Flowers').to.not.exist;
+            expect(res.text).to.contain('Murders in the United States');
+            expect(res.text).to.contain('R. Barri Flowers,H. Loraine Flowers');
+            expect(res.text).to.not.contain('Forget Me Not');
+            expect(res.text).to.not.contain('Sarah Flowers');
             done();
           });
       });
@@ -197,10 +193,10 @@ describe('hooks', function() {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res).to.be.html;
-            expect('New Bach Flower Body Maps').to.exist;
-            expect('Dietmar Krc$mer,Helmut Wild').to.exist;
-            // expect('The New Flower Expert').to.not.exist;
-            // expect('D. G. Hessayon').to.not.exist;
+            expect(res.text).to.contain('New Bach Flower Body Maps');
+            expect(res.text).to.contain('Dietmar Krc$mer,Helmut Wild');
+            expect(res.text).to.not.contain('The New Flower Expert');
+            expect(res.text).to.not.contain('D. G. Hessayon');
             done();
           });
       });
@@ -216,7 +212,7 @@ describe('hooks', function() {
           .end((err, res) => {
             expect(res).to.have.status(200);
             expect(res).to.be.html;
-            expect('<div id="list-results">').to.exist;
+            expect(res.text).to.contain('<div id="list-results">');
             done();
           });
       });
@@ -224,144 +220,38 @@ describe('hooks', function() {
   });
 });
 
-
-
-
   //     it('should render User List page with dropdown list matching possible categories for user on /api/list/<id>/category GET', function(done) {
-  //       chai.request(server)
-  //         .get('/api/list/1/category')
-  //         .end((err, res) => {
-  //           res.should.have.status(200);
-  //           res.should.be.json;
-  //           done();
-  //         });
   //     });
 
   //     it('should render User List page with dropdown list matching possible statuses for user on /api/list/<id>/status GET', function(done) {
-  //       chai.request(server)
-  //         .get('/api/list/1/status')
-  //         .end((err, res) => {
-  //           res.should.have.status(200);
-  //           res.should.be.json;
-  //           done();
-  //         });
   //     });
 
-  //     describe('User List Search', function() {
-  //       it('should render User List page with ALL books matching user on /api/list/<id>/<all> GET', function(done) {
-  //         chai.request(server)
-  //           .get('/api/list/1/all')
-  //           .end((err, res) => {
-  //             res.should.have.status(200);
-  //             res.should.be.json;
-  //             done();
-  //           });
-  //       });
-
-  //       it('should not render deleted book on User List page with ALL books matching user on /api/list/<id>/<all> GET', function(done) {
-  //         chai.request(server)
-  //           .get('/api/list/1/all')
-  //           .end((err, res) => {
-  //             res.should.have.status(200);
-  //             res.should.be.json;
-  //             done();
-  //           });
-  //       });
-
-  //       it('should render User List page with ALL books matching title and user on /api/list/<id>/title/<title> GET', function(done) {
-  //         chai.request(server)
-  //           .get('/api/list/1/title/Title - Title 1')
-  //           .end((err, res) => {
-  //             res.should.have.status(200);
-  //             res.should.be.json;
-  //             done();
-  //           });
-  //       });
-
-  //       it('should render User List page with ALL books matching author and user on /api/list/<id>/author/<author> GET', function(done) {
-  //         chai.request(server)
-  //           .get('/api/list/1/author/Author - Author 1')
-  //           .end((err, res) => {
-  //             res.should.have.status(200);
-  //             res.should.be.json;
-  //             done();
-  //           });
-  //       });
-
-  //       it('should render User List page with ALL books matching category and user on /api/list/<id>/category/<category> GET', function(done) {
-  //         chai.request(server)
-  //           .get('/api/list/1/category/Vacation')
-  //           .end((err, res) => {
-  //             res.should.have.status(200);
-  //             res.should.be.json;
-  //             done();
-  //           });
-  //       });
-
-  //       it('should render User List page with ALL books matching status and user on /api/list/<id>/status/<status> GET', function(done) {
-  //         chai.request(server)
-  //           .get('/api/list/1/status/In Progress')
-  //           .end((err, res) => {
-  //             res.should.have.status(200);
-  //             res.should.be.json;
-  //             done();
-  //           });
-  //       });
+  //     it('should render User List page with ALL books matching user on /api/list/<id>/<all> GET', function(done) {
   //     });
 
-  //     // POST requests.
-  //     describe('User List Add', function() {
-  //       it('should add existing library book to user list only on /api/list/add POST', function(done) {
-  //         chai.request(server)
-  //           .post('/api/list/add')
-  //           .end((err, res) => {
-  //             res.should.have.status(200);
-  //             done();
-  //           });
-  //       });
-
-  //       it('should add new library book to both library and user list on /api/list/add POST', function(done) {   
-  //         chai.request(server)
-  //           .post('/api/list/add')
-  //           .end((err, res) => {
-  //             res.should.have.status(200);
-  //             done();
-  //           });
-  //       });
-
-  //       it('should not add existing user list book to either library or user list only on /api/list/add POST', function(done) { 
-  //         chai.request(server)
-  //           .post('/api/list/add')
-  //           .end((err, res) => {
-  //             res.should.have.status(200);
-  //             done();
-  //           });
-  //       });
-
+  //     it('should not render deleted book on User List page with ALL books matching user on /api/list/<id>/<all> GET', function(done) {
   //     });
 
-  //     // PUT requests.
+  //     it('should render User List page with ALL books matching title and user on /api/list/<id>/title/<title> GET', function(done) {
+  //     });
+
+  //     it('should render User List page with ALL books matching author and user on /api/list/<id>/author/<author> GET', function(done) {
+  //     });
+
+  //     it('should render User List page with ALL books matching category and user on /api/list/<id>/category/<category> GET', function(done) {
+  //     });
+
+  //     it('should render User List page with ALL books matching status and user on /api/list/<id>/status/<status> GET', function(done) {
+  //     });
+
+  //     it('should add existing library book to user list only on /api/list/add POST', function(done) {
+  //     });
+
+  //     it('should add new library book to both library and user list on /api/list/add POST', function(done) {   
+  //     });
+
+  //     it('should not add existing user list book to either library or user list only on /api/list/add POST', function(done) { 
+  //     });
+
   //     it('should update status for user list on /api/list/update PUT', function(done) { 
-  //       chai.request(server)
-  //         .put('/api/list/update')
-  //         .end((err, res) => {
-  //           res.should.have.status(200);
-  //           done();
-  //         });
   //     });
-  //   });
-  // });
-// });
-
-
-          // res.body.should.be.a('array');
-          // res.body[0].should.have.property('_id');
-          // res.body[0].should.have.property('name');
-          // res.body[0].should.have.property('lastName');
-          // res.body[0].name.should.equal('Bat');
-          // res.body[0].lastName.should.equal('man');
-            //  expect(res).to.be.a('array');
-            // expect(res.body[0]).to.have.property('title');
-            // expect(res.body[0]).to.have.property('author');
-            // expect(res.res.body[0]).name.to.be.equal('Bat');
-            // expect(res.res.body[0]).author.to.be.equal('Bat');
