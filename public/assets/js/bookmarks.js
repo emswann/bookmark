@@ -95,20 +95,6 @@ $(document).ready(() => {
                 // search author <text field>
                 dynamicSearchList = $("<input type='text' name='search' class='userText'>");
                 break;
-            case "category":
-                // search category <category list>
-                var url = "/api/list/" + sessionStorage.getItem("userId") + "/category";
-                console.log("categoty GET request: " + url);
-                $.ajax(url, {
-                    type: "GET"
-                })
-                    .then(data => {
-                        data.forEach(ele => {
-                            $("<option value='" + ele + "'>").text(ele).appendTo(dynamicSearchList);
-                        })
-                    })
-                    .fail(error => console.error(error));
-                break;
             case "status":
                 // search status <status list>
                 var url = "/api/list/" + sessionStorage.getItem("userId") + "/status";
