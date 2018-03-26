@@ -1,12 +1,12 @@
 const chai       = require('chai');
 const chaiHttp   = require('chai-http');
-const chaiJson   = require('chai-json');
+// const chaiEnzyme = require('chai-enzyme');
  
 const expect   = require('chai').expect;
  
 // Register the plugin
 chai.use(chaiHttp);
-chai.use(chaiJson);
+// chai.use(chaiEnzyme());
 
 var server = require('../server');
 

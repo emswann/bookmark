@@ -22,8 +22,6 @@
     "body-parser": "^1.18.2",
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
-    "chai-jq": "0.0.9",
-    "chai-json": "^1.0.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "dotenv": "^5.0.1",
