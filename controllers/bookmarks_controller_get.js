@@ -9,6 +9,7 @@ let gbooks = require('@datafire/google_books').create({
   redirect_uri: ""
 });
 const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 const searchList = require('./searchList');
 
 var getGBooks = (res, userId, searchType, searchParam) => {
@@ -103,7 +104,7 @@ module.exports = app => {
       where: { UserId: req.params.id },
       include: [{
         model: db.Status,
-        where: { name: 'Deleted' },
+        where: { name: { [Op.ne]: 'Deleted' }},
         attributes: { exclude: ['id', 'name', 'createdAt', 'updatedAt'] }
       },
       {

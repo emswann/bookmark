@@ -99,7 +99,7 @@ $(document).ready(() => {
             case "category":
                 // search category <category list>
                 var url = "/api/list/" + sessionStorage.getItem("userId") + "/category";
-                console.log("categoty GET request: " + url);
+                console.log("category GET request: " + url);
                 $.ajax(url, {
                     type: "GET"
                 })
@@ -195,7 +195,7 @@ $(document).ready(() => {
     })
 
     // PUT new "category" when category (not currently set) button is clicked
-    $(document).on("click", ".CategoryArea li:not(.setCategory) button",  function() {
+    $(document).on("click", ".categoryArea li:not(.setCategory) button",  function() {
         console.log($(this).attr("data-category"));
         
         var userId = sessionStorage.getItem("userId");
