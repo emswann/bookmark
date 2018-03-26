@@ -169,6 +169,11 @@ h3 {
   margin-top: 0;
 }
 
+.bookDetails a {
+  font-size: .75rem;
+  font-style: italic;
+}
+
 .no-res {
   background-color: rgba(255, 240, 175, 0.925);
   border: 1px solid #444;
@@ -209,10 +214,6 @@ h3 {
   width: 6rem;
   outline: 0;
 }
-
-/* .statusArea:hover {
-  cursor: pointer;
-} */
 
 .statusArea button {
   padding: .1rem .25rem;
