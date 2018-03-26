@@ -1,6 +1,7 @@
 {{#if books}}
 <ul class="stack">
     {{#each books}}
+<<<<<<< HEAD
     <li class="container book">
         <div class="contents">
             <button type="submit" class="add-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-img="{{img}}"
@@ -18,6 +19,39 @@
                 {{/if}} {{#if desc}}
                 <p class="bookDesc">Description: {{desc}}</p>
                 {{/if}}
+=======
+        <li class="container book">
+            <div class="contents">
+<<<<<<< HEAD
+                <button type="submit" class="add-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-url="{{url}}"> + Add to list</button>
+=======
+                <button type="submit" class="add-to-list" data-title="{{title}}" data-author="{{author}}" data-genre="{{genre}}" data-img="{{img}}" data-url="{{url}}"> + Add to your list</button>
+>>>>>>> b24a8440bbb96e66b1d83e0a70e6a504bab72d7a
+                <img src={{img}}>
+                <div class="bookDetails">
+                    {{#if title}}
+                        <h3>{{title}}</h3>
+                    {{/if}}
+
+                    {{#if author}}
+                        <h4>by {{author}}</h4>
+                    {{/if}}
+
+                    {{#if year}}
+                        <p>Year: {{year}}</p>
+                    {{/if}}
+
+                    {{#if genre}}
+                        <p>Genre: {{genre}}</p>
+                    {{/if}}
+
+                    {{#if desc}}
+                        <p class="bookDesc">Description: {{desc}}</p>
+                    {{/if}}                                       
+                </div>
+            </div>  
+            <div class="expand"><span class="glyphicon glyphicon-chevron-down"></span></div>
+>>>>>>> 9b7a2b2f0957673b08403fc44c5ab6f481de07a2
             </div>
         </div>
         <div class="expand">

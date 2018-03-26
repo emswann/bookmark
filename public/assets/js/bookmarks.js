@@ -1,5 +1,6 @@
 $(document).ready(() => {
-    var currentView;
+    var currentView = "All";
+    console.log("page ready ping");
 
     $(".user-search").on("submit", function (event) {
         event.preventDefault();
@@ -143,7 +144,7 @@ $(document).ready(() => {
         $(".search-btn").attr("data-value", newSearchParam);
     });
 
-    $(document).on("click", ".add-to-list", function (event) {
+    $(document).on("click", ".add-to-list:not('.added')", function (event) {
         var title = $(this).attr("data-title")
         var userId = sessionStorage.getItem("userId");
 
@@ -179,6 +180,11 @@ $(document).ready(() => {
         $(".statusArea li").filter(function() {
             return $(this).parent().attr("value") === $(this).attr("value");
         }).addClass("setStatus").show();
+        if (!(currentView === "Deleted")) {
+            console.log("currentView =", currentView);
+            console.log("removing Trash button");
+            $(".trash").remove();
+        }
     }
 
     // reveal all status for selection
@@ -206,7 +212,6 @@ $(document).ready(() => {
         var url = "/api/list/update/" + userId;
 
         console.log("PUT request: " + url);
-
         $.ajax(url, {
             type: "PUT",
             data: dataObj
@@ -216,8 +221,8 @@ $(document).ready(() => {
                 console.log("'" + title + "'" + " updated to " + status + " on list");
                 $(this).parent().siblings(".setStatus").removeClass("setStatus");
                 $(this).parent().addClass("setStatus");
-                if (!(status === currentView)) {
-                    $(this).closest(".book").empty().append($("<p style='text-align: center'>").text("Book moved to '"+status+"'"));
+                if (!(status === currentView) && !(currentView === "All")) {
+                    $(this).closest(".book").empty().append($("<p style='text-align: center'>").text("'"+title+"' moved to '"+status+"'")).delay(2000).fadeOut(1000);
                 } else {
                     $(this).parent().siblings().animate({height: "toggle"}, 200, function() {
                         // Animation complete

@@ -237,13 +237,13 @@ h3 {
   color: white;
 }
 
-.onLoan button {
-  background-color: rgb(238, 130, 238);
-  color: white;
+.trash button {
+  background-color: rgb(180, 0, 0);
+  color: yellow;
 }
 
-.trash button {
-  background-color: rgb(184, 48, 48);
+.onLoan button {
+  background-color: rgb(238, 130, 238);
   color: white;
 }
 
