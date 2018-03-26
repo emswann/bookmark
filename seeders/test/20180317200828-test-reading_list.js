@@ -49,6 +49,30 @@ module.exports = {
         StatusId: 5,
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        UserId: 1,
+        LibraryId: 7,
+        CategoryId: 1,
+        StatusId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        UserId: 1,
+        LibraryId: 8,
+        CategoryId: 1,
+        StatusId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        UserId: 1,
+        LibraryId: 9,
+        CategoryId: 1,
+        StatusId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }]
     );
   },
