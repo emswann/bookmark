@@ -14,7 +14,8 @@ const searchList = require('./searchList');
 
 var getGBooks = (res, userId, searchType, searchParam) => {
   const apiKey = process.env.GBOOKS_API_KEY;
-  const MAX_RESULTS = 10;
+  const MAX_RESULTS = 20;
+  const RET_RESULTS = 10;
 
   try { 
     var searchTypeAndParam = searchType + ":" + searchParam;
@@ -62,7 +63,7 @@ var getGBooks = (res, userId, searchType, searchParam) => {
                 gbook.title === ubook.title && gbook.author === ubook.author));
 
           // Including extension since using both handlebars and ejs in app. 
-          res.render("usersearch.handlebars", {books: filteredObjArray, layout: false});
+          res.render("usersearch.handlebars", {books: filteredObjArray.slice(0, RET_RESULTS), layout: false});
         });
       })
       .catch(error => console.log("gbooks.then error =", error));
