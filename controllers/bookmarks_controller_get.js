@@ -33,10 +33,13 @@ var getGBooks = (res, userId, searchType, searchParam) => {
 
         gBooks.forEach(book => {
           var info = book.volumeInfo;
+          var author = info.authors ? info.authors.toString() : undefined;
 
           gBooksObjArray.push({
             title: info.title,
-            author: info.authors ? info.authors.toString() : undefined,
+            // Need actual string to insert into table due to subsequent searches by author.
+            author: author,
+            mod_author: author || "Unknown",
             year: info.publishedDate,
             genre: info.categories ? info.categories.toString() : undefined,
             desc: info.description,
@@ -53,14 +56,15 @@ var getGBooks = (res, userId, searchType, searchParam) => {
           userBooks.forEach(book =>
             userBooksObjArray.push({
               title: book.Library.title,
-              author: book.Library.author,
+              author: book.Library.author
             })  
           )             
 
           var filteredObjArray = 
             gBooksObjArray.filter(gbook =>   
               !userBooksObjArray.some(ubook => 
-                gbook.title === ubook.title && gbook.author === ubook.author));
+                // Need to compare google book using modified author since this is returned from the database.
+                gbook.title === ubook.title && gbook.mod_author === ubook.author));
 
           // Including extension since using both handlebars and ejs in app. 
           res.render("usersearch.handlebars", {books: filteredObjArray.slice(0, RET_RESULTS), layout: false});
@@ -147,20 +151,22 @@ module.exports = app => {
 
     searchList[searchParam](userId, searchParamVal)
     .then(data =>  {
-
       var booksObjArray = [];
         
-      data.forEach(book =>
+      data.forEach(book => {
+        var mod_author = book.Library.author;
+
         booksObjArray.push({
           title: book.Library.title,
-          author: book.Library.author,
+          author: mod_author === "Unknown" ? undefined : mod_author,
+          mod_author: mod_author,
           genre: book.Library.genre,
           category: book.Category.name,
           status: book.Status.name,
           img: book.Library.img,
           url: book.Library.url
         })
-      );
+      });
 
       // Include extension since using both handlebars and ejs in app.   
       res.render("userlist.handlebars", {books: booksObjArray, layout: false});
