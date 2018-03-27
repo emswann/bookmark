@@ -1,3 +1,4 @@
+![bookmarks-title](screenshots/bookmarks-title.png "Adding to the reading list.")
 # bookmark
 Application to create and track reading lists for users.
 
