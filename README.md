@@ -28,8 +28,14 @@ $ sequelize db:seed:all --seeders-path "seeders/test"
 This procedure will create `database_db`.
 
 ## Usage
-Upon logging in with a freshly created account, the user will have an empty "reading list" and the opportunity to search for books via the Google API. Books may then be added to the reading list, with "completion status" and "category" fields available to them. The reading list may then be filtered by status or category.
+Upon logging in with a freshly created account, the user will have an empty "reading list" and the opportunity to search for books via the Google API. Books may then be added to the reading list.
+![add-to-list](screenshots/add-to-list.png "Adding to the reading list.")
+The book will have "completion status" and "category" fields available to them once in the reading list.
+![reading-list-book](screenshots/reading-list-book.png "Adding to the reading list.")
+Click on the current status or category to change it. The reading list may then be filtered by status or category.
+![tag-changing](screenshots/tag-changing.png "Adding to the reading list.")
 - When a book is assigned "Deleted" status, it is removed from all list views unless the user specifically chooses to view "Deleted" books only. In this view, "Deleted" books are also granted a "Trash" button, which will remove the book from the reading list completely. (It may be found again in the "book search" area if desired.)
+![trash-button](screenshots/trash-button.png "Adding to the reading list.")
 
 ## Credits
 - Matt Haddock
