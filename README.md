@@ -5,6 +5,14 @@ Application to create and track reading lists for users.
 ## Purpose
 Allows the avid reader to find books and add them to a personal reading list, tracking completion status and category. Demonstrates use of Sequelize, Handlebars, Express, and more.
 
+## Getting Started
+
+You should be able to download the files via the github pages link below and run locally on your computer:
+[https://github.com/emswann/bookmark.git](https://github.com/emswann/bookmark.git).
+
+The application has also been published on Heroku:
+[https://bookmark-gt.herokuapp.com/](https://bookmark-gt.herokuapp.com/).
+
 ## Local Installation
 ### .env setup
 When locally hosted, Bookmarks requires a .env file to contain MYSQL database information, and an API key for Google Books. Include the following information as environment variables:
